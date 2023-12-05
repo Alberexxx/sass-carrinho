@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css'>
+       
+    <link rel="stylesheet" href="/css/login/validacoes.css">
+    <link rel="stylesheet" href="/css/login/style.css"> 
+
+</head>
+
+<body>
+    
+    <div class="body">
+    <div class="container" id="container">
+
+
+        
+        
+        <div class="normal">
+            <div class="form-container sign-in-container">
+                <form method="post" action="/authenticate">
+                    <h1>Conecte-se!</h1>
+                    
+                    <span class="text-color">Ou faça login usando o endereço de e-mail</span>
+                    <label>
+                        <input type="email" placeholder="Digite seu email" name="email" id="email_login" required/>
+                        <p class="aviso" id="aviso_login"></p>
+                    </label>
+                    <label>
+                        <input type="password" placeholder="Digite sua senha" name="senha" id="senha_login" required/>
+                        
+                    </label>
+                   
+                    <button id="btnLogin">Entrar</button>
+                    <br>
+                  <!--  <span class="span-mobile">Não tem uma Conta? <a class="a-mobile" id="signUp2" href="#"> Cadastre-se</a></span> -->
+                </form>
+            </div>
+        </div> 
+        <div class="normal">
+            <div class="overlay-container">
+                <div class="overlay">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js'></script>
+    <script src="/js/login/validacoesSeparado.js"> </script>
+    <script src="/js/login/loginSeparado.js"></script>
+</body>
+
+</html>

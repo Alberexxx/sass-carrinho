@@ -1,0 +1,380 @@
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+}
+* {
+    box-sizing: border-box;
+}
+.span-mobile{
+    display: none;
+}
+body {
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: -20px 0 50px;
+    margin-top: 20px;
+    background: #000;
+}
+h1 {
+    font-weight: bold;
+    margin: 0;
+}
+p {
+    font-size: 14px;
+    font-weight: 100;
+    line-height: 20px;
+    letter-spacing: .5px;
+    margin: 20px 0 30px;
+}
+span {
+    font-size: 12px;
+}
+a {
+    color: #305f36;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}
+a:hover {
+    color: #27b737;
+}
+.container {
+    border-radius: 30px;
+    overflow: hidden;
+    opacity: 85%;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+    transition: 333ms;
+    border: 2px solid #27b738;
+    box-shadow: none; /* Remova a sombra do contêiner se desejar */
+    position: static;
+    border: none;
+    background-color: transparent;
+}
+.form-container form {
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.social-container {
+    margin: 10px 0;
+    display: block;
+}
+.social-container a {
+    border: 1px solid #0f4916;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
+    transition: 333ms;
+}
+.logo {
+    /* -webkit-filter: drop-shadow(0px 0px 20px rgba(0 0 0 / 90%)); */
+    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.95));
+    max-height: 17%;
+}
+.social-container a:hover {
+    transform: rotateZ(13deg);
+    border: 1px solid #27b737;
+    transform: scale(1.35);
+}
+.form-container input {
+    background: #eee;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 15px;
+    margin: 8px 0;
+    width: 100%;
+}
+.form-container input:hover {
+    transform: scale(1.06);
+}
+button {
+    border-radius: 10px;
+    box-shadow: 0 1px 1px;
+    border: 1px solid #27b737;
+    background: #27b737;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
+button:hover {
+    letter-spacing: 2px;
+    transition: letter-spacing 0.3s ease;
+    background-color: transparent;
+    border: 2px solid #27b737;
+    border-radius: 12px;
+    color: #27b737;
+}
+button:active {
+    transform: scale(.95);
+}
+button:focus {
+    outline: none;
+}
+button.ghost {
+    transition: background 0.6s ease;
+    background: transparent;
+    color: #fff;
+    border-color: #fff;
+}
+button.ghost:hover {
+    background-color: #27b737;
+}
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all .6s ease-in-out;
+}
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    z-index: 1;
+    opacity: 0;
+}
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform .6s ease-in-out;
+    z-index: 100;
+}
+.overlay {
+    background: linear-gradient(to right, #052209, #15631e, #052209) no-repeat 0 0 / cover;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateY(0);
+    transition: transform .6s ease-in-out;
+}
+.overlay-panel {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 40px;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform .6s ease-in-out;
+}
+.logo-mobile{
+    /* -webkit-filter: drop-shadow(0px 0px 25px rgba(0 0 0 / 90%)); */
+    filter: drop-shadow(0px 0px 10px rgba(197, 196, 196, 0.95));
+    display: none;
+}
+.overlay-right {
+    right: 0;
+    transform: translateY(0);
+}
+.overlay-left {
+    transform: translateY(-20%);
+}
+.container.right-panel-active .sign-in-container {
+    transform: translateY(100%);
+}
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+}
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+.container.right-panel-active .overlay-left {
+    transform: translateY(0);
+}
+.container.right-panel-active .overlay-right {
+    transform: translateY(20%);
+}
+label{
+        width: 100%;
+        max-width: 270px;
+    }
+@media (max-width: 768px) {
+    /* Estilos para o corpo (body) */
+    body {
+        width: 100vw;
+        font-size: 16px;
+        margin: 0;
+        margin-top: 10px;
+        padding-left: 8px;
+        padding-right: 8px;
+        background: #000; /* Ajuste o fundo conforme necessário */
+    }
+
+    /* Estilos para o contêiner principal */
+    .container {
+        /* Largura total para ocupar toda a largura da tela */
+        box-shadow: none; /* Remova a sombra do contêiner se desejar */
+        position: static;
+        border: none;
+        background-color: transparent;
+    }
+
+    /* Estilos para os formulários */
+    .form-container {
+        padding: 0; /* Adicione um espaçamento interno para melhor legibilidade */
+    }
+
+    .form-container form {
+        padding: 0 8px;
+    }
+
+    .form-container input {
+        background: #eee;
+        border: none;
+        border-radius: 12px;
+        margin: 8px 0;
+        font-size: 90%;
+        width: 100%;
+        height: 38px;
+    }
+
+    .overlay-panel {
+        padding: 0 8px;
+    }
+
+    h1, h2 {
+        font-size: 150%;
+    }
+
+    a {
+        font-size: 70%;
+    }
+
+    /* Estilos para os botões */
+    button {
+        /* Ajuste o tamanho da fonte dos botões */
+        padding: 10px 22px; /* Ajuste o espaçamento interno dos botões */
+    }
+
+    /* Outros estilos específicos para dispositivos móveis podem ser adicionados aqui */
+
+    /* Exemplo: Reduza o tamanho do logotipo */
+    .logo {
+        max-height: 10%; /* Ajuste o tamanho do logotipo conforme necessário */
+    }
+
+    .sign-in-container {
+        left: 0;
+        width: 50%;
+        z-index: 2;
+    }
+
+    .sign-up-container {
+        left: 0;
+        width: 50%;
+        z-index: 1;
+        opacity: 0;
+    }
+    .social-container a:active {
+        transform: scale(1.35);
+    }
+}
+
+@media (max-width: 576px) {
+    body{
+        -webkit-text-size-adjust: 90%;
+    }
+    /* Remova a largura fixa do contêiner */
+    /* Remova a sombra do contêiner */
+    .container.right-panel-active {
+        box-shadow: none; 
+    }
+.form-container {
+    width: 100%;
+}
+h1, h2 {
+    font-size: 180%;
+}
+
+label {
+    max-width: 260px;
+}
+.social-container a {
+    border: 1px solid #429650;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    font-size: 100%;
+    width: 40px;
+    color: #429650;
+    transition: 333ms;
+}
+.span-mobile{
+    display: block;
+}
+a{
+    color: #187523;
+    font-size: 80%;
+    margin: 10px 0;
+}
+.logo-mobile{
+    display: block;
+    max-height: 14%;
+    margin: 0;
+}
+
+.span-mobile{
+    font-size: 80%;
+}
+.a-mobile {
+    margin-left: 2px;
+    font-size: 90%;
+}
+.normal .overlay-container{
+    display: none;
+}
+.form-container input{
+    font-size: 80%;
+}
+.form-container input:hover {
+    transform: scale(0.90);
+}
+
+.container.right-panel-active .sign-up-container{
+ transform: translateX(0);
+}
+
+}

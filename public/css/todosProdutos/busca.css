@@ -1,0 +1,93 @@
+:root {
+  --color-black: #000;
+  --color-whiter: #fff;
+  --color-green: #00acfc;
+  --color-darkgreen: #0134a1;
+  --color-orange: #FF8C00;
+  --color-gray: #2c2c2c;
+
+}
+/* CSS para o campo de entrada de busca */
+#searchInput {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid var(--color-whiter);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    width: 85%;
+    margin: auto;
+    display: block;
+  }
+  
+  /* CSS para a lista de resultados */
+  #searchResults {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  #searchResults li {
+    padding: 8px;
+    border-bottom: 1px solid var(--color-whiter);
+  }
+  
+  #searchResults li:last-child {
+    border-bottom: none;
+  }
+
+  #btn-pesquisar {
+    display: block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-whiter);
+    background-color: var(--color-green);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: auto;
+   
+  }
+  #btn-pesquisar:hover {
+    background-color: var(--color-green);
+  }
+
+  .container {
+    text-align: center;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+p {
+    font-size: 18px;
+    color: #666;
+}
+
+.search-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  border: 1px solid var(--color-black);
+  display: none;
+}
+
+.search-container.active {
+  display: block;
+}
+
+.search-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+  

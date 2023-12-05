@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="/css/abaCarrinho/styles.css">
+</head>
+<script src="/js/abaCarrinho/script.js"></script>
+
+<body>
+
+
+  <div class="main-content">
+
+  </div>
+
+  <div class="cart-container" id="carrinho">
+    <div class="cart-items">
+      <!-- Aqui serão exibidos os itens do carrinho -->
+    </div>
+    <div class="acoes">
+      <div class="cart-actions">
+        <button class="expand-cart-btn"> Expandir  <img src="/img/public/seta.png" alt="" id="icon_seta">
+        </button>
+        <button class="limpa_carrinho"  onclick="LimparCarrinho('<%= empresa %>')">Limpar Carrinho </button>
+        <button class="btn-total" id="btn-total" ><strong>Total: </strong> R$0,00 </button>
+
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="enviar('<%= empresa %>')">Enviar Pedido para o Whatsapp</button>
+    </div>
+  </div>
+  <script>
+  /*  var empresaa = '<%#= empresa %>'
+    var btn_valor = document.getElementById('btn-total')
+    var stringOriginal = JSON.parse(localStorage.getItem('carrinho:' + empresaa)) || [];
+    var ValorTotal = 0
+    for (var i = 0; i < stringOriginal.length; i++) {
+      stringOriginal[i].preco = stringOriginal[i].preco.replace(",", ".");
+      ValorTotal += parseFloat(stringOriginal[i].preco) * parseInt(stringOriginal[i].quantidade);
+
+    
+    }
+    ValorTotal = ValorTotal.toFixed(2);
+    ValorTotal = ValorTotal.replace('.', ',');
+    btn_valor.innerText = ValorTotal
+    */
+
+function enviar(empresa) {
+    var stringOriginal = JSON.parse(localStorage.getItem('carrinho:' + empresa)) || [];
+    var numero = '<%= numero %>';
+
+    var novaString = "";
+    let ValorTotal = 0;
+
+    for (var i = 0; i < stringOriginal.length; i++) {
+        let produto = stringOriginal[i].produto ? "Produto: " + stringOriginal[i].produto + ", " : "";
+        let cor = stringOriginal[i].cor ? "Cor: " + stringOriginal[i].cor + ", " : "";
+        let tamanho = stringOriginal[i].tamanho ? "Tamanho: " + stringOriginal[i].tamanho : "";
+        let quantidade = stringOriginal[i].quantidade ? "Qtd " + stringOriginal[i].quantidade + ", " : "";
+        let preco = stringOriginal[i].preco ? "preço: R$" + stringOriginal[i].preco : "";
+
+        novaString += produto + cor + tamanho + quantidade + preco;
+
+        stringOriginal[i].preco = stringOriginal[i].preco.replace(",", ".");
+
+        //ValorTotal += parseFloat(stringOriginal[i].preco)  * parseInt(stringOriginal[i].quantidade);
+
+      if (stringOriginal[i].preco && !isNaN(parseFloat(stringOriginal[i].preco))) {
+          // Realiza a multiplicação apenas se o valor for um número válido
+          ValorTotal += parseFloat(stringOriginal[i].preco) * parseInt(stringOriginal[i].quantidade);
+      } else {
+        
+
+      }
+
+
+
+        if (i !== stringOriginal.length - 1) {
+            novaString += " %0A ";
+            novaString = novaString.slice(0, -1);
+        }
+    }
+
+    // Corrigindo a variável para ValorTotal
+    ValorTotal = ValorTotal.toFixed(2); // Limitando a duas casas decimais
+    ValorTotal = ValorTotal.replace('.', ',');
+
+    var cabecalho = "------%20Carrinho%20de%20compras%20------%0A%0A";
+    var rodape = `%0A%0A*Valor%20Total%20do%20carrinho:*%20R$${ValorTotal}`;
+    var mensagemCompleta = "https://wa.me/55" + numero + "?text=" + cabecalho + novaString + rodape;
+    console.log(mensagemCompleta);
+
+    if (stringOriginal.length > 0) {
+        window.location.href = mensagemCompleta;
+    }
+}
+
+  </script>
+</body>
+
+</html>

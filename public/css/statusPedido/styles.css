@@ -1,0 +1,82 @@
+:root {
+  --color-black: #000;
+  --color-whiter: #fff;
+  --color-green: #7CFC00;
+  --color-darkgreen: #01a116;
+  --color-orange: #FF8C00;
+  --color-gray: #2c2c2c;
+
+}
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-black);
+}
+
+.container {
+  padding-top: 115px;
+}
+
+h1 {
+  text-align: center;
+  color: var(--color-whiter);
+}
+
+.ordem-lista {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  margin: auto;
+}
+
+.ordem-item {
+  position: relative;
+  margin: 10px;
+  padding: 15px;
+  border: 1px solid var(--color-whiter);
+  background-color: var(--color-whiter);
+  border-radius: 10px;
+}
+.ordem-item .status-process {
+  color: var(--color-black);
+  text-align: right;
+  
+  
+}
+.ordem-item .status-transito {
+  color: rgb(19, 92, 52);
+  position: absolute;
+  bottom: 82px;
+  right: 10px;
+  padding-left: 30px;
+}
+.ordem-item .status-entregue {
+  color: rgb(11, 182, 11);
+  position: absolute;
+  bottom: 82px;
+  right: 10px;
+  padding-left: 30px;
+}
+.ordem-item .status-cancel {
+  color: rgb(173, 13, 13);
+  position: absolute;
+  bottom: 82px;
+  right: 10px;
+  padding-left: 30px;
+}
+
+.ordem-item h3 {
+  color: var(--color-black);
+}
+
+.ordem-item p {
+  margin-top: 5px;
+  color: var(--color-black);
+}
+
+@media (max-width: 786px) {
+
+
+}/*# sourceMappingURL=styles.css.map */

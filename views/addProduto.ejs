@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/addproduto/style.css">
+    <link rel="stylesheet" href="/css/painel/style.css">
+
+</head>
+
+<body>
+
+
+    <header class="painel-administrativo">
+        <div class="logo">
+            <img src="/logo/<%= empresa %>" alt="Logo da Loja">
+        </div>
+        
+        <nav >
+            <ul class="opcoes">
+                <% if (empresa == "administrador") { %>
+                    <li class="opcao"><a class="link" href="/admin/usuarios">Usuarios</a></li>
+               <% } %>
+                <li class="opcao"><a class="link" href="/<%= empresa %>">Loja</a></li>
+                <li class="opcao"><a class="link" href="/admin/produtos">Produtos</a></li>
+                <li class="opcao"><a class="link" href="/admin/configuracoes">Configurações</a></li>
+                <li class="opcao"><a class="link" href="/deslogar/<%= empresa %>">Sair </a></li>
+            </ul>
+        </nav>
+        
+    </header>
+   
+
+    <div class="signup-body"> 
+        <div class="container">
+            <div class="login-box">
+                <div class="login-header">
+                    <h2>Adicionar Produtos</h2>
+                    <p>complete as informações abaixo! </p>
+                </div>
+                <form id="signup-form" action="/produtos/save" method="post" enctype="multipart/form-data">
+                    <div class="div-form">
+                        <div class="div1">
+                            <div class="div-form">
+                                <div class="div1" class="tamanho">
+                                    <div class="input-container tamanho">
+                                        <br>
+                                        <label>Foto do Produto</label>
+                                        <img id="previewImage" src="#" alt="Imagem Preview" style="display:none; max-width: 300px; max-height: 300px; margin: auto;">
+                                        <br>
+                                        <label for="foto">
+                                            
+                                        </label>
+                                        <label class="borda-arredondada input" for="foto"
+                                            style="color: rgb(2, 2, 2);">Selecionar um arquivo
+                                            <img src="https://cdn3.iconfinder.com/data/icons/glypho-generic-icons/64/action-upload-alt-512.png"
+                                                style="width: 20px" />
+                                        </label>
+                                        <input type="file" onclick="uploadFile()" accept="image/*" name="foto"
+                                            id="foto" style="opacity: 0;" required>
+                                            <p id="status"></p>
+                                    </div>
+                                    <div class="input-container tamanho">
+                                        <label for="tamanho">Tamanho</label>
+                                        <select id="select-tamanho" name="tamanho">
+                                            <option value="" selected></option>
+                                            <option value="p">P</option>
+                                            <option value="M">M</option>
+                                            <option value="G">G</option>
+                                            <option value="GG">GG</option>
+                                        </select>
+
+                                    </div>
+                                    
+                                    <div class="input-container tamanho">
+                                        <div class="modelo">
+                                            <label id="modelolabel">Modelo: </label>
+                                            <label class="modelo-option" for="f">
+                                                <input type="radio" name="modelo" id="f" value="feminino">
+                                                Feminino
+                                            </label>
+                                            <label class="modelo-option" for="m">
+                                                <input type="radio" name="modelo" id="m" value="masculino">
+                                                Masculino
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="input-container">
+                                        <label for="categoria">Marca</label>
+                                        <input type="text" name="marca" id="marca"
+                                            placeholder="Digite a marca" required>
+                                    </div>
+                                </div>
+                                <div class="div1" >
+                                    <div class="input-container">
+                                        <label for="nome">Nome</label>
+                                        <input type="text" name="nome" id="nome" placeholder="Nome do Produto" required>
+                                    </div>
+                                    <div class="input-container">
+                                        <label for="descricao">descrição</label>
+                                        <input type="text" name="descricao" id="" placeholder="descricao para o produto">
+                                        <label for="cor">Cor</label>
+                                        <input type="text" name="cor" id="cor" placeholder="Digite a cor" >
+                                    </div>
+                                    <div class="input-container">
+                                        <label for="categoria">Categoria</label>
+                                        <input type="text" name="categoria" id="categoria"
+                                            placeholder="Digite a Categoria" required>
+                                    </div>
+                                    <div class="input-container">
+                                        <label for="valor">Valor</label>
+                                        <input type="text" id="valor" name="preco" placeholder="ex: 56,40" >
+                                    </div>
+                                    <div class="input-container tamanho">
+                                        <label for="Status">Status</label>
+
+                                        <select id="select-tamanho" name="status">
+       
+                                            <option value="visivel" selected>visivel</option>
+                               
+                                            <option value="oculto" >oculto</option>
+
+                                            <option value="indisponivel">indisponivel</option>                               
+
+                                        </select>
+                                        
+
+                                    </div>
+                                    
+                                    <div class="input-container">
+                                        <input class="submit" type="submit" value=" cadastrar produto ">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+        const inputFile = document.getElementById('foto');
+        const previewImage = document.getElementById('previewImage');
+
+        inputFile.addEventListener('change', function () {
+            const file = this.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+</script>
+
+</html>

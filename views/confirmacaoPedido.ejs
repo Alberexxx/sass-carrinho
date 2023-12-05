@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Pedido Finalizado</title>
+
+    <style>
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.checkmark_circle {
+    width: 100px;
+    height: 100px;
+    background-color: #4bb71b;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fill 0.4s both 0.4s;
+}
+
+.checkmark_check {
+    width: 25px;
+    height: 60px;
+    border: solid white;
+    
+    border-width: 0 7px 7px 0;
+    transform: rotate(30deg);
+}
+
+@keyframes fill {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+h1 {
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="checkmark">
+            <div class="checkmark_circle">
+                <div class="checkmark_check"></div>
+            </div>
+        </div>
+        <h1>Pedido Finalizado com Sucesso!</h1>
+        <p>você está sendo redirecionado para a pagina inicial</p>
+    </div>
+</body>
+<script>
+    // Redirecionar após 3 segundos
+    setTimeout(function() {
+      window.location.href = "/home";
+    }, 3000); // Redirecionar após 3 segundos (3000 milissegundos)
+  </script>
+</html>

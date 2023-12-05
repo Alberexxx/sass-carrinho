@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>teste o envio do carrinho no seu local storage</h1>
+    <button onclick="enviar()">enviar</button>
+</body>
+<script>
+
+//var stringOriginal = [{nome: "camisa", quantidade: "2x"}, {nome: "sapato", quantidade: "5x"}];
+var stringOriginal = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+var novaString = "";
+
+for (var i = 0; i < stringOriginal.length; i++) {
+    novaString += "Nome: " + stringOriginal[i].nome + ", Quantidade: " + stringOriginal[i].quantidade;
+    if (i !== stringOriginal.length - 1) {
+        novaString += " %0A ";
+        novaString = novaString.slice(0, -1);
+
+    }
+}
+
+novaString2 = ""
+for (var i = 0; i < novaString.length; i++) {
+   
+    if (novaString[i] == " ") {
+        novaString2 += "%20";
+    } else {
+        novaString2 += novaString[i] ;
+
+    }
+    
+
+}
+
+var mensagemCompleta = "https://wa.me/5581997852630?text=" + novaString2;
+console.log(mensagemCompleta);
+
+
+
+
+
+  function  enviar(){
+    window.location.href = mensagemCompleta
+    }
+</script>
+</html>

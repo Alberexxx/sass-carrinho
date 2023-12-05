@@ -1,0 +1,253 @@
+/* Estilos globais */
+:root {
+    --color-black: #000;
+    --color-whiter: #fff;
+    --color-green: #7CFC00;
+    --color-darkgreen: #01a116;
+    --color-orange: #FF8C00;
+    --color-gray: #2c2c2c;
+  
+  }
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+.tela-inicial{
+    display: flex;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Estilos do cabeçalho */
+.painel-administrativo {
+    background-color: #282828;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    display: block;
+    
+}
+
+.logo img {
+    align-items: center;
+    width: 150px; /* Largura da logo */
+    margin-right: 10px;
+    
+}
+
+.titulo{
+    margin: -20px;
+    text-align: center;
+    background-color: #363636;
+    color: #fff;
+    
+}
+#titulo {
+    font-size: 30px;
+    font-weight: bold;
+    display: inline;
+}
+
+#painel{   
+    margin-left: 30vw;
+}
+
+.opcoes {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-left: 35vw ;
+    padding-top: 8px;
+    margin-top: 8px;
+    padding-bottom: 8px;
+}
+
+.grafico{
+    margin-left: 30px;
+    margin-top: 50px;
+    width: 45vw;
+    height: 25vw;
+    display: flex;
+}
+
+.Visão-Geral{
+    margin-left: -60px;
+}
+
+.opcao {
+    margin-right: 20px;
+}
+
+.link {
+    color: #fff;
+    text-decoration: none;
+}
+
+.link:hover {
+    color: #68ce02;
+}
+
+/* Resto dos estilos conforme necessário */
+.Dados {
+    border: 2px solid #000000; /* Adicione uma borda sólida */
+    border-radius: 10px; /* Cantos arredondados */
+    margin-bottom: 20px;
+    width: 160px;
+    margin-left: 100px;
+    text-align: center;
+  
+}
+.titulo2{
+    margin-top: 180px; 
+    text-align: center;
+    margin-bottom: 1px;
+    padding-bottom: -100px;
+}
+#tabelaPedidos{
+    border-collapse: collapse;
+    width: 97%;
+    background-color: #FFFFFF;
+    margin-right: 150px;
+    margin-left: 20px;   
+   
+  }
+  .tabelaPedidos1{
+    margin-top: -200px; 
+  }
+  #tabelaPedidos th, #tabelaPedidos td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+ th{
+    background-color: rgb(213, 213, 213);
+}
+.button {
+  display: block;
+  margin: auto;
+
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #68ce02;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+
+}
+.button:hover {
+    background-color: #519e03;
+  }
+  
+  /* Efeito de clique para o botão */
+  .button:active {
+    background-color: #4c9602;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilo do texto do botão */
+  .button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+
+#btn_finalizado{
+    float: left;
+    margin-left: 40px;
+    margin-bottom: 15px;
+    background-color: #333;
+
+}
+
+
+/* Estilos para telas menores (responsividade) */
+@media (max-width: 730px) {
+    .home {
+        flex-direction: column; /* Altera a direção dos elementos para empilhamento */
+        text-align: center; /* Centraliza o texto no cabeçalho */
+        padding: auto;
+        display: flex;
+        align-items: center;
+    }
+    .painel-administrativo{
+      display: block;
+     
+    }
+    .opcoes {
+        width: 75%;
+        text-align: center;
+        margin: auto;
+        padding-top: 8px;
+        padding-bottom: 0px;
+        margin-top: 8px;
+        margin-left: 20vw ;
+    }
+    .opcoes ul {
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column; /* Empilha os itens verticalmente */
+        align-items: center; /* Centraliza horizontalmente */
+        justify-content: center;
+    }
+    .logo {
+        margin: auto;
+
+    }
+    .theme-toggle {
+        margin-top: 10px; /* Espaçamento entre o ícone de tema e o título */
+    }
+    .Dados{
+        margin-left: 50vw ;
+    }
+
+    .logo img {
+       max-width: 100%;    
+       height: auto;
+       display: block; /* Adicione esta linha para corrigir um possível problema de alinhamento */
+       margin: auto;
+       
+    }
+    .tela-inicial{
+        flex-direction: column;
+    }
+
+
+    .opcao {
+        margin-right: 10px; /* Remove a margem direita das opções de menu */
+        margin-bottom: 10px; /* Espaçamento entre as opções de menu */
+       
+    }
+
+    .grafico{
+        flex-direction: column; /* Altera a direção dos elementos para empilhamento */
+        width: 80vw;
+        height: 90vw;
+    }
+    .tabelaPedidos1{
+        flex-direction: column;
+        margin-right: 1000px;
+        margin-top: -70px;
+    }
+    .titulo{
+        margin-top: -20px;
+        text-align: center;
+        background-color: #333;
+        color: #fff;
+    }
+    
+}
+
+

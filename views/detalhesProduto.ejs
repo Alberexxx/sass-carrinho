@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce</title>
+    <!-- CSS-link -->
+    <link rel="stylesheet" href="/css/detalhesProduto/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+    />
+    <link rel="stylesheet" href="/css/home/popup.css">
+    <link rel="stylesheet" href="/css/painel/style.css">
+    <link rel="shortcut icon" href="/img/home/carrinho-de-compras.png" type="image/x-icon">
+
+
+
+  </head>
+
+  <body>
+    <input type="hidden" id="nomeEmpresa" value="<%= empresa %>">
+
+    <div id="popup" class="popup" style="display:none;">
+      Produto adicionado ao carrinho!
+    </div>
+    <div id="popup2" class="popup" style="display:none;">
+        faça login para poder adicionar um produto ao seu carrinho.
+        <a href="/login" style="color: #01a116;">clique aqui para logar</a>
+      </div>
+
+    <!-- cupom-and-menu
+    <div class="cupom-text">
+      <p>30% OFF utilizando o cupom: UNIBRA.</p>
+    </div> -->
+
+    <% if (idSession === empresaId) { %>
+      <header class="painel-administrativo">
+          <div class="logo">
+           <!--   <img src="/logo/<%#= empresa %>" alt="Logo da Loja">-->
+          </div>
+          
+          <nav >
+              <ul class="opcoes">
+                <% if (empresa == "administrador") { %>
+                  <li class="opcao"><a class="link" href="/admin/usuarios">Usuarios</a></li>
+             <% } %>
+                  <li class="opcao"><a class="link" href="/<%= empresa %>">Loja</a></li>
+                  <li class="opcao"><a class="link" href="/admin/produtos">Produtos</a></li>
+                  <li class="opcao"><a class="link" href="/admin/configuracoes">Configurações</a></li>
+                  <li class="opcao"><a class="link" href="/deslogar/<%= empresa %>">Sair </a></li>
+              </ul>
+          </nav>
+          
+      </header>
+  <% } %>
+
+    <%- include('./partials/navbar.ejs') %>
+    <%- include('abaCarrinho') %>
+
+    <div id="popup" class="popup" style="display:none;">
+      Produto adicionado ao carrinho!
+    </div>
+    
+    <ul class="navmenu">
+      <a href="/<%= empresa %>" id="Produtos-btn"><li>todos os produtos</li></a>
+
+  </ul>
+    <!-- seção-do-corpo -->
+    <main>
+      <section>
+        <div class="container">
+          <div class="left-side">
+            <div class="itens">
+              <div class="select-image">
+                <img id="" src="/imagem/<%= produto.id_produto %>" />
+              </div>
+            </div>
+          </div>
+          <div class="right-side">
+            <div class="content">
+              <h6><%= produto.marca %></h6>
+              <h1><%= produto.nome_produto %></h1>
+              <% if (produto.status == 'indisponivel') { %>
+              
+             <% } else { %>
+                  <div class="prices">
+                    <span class="price"><% if (produto.preco == '') { %>
+                      <%= produto.preco %>
+                  <% } else { %>
+                      R$<%= produto.preco %>
+                  <% } %>
+                  </span>
+                  <!-- <span class="off">R$129,99</span> -->
+
+                  </div> 
+                  <div> <% if (produto.tamanho != '') { %>
+                          <p>Tamanho: <%= produto.tamanho %></p>
+                        <% } %>
+
+                       </div>
+                  <!--
+                    
+                  <div class="select-menu">
+                    <div class="select-btn">
+                      <span class="sBtn-text">Tamanhos</span>
+                      <i class="bx bx-chevron-down"></i>
+                    </div>
+                    <ul class="options">
+                      <li class="option">
+                        <span class="option-text">P</span>
+                      </li>
+                      <li class="option">
+                        <span class="option-text">M</span>
+                      </li>
+                      <li class="option">
+                        <span class="option-text">G</span>
+                      </li>
+                      <li class="option">
+                        <span class="option-text">GG</span>
+                      </li>
+                  </div>
+                  -->
+                  <div class="options">
+                    <button class="button" id="button" onclick="adicionar('<%= produto.id_produto %>', '<%= produto.preco %>', '<%= produto.nome_produto %>', '<%= empresa%>')" id="<%= produto.id_produto %>"
+                      ><img src="/img/detalhesProduto/icon-cart.svg"/>Adicionar ao Carrinho</button>
+                    
+                  </div>
+              <% } %>
+              
+            </div>
+          </div>
+        </div>
+        <div class="description">
+          <h3>DESCRIÇÃO<br /><br /></h3>
+          <p><%= produto.descricao %></p>
+          
+        </div>
+      </section>
+      <!-- seção de produtos  -->
+      <section class="trending-product" id="trending">
+        <div class="center-text">
+          <h2>Você pode <span>Gostar</span></h2>
+        </div>
+
+        <%#  function limitarTamanhoString(str, limite) { %>
+          <%#  if (str.length > limite) { %>
+          <%#       return str.slice(0, limite) + "..."; %>
+           <%#  } else { %>
+           <%#      return str %>
+           <%#  } %>
+      <%#   } %>
+
+         <div class="products" >
+        <% produtosRelacionados.forEach(relacionado => { %>
+          <div class="row" id="relacionado" style="width: 200px; " >
+            <a href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>"><img src="/imagem/<%= relacionado.id_produto %>" alt=""  /></a>  
+              <div class="product-text">
+                
+              </div>
+              
+              <div class="heart-icon" id="btn-coracao">
+                <i class='bx bx-cart'   onclick="adicionar('<%= relacionado.id_produto %>', '<%= relacionado.preco %>', '<%= relacionado.nome_produto %>', '<%= empresa%>')" id="<%= produto.id_produto %>"  ></i>
+              </div>
+
+              <div class="ratting">
+                <i class="bx bx-star"></i>
+                <i class="bx bx-star"></i>
+                <i class="bx bx-star"></i>
+                <i class="bx bx-star"></i>
+                <i class="bx bxs-star-half"></i>
+              </div>
+
+              <div class="price">
+               <!-- <h4><%#= limitarTamanhoString(relacionado.nome_produto) %></h4>-->
+                <h4><%= relacionado.nome_produto %></h4>
+
+                <p> <% if (relacionado.preco == '') { %>
+                  <%= relacionado.preco %>
+              <% } else { %>
+                  R$<%= relacionado.preco %>
+              <% } %>
+              </p>
+              </div>
+            </div>
+            
+        <% }) %>
+       
+          
+
+         
+        
+        </div>
+      </section>
+    </main>
+    <!-- seção-de-contato -->
+   
+    <%- include('./partials/footer.ejs') %>
+    <script>
+     
+      var tema = '<%= tema %>'
+      var body = document.querySelector('body');
+      var btn = document.getElementById('button')
+
+          if(tema == "Roxo") {
+              document.documentElement.style.setProperty('--color-green', '#8800a7');
+              body.style.setProperty('--color-green', '#8800a7')
+              btn.style.backgroundColor = '#8800a7'
+
+          } else if (tema == "Vermelho"){
+              document.documentElement.style.setProperty('--color-green', '#ff0000');
+              body.style.setProperty('--color-green', '#ff0000')
+              btn.style.backgroundColor = '#ff0000'
+
+          } else if (tema == "Verde"){
+              document.documentElement.style.setProperty('--color-green', '#3fca04');
+              body.style.setProperty('--color-green', '#3fca04')
+              btn.style.backgroundColor = '#3fca04'
+
+          } else if (tema == "Azul"){
+              document.documentElement.style.setProperty('--color-green', '#00acfc');
+              body.style.setProperty('--color-green', '#00acfc')
+              btn.style.backgroundColor = '#00acfc'
+          } else if (tema == "Amarelo"){
+              document.documentElement.style.setProperty('--color-green', '#eaff00');
+              body.style.setProperty('--color-green', '#eaff00')
+              btn.style.backgroundColor = '#eaff00'
+
+          } else if (tema == "Laranja"){
+              document.documentElement.style.setProperty('--color-green', '#e19406');
+              body.style.setProperty('--color-green', '#e19406')
+              btn.style.backgroundColor = '#e19406'
+
+          }
+      
+    </script>
+
+   
+    <script src="/js/detalhesProduto/script.js"></script>
+    <script src="https://kit.fontawesome.com/998c60ef77.js"
+      crossorigin="anonymous"></script>
+    <script src="/js/home/ajax.js"></script>
+    <script src="/js/abaCarrinho/script.js"></script>
+
+  </body>
+</html>
