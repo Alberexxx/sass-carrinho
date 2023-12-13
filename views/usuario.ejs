@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/produtos/style.css">
+    <link rel="stylesheet" href="/css/painel/style.css">
+    
+
+</head>
+<head>
+    <style> 
+   body{
+    background-color: rgb(233, 233, 233);
+   }
+ 
+</style>
+</head>
+<body>
+
+    
+    <header class="painel-administrativo">
+        <div class="logo">
+            <img src="/logo/<%= empresa %>" alt="Logo da Loja">
+        </div>
+        <br>
+        <nav >
+            <ul class="opcoes">
+                <% if (empresa == "administrador") { %>
+                    <li class="opcao"><a class="link" href="/admin/usuarios">Usuarios</a></li>
+               <% } %>
+                <li class="opcao"><a class="link" href="/<%= empresa %>">Loja</a></li>
+                <li class="opcao"><a class="link" href="/admin/produtos">Produtos</a></li>
+                <li class="opcao"><a class="link" href="/admin/configuracoes">Configurações</a></li>
+                <li class="opcao"><a class="link" href="/deslogar/<%= empresa %>">Sair </a></li>
+            </ul>
+        </nav>
+        <br>
+    </header>
+
+        <br><br>
+   
+
+
+         <h1 id="titulo">Detalhes do cliente : <%= usuario.nome %></h1>  
+         <form action="/admin/usuarios" method="get">
+            <button class="btn form"  id="btn_adicionar"> todos os usuarios</button>
+            <input type="hidden" name="empresa" value="<%= empresa %>">
+         </form>
+        <br><br><br>
+
+<table  id="tabela" border="2px">   
+    <thead >
+        <tr>
+        <th style="background-color: black;">ID</th>
+        <th style="background-color: black;">EMPRESA</th>
+        <th style="background-color: black;">EMAIL</th>
+        <th style="background-color: black;">CONTATO</th>
+        <th style="background-color: black;">MENSALIDADE</th>
+        <th style="background-color: black;">PRODUTOS</th>
+        <th style="background-color: black;">SITUACAO</th>
+        <th style="background-color: black;">MUDAR SITUAÇÃO</th>
+        <th style="background-color: black;">MUDAR SENHA</th>
+        <th style="background-color: black;">EXCLUIR USUARIO</th>
+
+
+        </tr>
+    </thead>
+    <body>
+
+   
+            </form>
+            <tr>
+                <td><%= usuario.id_usuario %></td>
+            <td>
+                <form action="/admin/usuario/nome" method="post" style="display: inline;"> 
+                    <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                    <input type="text" name="nome" style="width: 100%; text-align: center;"  value="<%= usuario.nome %>">
+                    <button class="btn " style="background-color: rgb(242, 255, 0); color: black; "> atualizar</button>
+                </form>
+            </td>
+            <td>
+                <form action="/admin/usuario/email" method="post" style="display: inline;"> 
+                    <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                    <input type="text" name="email" style="width: 100%; text-align: center;"  value="<%= usuario.email %>">
+                    <button class="btn " style="background-color: rgb(242, 255, 0); color: black; "> atualizar</button>
+                </form>
+            </td>
+                <td> 
+                    <form action="/admin/usuario/telefone" method="post" style="display: inline;"> 
+                        <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                        <input type="text" name="telefone" style="width: 100%; text-align: center;"  value="<%= usuario.contato_profissional %>">
+                        <button class="btn " style="background-color: rgb(242, 255, 0); color: black; "> atualizar</button>
+                    </form>
+                <td>
+                    <form action="/admin/usuario/mensalidade" method="post" style="display: inline;"> 
+                        <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                        R$  <input type="text" name="mensalidade" style="width: 25px; text-align: center;"  value="<%= usuario.mensalidade %>">
+                        <button class="btn " style="background-color: rgb(242, 255, 0); color: black; "> atualizar</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form action="/admin/usuario/limite" method="post" style="display: inline;"> 
+                        <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                        <input type="text" name="limite" style="width: 25px; text-align: center;"  value="<%= usuario.limite_produtos %>">
+                        <button class="btn " style="background-color: rgb(242, 255, 0); color: black; "> atualizar</button>
+                    </form>
+                </td>
+                <td><%= usuario.situacao %> </td>
+                    
+                <td>
+                    <form method="post" action="/admin/usuarios/situacao" style="display: inline;">
+
+                        <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                        <input type="hidden" name="situacao"  value="atrasado">
+                        <button class="btn" style="background-color: orange;"> Atrasado</button>
+                    </form>
+                        
+                    <form action="/admin/usuarios/situacao" method="post" style="display: inline;"> 
+                        <input type="hidden" name="id" value="<%= usuario.id_usuario %>">
+                        <input type="hidden" name="situacao"  value="em dia">
+                        <button class="btn " style="background-color: green;"> Em dia</button>
+                    </form>
+
+                    <form action="/admin/usuarios/situacao" method="post" style="display: inline;"> 
+                        <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                        <input type="hidden" name="situacao"  value="bloqueado">
+                        <button class="btn " style="background-color: red;"> Bloquear</button>
+                    </form>
+                   
+            </td>
+           
+            <td>
+                <form action="/admin/usuario/senha" method="post" style="display: inline;"> 
+                    <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                    <input type="text" name="senha" style="width: 100%; text-align: center;"  >
+                    <button class="btn " style="background-color: rgb(242, 255, 0); color: black; "> atualizar</button>
+                </form>
+            </td>
+            <td>
+                <form action="/admin/usuario/excluir_usuario" method="post" style="display: inline;"> 
+                    <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
+                    <button class="btn " style="background-color: rgb(255, 0, 0); color: black; "> EXCLUIR</button>
+                </form>
+            </td>
+    <br>
+    
+
+</body>
+</table>
+<br><br><br>
+</html>

@@ -50,7 +50,7 @@
                                         <br>
                                     <form action="/admin/produto/edit/env" method="post" enctype="multipart/form-data">
                                         <label for="foto">
-                                            <img id="fotoproduto" style=" max-width: 300px; max-height: 300px; margin: auto;" src="/imagem/<%= produto.id_produto %>" alt="" />
+                                            <img id="fotoproduto" style=" max-width: 170px; max-height: 170px; margin: auto;" src="/imagem/<%= produto.id_produto %>" alt="" />
                                         </label>
                                         <label class="borda-arredondada input" for="foto"
                                             style="color: rgb(26, 255, 0);">Selecionar um arquivo
@@ -58,45 +58,61 @@
                                                 style="width: 20px" />
                                         </label>
                                         <input type="file" accept="image/*" name="foto" id="foto" style="opacity: 0;">
-                                    </div>
+                                        <div class="input-container tamanho">
+                                            <br>
+                                            <label>Foto 2 do Produto  </label>
+                                            <img id="previewImage2" src="/imagem2/<%= produto.id_produto %>" style=" max-width: 170px; max-height: 170px; margin: auto;" onerror="fotoExemplo()">
+                                            <br><br>
+                                            
+                                                
+                                            </label>
+                                            <label class="borda-arredondada input" for="foto2"
+                                                style="color: rgb(2, 2, 2);">Selecionar foto 2 *opcional
+                                                <img src="https://cdn3.iconfinder.com/data/icons/glypho-generic-icons/64/action-upload-alt-512.png"
+                                                    style="width: 20px" />
+                                            </label>
+                                            <input type="file" accept="image/*" name="foto2" id="foto2" style="opacity: 0;" >
+                                        </div>
+                         <!--           </div>
+                            
                                     <div class="input-container tamanho">
                                         <label for="tamanho">Tamanho</label>
 
                                         <select id="select-tamanho" name="tamanho">
 
-                                        <% if (produto.tamanho === "") { %>
+                                        <%# if (produto.tamanho === "") { %>
                                             <option value="" selected> </option>
 
-                                        <% } else {%>
+                                        <%# } else {%>
                                             <option value=""></option>
-                                        <% } %>
-                                        <% if (produto.tamanho === "P") { %>
+                                        <%# } %>
+                                        <%# if (produto.tamanho === "P") { %>
                                             <option value="P" selected>P</option>
 
-                                        <% } else {%>
+                                        <%# } else {%>
                                             <option value="P">P</option>
-                                        <% } %>
-                                        <% if (produto.tamanho === "M") { %>
+                                        <%# } %>
+                                        <%# if (produto.tamanho === "M") { %>
                                             <option value="M" selected>M</option>
 
-                                         <% } else {%>
+                                         <%# } else {%>
                                             <option value="M">M</option>
 
-                                         <% } %>
-                                         <% if (produto.tamanho === "G") { %>
+                                         <%# } %>
+                                         <%# if (produto.tamanho === "G") { %>
                                             <option value="G" selected>G</option>
 
-                                         <% } else {%>
+                                         <%# } else {%>
                                             <option value="G">G</option>
 
-                                         <% } %>
-                                         <% if (produto.tamanho === "GG") { %>
+                                         <%# } %>
+                                         <%# if (produto.tamanho === "GG") { %>
                                             <option value="GG" selected>GG</option>
 
-                                         <% } else {%>
+                                         <%# } else {%>
                                             <option value="GG">GG</option>
 
-                                         <% } %>
+                                         <%# } %>
 
                                             
 
@@ -108,7 +124,7 @@
                                         <div class="modelo">
                                             <label id="modelolabel">Modelo: </label>
 
-                                            <% if (produto.modelo === "masculino") { %>
+                                            <%# if (produto.modelo === "masculino") { %>
                                                  <label class="modelo-option" for="m">
                                                 <input type="radio" name="modelo" id="m" value="masculino" checked>
                                                 Masculino
@@ -117,7 +133,7 @@
                                                 <input type="radio" name="modelo" id="f" value="feminino"  > 
                                                    Feminino                     
                                                 </label>
-                                            <%} else {%>
+                                            <%#} else {%>
                                                 <label class="modelo-option" for="m">
                                                     <input type="radio" name="modelo" id="m" value="masculino" >
                                                     Masculino
@@ -126,23 +142,25 @@
                                                 <input type="radio" name="modelo" id="f" value="feminino"  checked> 
                                                     Feminino                     
                                                 </label>
-                                            <%}%>
+                                            <%#}%>
 
                                             
                                            
                                            
                                         </div>
+                                        -->
                                     </div>
-                                    <div class="input-container">
-                                        <label for="categoria">Marca</label>
-                                        <input type="text" name="marca" id="marca"
-                                            placeholder="Digite a marca" value="<%= produto.marca %>" required>
-                                    </div>
+                                    
                                 </div>
                                 <div class="div1">
                                     <div class="input-container">
                                         <label for="nome">Nome</label>
                                         <input type="text" name="nome" id="nome" placeholder="Nome do Produto" value="<%= produto.nome_produto %>" required>
+                                    </div>
+                                    <div class="input-container">
+                                        <label for="categoria">Marca</label>
+                                        <input type="text" name="marca" id="marca"
+                                            placeholder="Digite a marca" value="<%= produto.marca %>" required>
                                     </div>
                                     <div class="input-container">
                                         <label for="descricao">descrição</label>
@@ -211,21 +229,15 @@
     </div>
 </body>
 <script>
-   /* document.getElementById('signup-form').addEventListener('submit', function(event) {
-        console.log("Dados do formulário: ", {
-            id: document.getElementById('id').value,
-            nome: document.getElementById('nome').value,
-            preco: document.getElementById('preco').value,
-            descricao: document.getElementById('descricao').value,
-            tamanho: document.getElementById('select-tamanho').value,
-            modelo: document.querySelector('input[name="modelo"]:checked').value,
-            cor: document.getElementById('cor').value,
-            categoria: document.getElementById('categoria').value,
-        });
-    }); */
 
-        const inputFile = document.getElementById('foto');
-        const previewImage = document.getElementById('fotoproduto');
+    function fotoExemplo() {
+       
+        console.log('func do eneerror ativada');
+        let img2 = document.getElementById('previewImage2')
+        img2.src = 'https://abrai.me/ImPh1'
+    }
+        let inputFile = document.getElementById('foto');
+        let previewImage = document.getElementById('fotoproduto');
 
         inputFile.addEventListener('change', function () {
             const file = this.files[0];
@@ -241,6 +253,30 @@
                 reader.readAsDataURL(file);
             }
         });
+
+        function input2() {
+            var inputFile2 = document.getElementById('foto2');
+            var previewImage2 = document.getElementById('previewImage2');
+            var file = inputFile2.files[0];
+
+            console.log('input 2 executado');
+
+            if (file) {
+                console.log('if executado');
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImage2.src = e.target.result;
+                    previewImage2.style.display = 'block';
+                    console.log('render executado');
+                };
+
+                reader.readAsDataURL(file);
+                console.log('data executado');
+            }
+        };
+
+        document.getElementById('foto2').addEventListener('change', input2);
 </script>
 
 </html>

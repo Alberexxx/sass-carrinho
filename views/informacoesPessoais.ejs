@@ -15,7 +15,6 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-
         }
         form {
             display: flex;
@@ -57,7 +56,6 @@
             </ul>
         </nav>
     </header>
-    <br><br><br><br>
     
     <container class="container" style="margin-top: -80px;">
     <form enctype="multipart/form-data" method="post" action="/admin/configuracoes/edit">
@@ -73,24 +71,11 @@
         </select>
         <label for="numeroWhatsapp">Número do WhatsApp:</label>
         <input type="text" id="numeroWhatsapp" placeholder=" ex: 81993856910" name="numero" value="<%= usuario.telefone %>">
-       
-        <label for="contato">Contato:</label>
-        <input type="text" id="contato" placeholder=" ex: (81)99385-6910" name="contato" value="<%= usuario.contato %>">
-
-        <label for="horario">horario de funcionamento:</label>
-        <input type="text" id="horario" placeholder=" ex: funcionamos das 8:00h às 16:00h" name="horario" value="<%= usuario.horario %>">
-
-        <label for="endereco">Endereço:</label>
-        <input type="text" id="endereco" placeholder=" ex: Rua das flores nº159" name="endereco" value="<%= usuario.enderecoLoja  %>">
-
         <label for="linkInstagram">Link da página do Instagram:</label>
         <input type="text" id="linkInstagram" placeholder="https://instagram.com/meuUsuario?igshid=MzdddhbsU2YQ==" name="instagram" value="<%= usuario.instagram %>">
-       
         <label for="logo">Envie uma nova logo:</label>
         <input type="file" id="logo" name="logo">
-       
         <input type="submit" value="Editar">
-        
     </form>
    </container>
 </body>

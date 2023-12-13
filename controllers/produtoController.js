@@ -110,7 +110,7 @@ router.get('/admin/produtos', userAuth ,(req, res) => {
 
 
 //CREATE
-router.post('/produtos/save', upload.single('foto'), (req, res) => {
+router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name: 'foto2', maxCount: 1}]), (req, res) => {
    var nome_produto = req.body.nome
    var preco = req.body.preco
    var descricao = req.body.descricao
@@ -122,14 +122,33 @@ router.post('/produtos/save', upload.single('foto'), (req, res) => {
    var id_usuario = req.session.usuario.id
    var marca = req.body.marca
    var status = req.body.status
+   
 
-
-  if (!req.file) {
+  /*if (!req.file) {
 
     return res.status(400).send('Nenhum arquivo enviado');
-  }
+  } */
 
-   const { originalname, mimetype, buffer } = req.file;
+   //var { originalname, mimetype, buffer } = req.file;
+   //var { originalname2, mimetype2, buffer2 } = req.file;
+
+    var foto = req.files['foto'] ? {
+        originalname: req.files['foto'][0].originalname,
+        mimetype: req.files['foto'][0].mimetype,
+        buffer: req.files['foto'][0].buffer,
+    } : null;
+
+    var foto2 = req.files['foto2'] ? {
+        originalname: req.files['foto2'][0].originalname,
+        mimetype: req.files['foto2'][0].mimetype,
+        buffer: req.files['foto2'][0].buffer,
+    } : null;
+
+    if ( foto == null && foto2 != null ) {
+        foto = foto2;
+        foto2 = null
+    }
+
 
    usuario.findByPk( id_usuario).then( (userResult => { 
         product.findAndCountAll({
@@ -137,6 +156,9 @@ router.post('/produtos/save', upload.single('foto'), (req, res) => {
         })
         .then( produtosResult => {
                 if (produtosResult.count < userResult.limite_produtos) {
+                    var { originalname: originalname, mimetype: mimetype, buffer: buffer } = foto || {};
+                    var { originalname: originalname2, mimetype: mimetype2, buffer: buffer2 } = foto2 || {};
+
                     product.create({
                         nome_produto: nome_produto,
                         preco: preco,
@@ -148,6 +170,11 @@ router.post('/produtos/save', upload.single('foto'), (req, res) => {
                         originalname: originalname,
                         mimetype: mimetype,
                         foto: buffer,
+
+                        originalname2: originalname2,
+                        mimetype2: mimetype2,
+                        foto2: buffer2,
+
                         slug: slugify(nome_produto),
                         id_usuario: id_usuario,
                         marca: marca,
@@ -182,6 +209,19 @@ router.get('/imagem/:id', (req, res) => {
     })
 
   });
+
+router.get('/imagem2/:id', (req, res) => {
+
+product.findByPk(req.params.id).then(produto => {
+
+    res.setHeader('Content-Type', produto.mimetype2);
+    res.send(produto.foto2);
+
+})
+
+});
+
+
 
 router.post("/admin/produtos/deletar", (req,res) => {
     var id = req.body.id;
@@ -218,7 +258,7 @@ router.post("/admin/editar-produto", userAuth, (req, res) => {
 
    
 
-router.post('/admin/produto/edit/env', upload.single('foto'), (req, res) => {
+router.post('/admin/produto/edit/env', upload.fields([{name: 'foto', maxCount: 1}, {name: 'foto2', maxCount: 1}]), (req, res) => {
     var id = req.body.id
     var nome_produto = req.body.nome
     var preco = req.body.preco
@@ -227,10 +267,24 @@ router.post('/admin/produto/edit/env', upload.single('foto'), (req, res) => {
     var modelo = req.body.modelo
     var cor = req.body.cor
     var categoria = req.body.categoria
-    const { originalname, mimetype, buffer } = req.file ?? {}
+    
+    var foto = req.files['foto'] ? {
+        originalname: req.files['foto'][0].originalname,
+        mimetype: req.files['foto'][0].mimetype,
+        buffer: req.files['foto'][0].buffer,
+    } : null;
+
+    var foto2 = req.files['foto2'] ? {
+        originalname: req.files['foto2'][0].originalname,
+        mimetype: req.files['foto2'][0].mimetype,
+        buffer: req.files['foto2'][0].buffer,
+    } : null;
+
     var marca = req.body.marca
     var status = req.body.status
 
+    var { originalname: originalname, mimetype: mimetype, buffer: buffer } = foto || {};
+    var { originalname: originalname2, mimetype: mimetype2, buffer: buffer2 } = foto2 || {}
     
     product.update({
         nome_produto: nome_produto,
@@ -240,9 +294,15 @@ router.post('/admin/produto/edit/env', upload.single('foto'), (req, res) => {
         modelo: modelo,
         cor: cor, 
         nome_categoria: categoria,
+
         originalname: originalname,
         mimetype: mimetype,
         foto: buffer,
+
+        originalname2: originalname2,
+        mimetype2: mimetype2,
+        foto2: buffer2,
+
         marca: marca,
         status: status,
         slug: typeof nome_produto === 'string' ? slugify(nome_produto) : null

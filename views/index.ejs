@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/todosProdutos/busca.css">
     <link rel="stylesheet" href="/css/painel/style.css">
+    <link rel="stylesheet" href="/css/todosProdutos/footer.css">
+   
+
+
     <link rel="shortcut icon" href="/img/home/carrinho-de-compras.png" type="image/x-icon">
 
 </head>
@@ -103,7 +107,7 @@
                                         
                         
                             <div class="row" style="width: 200px;" >
-                                <a href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>"><img src="/imagem/<%= produto.id_produto %>" id="imgProduto"></a> 
+                                <a href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>"><div class="box_img" id="box_img"><img src="/imagem/<%= produto.id_produto %>" id="imgProduto" class="img_antes"><!-- <img src="/imagem2/<%#= produto.id_produto %>" id="imgProduto" class="img_depois"> --></div></a> 
                                 <div class="product-text">
                                    <!--<h5>Oferta</h5>--> 
                                 </div>
@@ -115,7 +119,7 @@
 
                                        <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 15) %></h4>-->
                                         <h4> <%= produto.nome_produto %></h4> 
-
+ 
                                         <p style="color: red;">indisponivel</p>
                                         </div>
 
@@ -123,13 +127,7 @@
                                     <% } else { %>
                                         <div class="heart-icon"> <i class='bx bx-cart' id="<%= produto.id_produto %> " onclick="adicionar('<%= produto.id_produto %>', '<%= produto.preco %>', '<%= produto.nome_produto %>', '<%= empresa%>')" id="<%= produto.id_produto %>"  ></i>
                                         </div>
-                                        <div class="ratting">
-                                            <i class='bx bx-star'></i>
-                                            <i class='bx bx-star'></i>
-                                            <i class='bx bx-star'></i>
-                                            <i class='bx bx-star'></i>
-                                            <i class='bx bxs-star-half'></i>
-                                        </div>
+                                       
                         
                                         <div class="price">
                                           <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 30) %></h4>--> 
@@ -138,7 +136,8 @@
                                             <p> <% if (produto.preco == '') { %>
                                                 <%= produto.preco %>
                                             <% } else { %>
-                                                R$<%= produto.preco %>
+                                               <strong class="preco_estilo">R$<%= produto.preco %></strong>  à vista ou R$xxx em até
+                                               10x no cartão sem juros
                                             <% } %>
                                             </p>
                                         </div>
@@ -208,7 +207,13 @@
            /* var logo_empresa = document.getElementById("Produtos-btn")
             logo_empresa.style.display = 'none'
             */
-        </script>
+
+ 
+
+  
+
+
+</script>
 
     <script src="/js/home/script.js"></script>
     <script src="https://kit.fontawesome.com/998c60ef77.js" crossorigin="anonymous"></script>

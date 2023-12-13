@@ -4,6 +4,7 @@
     --color-green: #7CFC00;
     --color-orange: #FF8C00;
     --color-gray: #2c2c2c;
+    --color-gray2: #131313;
 
     --banner: url(/img/home/banner-1.png);
 
@@ -31,7 +32,7 @@ body.dark {
     --color-green: #7CFC00;
     --color-orange: #FF8C00;
     --color-gray: #a6a6a6;
-
+    --color-gray2: #f3f3f3;
 
     transition: background 0.2s linear;
 }
@@ -473,19 +474,24 @@ a:hover {
 }
 
 /* contact-section */
-.contact {
-    background-color: var(--color-gray);
+section.contact {
+    background-color: var(--color-gray2);
+    
 }
 
 .contact-info {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, auto));
-    gap: 3rem;
+    gap: 1rem;
 }
 
 .first-info img {
     width: 100px;
     height: auto;
+}
+.preco_estilo {
+    font-size: 16px;
+    color: var(--color-green);
 }
 
 .contact-info h4 {
@@ -496,19 +502,17 @@ a:hover {
 }
 
 .contact-info p {
-    color: var(--color-whiter);
-    font-size: 14px;
+    color: rgb(144, 144, 144);
+    font-size: 12px;
     font-weight: 400;
     text-transform: capitalize;
     line-height: 1.5;
-    margin-bottom: 10px;
+    margin-bottom: 1px;
     cursor: pointer;
     transition: all .42s;
 }
 
-.contact-info p:hover {
-    color: var(--color-green);
-}
+
 
 .social-icon i {
     color: var(--color-green);

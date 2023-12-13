@@ -47,6 +47,15 @@ const Product = connection.define("products", {
         type: Sequelize.STRING
     }, status: {
         type: Sequelize.STRING
+    }, foto2: {
+        type: Sequelize.BLOB,
+        allowNull: true
+    }, mimetype2: {
+        type: Sequelize.STRING,
+        allowNull: true
+    }, originalname2: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 })
 

@@ -35,10 +35,16 @@ if (preferredTheme === 'dark') {
 mode.addEventListener('click', () => {
     const form = document.getElementById('icon');
 
+
+    body.classList.toggle('dark-mode')
+
+
+
     if (mode.classList.contains('bx-sun')) {
         mode.classList.remove('bx-sun');
         mode.classList.add('bx-moon');
         document.body.classList.add('dark');
+   
         localStorage.setItem('theme', 'dark'); // Armazenar a preferência do usuário no localStorage
         return;
     }

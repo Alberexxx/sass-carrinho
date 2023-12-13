@@ -339,6 +339,9 @@ input[type="number"]{
 #foto{
    width: 20px;
 }
+#foto2 {
+  width: 10px;
+}
 
 @media(max-width:768px) {
     .div-form{
@@ -375,6 +378,9 @@ input[type="number"]{
       display: block;
     }
     #previewImage {
+      width: 30vw;
+    }
+    #previewImage2 {
       width: 30vw;
     }
     

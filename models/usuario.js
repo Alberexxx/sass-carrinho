@@ -45,6 +45,14 @@ const usuario = connection.define("usuarios", {
         type: Sequelize.STRING
     }, limite_produtos: {
         type: Sequelize.INTEGER
+    }, horario: {
+        type: Sequelize.STRING
+    }, enderecoLoja: {
+        type: Sequelize.STRING
+    }, contato: {
+        type: Sequelize.STRING
+    }, contato_profissional: {
+        type: Sequelize.STRING
     }
 
 })

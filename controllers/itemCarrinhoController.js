@@ -71,7 +71,7 @@ router.post("/removeItem", (req, res) => {
      item_carrinho.destroy({where: {id_item: id}}).then( item => {
           res.send("ok")
      })
-})
+}) 
 
 router.post('/mudarQuantidade', (req,res) => {
      var id = req.body.idItem;

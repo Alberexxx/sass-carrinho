@@ -84,7 +84,7 @@ router.post('/admin/usuario/limite' , (req, res) => {
   }, {
     where: {id_usuario: id}
   }).then( () => {
-    res.redirect('/admin/usuarios')
+    res.redirect('/admin/usuario/detalhes/' + id )
   })
 
 
@@ -97,7 +97,7 @@ router.post('/admin/usuario/mensalidade' , (req, res) => {
   }, {
     where: {id_usuario: id}
   }).then( () => {
-    res.redirect('/admin/usuarios')
+    res.redirect('/admin/usuario/detalhes/' + id )
   })
 
 
@@ -148,6 +148,9 @@ router.post("/admin/configuracoes/edit",upload.single('logo'), (req, res) => {
   var tema = req.body.tema;
   var numero = req.body.numero;
   var instagram = req.body.instagram
+  var endereco = req.body.endereco
+  var horario = req.body.horario
+  var contato = req.body.contato
   var { originalname, mimetype, buffer } = req.file ?? {};
 
   usuario.update({
@@ -155,8 +158,10 @@ router.post("/admin/configuracoes/edit",upload.single('logo'), (req, res) => {
     instagram: instagram ,
     telefone: numero,
     logo: buffer ,
-    foto: mimetype
-    
+    foto: mimetype,
+    enderecoLoja: endereco,
+    contato: contato,
+    horario: horario
 },
     { where: {
       id_usuario: id_usuario

@@ -1,0 +1,26 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.addColumn('products', 'foto2', {
+      type: Sequelize.STRING, 
+    }),
+    await queryInterface.addColumn('products', 'mimetype2', {
+      type: Sequelize.STRING, 
+    }),
+    await queryInterface.addColumn('products', 'originalname2', {
+      type: Sequelize.STRING, 
+    })
+  },
+
+  async down (queryInterface, Sequelize) {
+    /**
+     * Add reverting commands here.
+     *
+     * Example:
+     * await queryInterface.dropTable('users');
+     */
+  }
+};
+ 
