@@ -5,38 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personalize sua Página</title>
     <link rel="stylesheet" href="/css/painel/style.css">
-
+    <link rel="stylesheet" href="/css/configuracoes/configuracoes.css">
     <style>
-        .container {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-        }
-        label {
-            margin-top: 10px;
-        }
-        select, input {
-            margin-top: 5px;
-            padding: 8px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .logo {
-            margin-top: 20px;
-            max-width: 150px;
-            max-height: 90px;
-            height: auto;
-        }
+       
     </style> 
 </head>
 <body>
@@ -56,11 +27,11 @@
                 <li class="opcao"><a class="link" href="/deslogar/<%= empresa %>">Sair</a></li>
             </ul>
         </nav>
-    </header>
+    </header> 
     <br><br><br><br>
     
-    <container class="container" style="margin-top: -80px;">
-    <form enctype="multipart/form-data" method="post" action="/admin/configuracoes/edit">
+    <container class="container" >
+    <form enctype="multipart/form-data" method="post" action="/admin/configuracoes/edit" id="meuForm">
         <label for="corTema">Escolha o tema da página:</label>
         <select id="corTema" name="tema">
             <option value="Padrão" <% if (usuario.corTema === 'Padrão') { %> selected <% } %>>Padrão</option>
@@ -71,11 +42,144 @@
             <option value="Amarelo" <% if (usuario.corTema === 'Amarelo') { %> selected <% } %>>Amarelo</option>
             <option value="Laranja" <% if (usuario.corTema === 'Laranja') { %> selected <% } %>>Laranja</option>
         </select>
-        <label for="numeroWhatsapp">Número do WhatsApp:</label>
+        <label for="numeroWhatsapp">Número do WhatsApp para envio do carrinho:</label>
         <input type="text" id="numeroWhatsapp" placeholder=" ex: 81993856910" name="numero" value="<%= usuario.telefone %>">
        
-        <label for="contato">Contato:</label>
-        <input type="text" id="contato" placeholder=" ex: (81)99385-6910" name="contato" value="<%= usuario.contato %>">
+        <label >Contato no rodapé da pagina:</label>
+        <input type="text" id="contato" placeholder="" name="contato" value="<%= usuario.contato %>" >
+
+        <label for="pagamento">taxas de pagamento:</label>
+        <div style="display: flex;">
+        
+            <button type="button" class="btn-pagamento" id="btn-avista" >a vista/pix</button>
+            <button type="button" class="btn-pagamento" id="btn-credito">credito</button>
+            <button type="button" class="btn-pagamento" id="btn-debito">debito</button>
+            <button type="button" class="btn-pagamento" onclick="criarJSON()">montar json</button>
+
+        </div>
+        <div id="avista_container" >
+            <div id="opc_avista_container"> 
+                    <p class="label-p">aplicar desconto para compras a vista/pix?</p>
+                
+                <label for="opc1">
+                    <input class="opc" type="radio" name="opc" id="opc1" checked value="false">
+                    Não
+                </label>
+                <label for="opc2">
+                    <input class="opc" type="radio" name="opc" id="opc2" value="true">
+                    Sim
+                </label>
+            </div>
+            <div id="taxa_avista">
+                <br>
+                <label for="avistaTaxa">digite o porcentagem do desconto:</label>
+                <input type="number" name="avistaTaxa" id="avistaTaxa" step="0.1" placeholder="ex: 9,5%">
+                <br><br>
+            </div>
+        
+        </div>
+        
+        <div class="credito_container" id="credito_container">
+            <div id="opc_credito_container"> 
+                <p class="label-p">sua loja cobra taxas em compras com cartão de credito?</p>
+            <label for="opc2">
+                <input class="opc" type="radio" name="opc_crd" id="opc2_crd" value="true" > 
+                Sim
+            </label>
+            <label for="opc1">
+                <input class="opc" type="radio" name="opc_crd" id="opc1_crd" value="false">
+                Não
+            </label> 
+            <p><%= usuario.taxas.taxas.avista.taxa %></p>
+            </div> 
+
+            <div id="taxa_credito">
+                <p>selecione e preencha as taxas de credito que sua loja trabalha: </p>
+
+                <input class="opc" type="radio" name="1x_crd" >1x
+                <input type="number" name="cTaxa1" class="inp_crd" step="0.1" placeholder="ex: 9,5">
+                <input class="opc" type="radio" name="2x_crd"  >2x
+                <input type="number" name="Ctaxa2" class="inp_crd" step="0.1" placeholder="ex: 1,5">
+                <br>
+                <input class="opc" type="radio" name="3x_crd" >3x
+                <input type="number" name="cTaxa3" class="inp_crd" step="0.1" placeholder="ex: 9,9">
+                <input class="opc" type="radio" name="4x_crd" >4x
+                <input type="number" name="cTaxa4" class="inp_crd" step="0.1" placeholder="ex: 9,5">
+                <br>
+                <input class="opc" type="radio" name="5x_crd"  >5x
+                <input type="number" name="cTaxa5" class="inp_crd" step="0.1" placeholder="ex: 2,5">
+                <input class="opc" type="radio" name="6x_crd"  >6x
+                <input type="number" name="cTaxa6" class="inp_crd" step="0.1" placeholder="ex: 9,5">
+                <br>
+                <input class="opc" type="radio" name="7x_crd"  >7x
+                <input type="number" name="cTaxa7" class="inp_crd" step="0.1" placeholder="ex: 0">
+                <input class="opc" type="radio" name="8x_crd"  >8x
+                <input type="number" name="cTaxa8" class="inp_crd" step="0.1" placeholder="ex: 8,5">
+                <br>
+                <input class="opc" type="radio" name="9x_crd"  >9x
+                <input type="number" name="cTaxa9" class="inp_crd" step="0.1" placeholder="ex: 9,1">
+                <input class="opc" type="radio" name="10x_crd" >10x
+                <input type="number" name="cTaxa10" class="inp_crd" step="0.1" placeholder="ex: 0,5">
+                <br>
+                <input class="opc" type="radio" name="11x_crd"  >11x
+                <input type="number" name="cTaxa11" class="inp_crd" step="0.1" placeholder="ex: 1,1">
+                <input class="opc" type="radio" name="12x_crd" >12x
+                <input type="number" name="cTaxa12" class="inp_crd" step="0.1" placeholder="ex: 4,2">
+
+                
+            </div>
+        </div>
+
+        <div class="debito_container" id="debito_container">
+            <div id="opc_debito_container"> 
+                <p class="label-p">sua loja cobra taxas em compras com cartão de debito?</p>
+            <label for="opc2">
+                <input class="opc" type="radio" name="opc_deb" id="opc2_deb" value="true"> 
+                Sim
+            </label>
+            <label for="opc1">
+                <input class="opc" type="radio" name="opc_deb" id="opc1_deb" value="false">
+                Não
+            </label> 
+            
+            </div>
+
+            <div id="taxa_debito">
+                <p>selecione e preencha as taxas de debito que sua loja trabalha: </p>
+            
+                <input class="opc" type="radio" name="1x_deb" id="opc1_deb" >1x
+                <input type="number" name="dTaxa1" class="inp_deb" step="0.1" placeholder="ex: 9,5">
+                <input class="opc" type="radio" name="2x_deb" id="opc1_deb" >2x
+                <input type="number" name="dTaxa2" class="inp_deb" step="0.1" placeholder="ex: 1,5">
+                <br>
+                <input class="opc" type="radio" name="3x_deb" id="opc1_deb" >3x
+                <input type="number" name="dTaxa3" class="inp_deb" step="0.1" placeholder="ex: 9,9">
+                <input class="opc" type="radio" name="4x_deb" id="opc1_deb" >4x
+                <input type="number" name="dTaxa4" class="inp_deb" step="0.1" placeholder="ex: 9,5">
+                <br>
+                <input class="opc" type="radio" name="5x_deb" id="opc1_deb" >5x
+                <input type="number" name="dTaxa5" class="inp_deb" step="0.1" placeholder="ex: 2,5">
+                <input class="opc" type="radio" name="6x_deb" id="opc1_deb" >6x
+                <input type="number" name="dTaxa6" class="inp_deb" step="0.1" placeholder="ex: 9,5">
+                <br>
+                <input class="opc" type="radio" name="7x_deb" id="opc1_deb" >7x
+                <input type="number" name="dTaxa7" class="inp_deb" step="0.1" placeholder="ex: 0">
+                <input class="opc" type="radio" name="8x_deb" id="opc1_deb" >8x
+                <input type="number" name="dTaxa8" class="inp_deb" step="0.1" placeholder="ex: 8,5">
+                <br>
+                <input class="opc" type="radio" name="9x_deb" id="opc1_deb" >9x
+                <input type="number" name="dTaxa9" class="inp_deb" step="0.1" placeholder="ex: 9,1">
+                <input class="opc" type="radio" name="10x_deb" id="opc1_deb" >10x
+                <input type="number" name="dTaxa10" class="inp_deb" step="0.1" placeholder="ex: 0,5">
+                <br>
+                <input class="opc" type="radio" name="11x_deb" id="opc1_deb" >11x
+                <input type="number" name="dTaxa11" class="inp_deb" step="0.1" placeholder="ex: 1,1">
+                <input class="opc" type="radio" name="12x_deb" id="opc1_deb" >12x
+                <input type="number" name="dTaxa12" class="inp_deb" step="0.1" placeholder="ex: 4,2">
+
+                
+            </div>
+        </div>
 
         <label for="horario">horario de funcionamento:</label>
         <input type="text" id="horario" placeholder=" ex: funcionamos das 8:00h às 16:00h" name="horario" value="<%= usuario.horario %>">
@@ -89,9 +193,12 @@
         <label for="logo">Envie uma nova logo:</label>
         <input type="file" id="logo" name="logo">
        
-        <input type="submit" value="Editar">
+        <input type="submit" id="inp_submit" value="Salvar Edições">
+        <br><br>
         
     </form>
    </container>
+   <script src="/js/configuracoes/configuracoes.js"></script> 
+
 </body>
 </html>

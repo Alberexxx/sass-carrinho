@@ -1,0 +1,95 @@
+.container {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin-top: 400px;
+   
+}
+form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    
+}
+label {
+    margin-top: 10px;
+}
+select, input {
+    margin-top: 5px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+#inp_submit{
+    cursor: pointer;
+}
+.logo {
+    margin-top: 20px;
+    max-width: 150px;
+    max-height: 90px;
+    height: auto;
+}
+.btn-pagamento {
+    margin-right: 3px;
+}
+.btn-pagamento:hover {
+    cursor: pointer;
+}
+#avista_container {
+    
+    background-color: rgb(233, 233, 233);
+    
+}
+#opc_avista_container {
+    display: none;
+}
+#taxa_avista {
+    display: none;
+    
+}
+
+.opc {
+    margin-top: 5px;
+    width: 20px; 
+}
+.label-p {
+    display: block;
+}
+
+label {
+    margin-top: 10px;
+   
+}
+.inp_crd {
+    width: 80px;
+}
+
+.credito_container {
+    background-color: rgb(233, 233, 233);
+
+}
+#opc_credito_container {
+    display: none;
+}
+#taxa_credito {
+    display: none;
+}
+
+
+.inp_deb {
+    width: 80px;
+}
+
+.debito_container {
+    background-color: rgb(233, 233, 233);
+
+}
+#opc_debito_container {
+    display: none;
+}
+#taxa_debito {
+    display: none;
+}

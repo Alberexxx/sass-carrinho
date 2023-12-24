@@ -53,6 +53,8 @@ const usuario = connection.define("usuarios", {
         type: Sequelize.STRING
     }, contato_profissional: {
         type: Sequelize.STRING
+    }, taxas: {
+        type: Sequelize.JSON
     }
 
 })

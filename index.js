@@ -107,12 +107,12 @@ app.get("/:empresa",(req, res) => {
             var idSessao = req.session.usuario.id
             produto.findAll({where: {id_usuario: userResult.id_usuario,  status: { [Op.not]: 'oculto'} } , 
                 order: Sequelize.literal('rand()')}).then( (produtoResult) => {
-                res.render("index", {produtos: produtoResult, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja})
+                res.render("index", {produtos: produtoResult, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
             })
         } else {
             produto.findAll({where: {id_usuario: userResult.id_usuario, status: { [Op.not]: 'oculto'} } ,
                 order: Sequelize.literal('rand()')}).then( (produtoResult) => {
-                res.render("index", {produtos: produtoResult, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja})
+                res.render("index", {produtos: produtoResult, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
              })
         }
     

@@ -502,4 +502,31 @@ section.contact2 {
     max-width: 130px;
     height: auto;
   }
+
+
+  .products {
+        
+    grid-template-columns: repeat(auto-fit, minmax(145px, auto));
+    gap: 1rem;
+    
+    margin: auto;
+    
+}
+#imgProduto{
+    width: 180px;
+}
+.box_img {
+    width: 180px;
+
+}
+.a_detalhes {
+    width:180px ;
+}
+.row {
+    
+    width: 180px;
+}
+.nome_produto {
+    width: 140px;
+}
 }

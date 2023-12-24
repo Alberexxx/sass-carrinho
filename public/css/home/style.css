@@ -196,7 +196,7 @@ body.dark {
   }
   
 section {
-    padding: 3% 10%;
+    padding: 3% 2%;
 }
 
 .main-home {
@@ -309,6 +309,7 @@ header.sticky {
     position: relative;
     transition: all 0.4s;
     margin: auto;
+    width: 200px;
 }
   
 .row img {
@@ -537,6 +538,7 @@ section.contact {
 }
 
 
+
 /* Responsive-css */
 @media screen and (max-width: 730px) {
     .navmenu {
@@ -616,5 +618,30 @@ section.contact {
     .cart img {
         width: 85%;
 
+    } /* ccs do home*/
+    .products {
+        
+        grid-template-columns: repeat(auto-fit, minmax(145px, auto));
+        gap: 1rem;
+        
+        margin: auto;
+        
+    }
+    #imgProduto{
+        width: 180px;
+    }
+    .box_img {
+        width: 180px;
+
+    }
+    .a_detalhes {
+        width:180px ;
+    }
+    .row {
+        
+        width: 180px;
+    }
+    .nome_produto {
+        width: 140px;
     }
 }

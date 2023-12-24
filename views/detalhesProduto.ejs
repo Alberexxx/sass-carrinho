@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ecommerce</title>
     <!-- CSS-link -->
-    <link rel="stylesheet" href="/css/detalhesProduto/style.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,6 +30,7 @@
     <link rel="stylesheet" href="/css/painel/style.css">
     <link rel="shortcut icon" href="/img/home/carrinho-de-compras.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="/css/detalhesProduto/style.css" />
 
 
   </head>
@@ -48,7 +48,7 @@
 
     <!-- cupom-and-menu
     <div class="cupom-text">
-      <p>30% OFF utilizando o cupom: UNIBRA.</p>
+      <p>30% OFF utilizando o cupom: COIMB.</p>
     </div> -->
 
     <% if (idSession === empresaId) { %>
@@ -111,13 +111,14 @@
              <% } else { %>
                   <div class="prices">
                     <span class="price"><% if (produto.preco == '') { %>
-                      <%= produto.preco %>
+                      <%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %>
                   <% } else { %>
-                      R$<%= produto.preco %>
+                      R$<%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %>
                   <% } %>
                   </span>
-                  à vista ou R$xxx em
-                  10x no cartão sem juros
+                  
+                  à vista ou em até x de R$ no cartão com jurus 
+
                   <!-- <span class="off">R$129,99</span> -->
 
                   </div> 
@@ -221,18 +222,19 @@
       <section class="contact2">
           <div class="contact2-info">
               <div>
-                 <p> rua nas flores bonitas nº45 segunda travessa</p>
-                 <p> 81 99545 45455</p>
+                 <p><%= enderecoLoja %></p>
+                 <p> <%= contato %></p>
               </div>
-              <div><p>funcionamos das 8:00h até às 17:00h</p></div>
+              <div><p><%= horario %></p></div>
               <div></div>
           </div>
           
-  
+   
       </section>
   
       <div class="end-text" style="padding-bottom: 180px; ">
-          <p>Copyright © @2024. Todos os direitos reservados. Projetado por <strong>Harpya solutions</strong> </p>
+        
+          <p>versão 1.1.0 <br>Copyright © @2024. Todos os direitos reservados. Projetado por <strong>Harpya solutions</strong> </p>
       </div>
      
   </footer>

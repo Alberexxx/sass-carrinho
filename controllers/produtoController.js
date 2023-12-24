@@ -5,7 +5,7 @@ const slugify = require("slugify")
 const multer = require("multer")
 const { Op } = require('sequelize'); 
 const Sequelize = require("sequelize")
-
+const sharp = require("sharp")
 const adminAuth = require("../middlewares/adminAuth");
 const userAuth = require("../middlewares/userAuth")
 const usuario = require('../models/usuario');
@@ -42,7 +42,7 @@ router.get("/:empresa/detalhes/:id/:slug", (req, res) => {
                 limit: 4
             
             }).then( produtosRelacionados => {
-                    res.render("detalhesProduto", {produto: produto, produtosRelacionados: produtosRelacionados, empresa: empresa, tema: userResult.corTema, logo: userResult.logo, instagram: userResult.instagram, numero: userResult.telefone, empresa: userResult.nome, mimetype: userResult.foto, idSession: idSession, empresaId: userResult.id_usuario})
+                    res.render("detalhesProduto", {produto: produto, produtosRelacionados: produtosRelacionados, empresa: empresa, tema: userResult.corTema, logo: userResult.logo, instagram: userResult.instagram, numero: userResult.telefone, empresa: userResult.nome, mimetype: userResult.foto, idSession: idSession, empresaId: userResult.id_usuario, enderecoLoja: userResult.enderecoLoja, contato: userResult.contato, horario: userResult.horario, taxas: userResult.taxas})
                 })
                 
 
@@ -110,7 +110,7 @@ router.get('/admin/produtos', userAuth ,(req, res) => {
 
 
 //CREATE
-router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name: 'foto2', maxCount: 1}]), (req, res) => {
+router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name: 'foto2', maxCount: 1}]), userAuth,(req, res) => {
    var nome_produto = req.body.nome
    var preco = req.body.preco
    var descricao = req.body.descricao
@@ -123,15 +123,6 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
    var marca = req.body.marca
    var status = req.body.status
    
-
-  /*if (!req.file) {
-
-    return res.status(400).send('Nenhum arquivo enviado');
-  } */
-
-   //var { originalname, mimetype, buffer } = req.file;
-   //var { originalname2, mimetype2, buffer2 } = req.file;
-
     var foto = req.files['foto'] ? {
         originalname: req.files['foto'][0].originalname,
         mimetype: req.files['foto'][0].mimetype,
@@ -149,50 +140,120 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
         foto2 = null
     }
 
-
-   usuario.findByPk( id_usuario).then( (userResult => { 
-        product.findAndCountAll({
-        where: {id_usuario: id_usuario}
-        })
-        .then( produtosResult => {
-                if (produtosResult.count < userResult.limite_produtos) {
-                    var { originalname: originalname, mimetype: mimetype, buffer: buffer } = foto || {};
-                    var { originalname: originalname2, mimetype: mimetype2, buffer: buffer2 } = foto2 || {};
-
-                    product.create({
-                        nome_produto: nome_produto,
-                        preco: preco,
-                        descricao: descricao,
-                        tamanho: tamanho,
-                        modelo: modelo,
-                        cor: cor, 
-                        nome_categoria: categoria,
-                        originalname: originalname,
-                        mimetype: mimetype,
-                        foto: buffer,
-
-                        originalname2: originalname2,
-                        mimetype2: mimetype2,
-                        foto2: buffer2,
-
-                        slug: slugify(nome_produto),
-                        id_usuario: id_usuario,
-                        marca: marca,
-                        status: status    
-                                        
-                    }).then(() => {
-                    
-                        res.redirect('/admin/produtos')
-                    
-                    
-                    }).catch((err) => {
-                        res.send(err)
-                    })
-                } else {
-                    res.redirect('/admin/produtos')
+    //------------- comprimir imagem ---------------
+    const processarImagem = async (imagem, tamanhoMaximoKB) => {
+        if (!imagem) {
+            return null;
+        }
+    
+        const tamanhoMaximoBytes = tamanhoMaximoKB * 1024;
+        const resolucaoAlvo = 800;
+    
+        try {
+            let buffer;
+            let qualidade = 100;
+    
+            console.log('Iniciando processamento de imagem...');
+    
+            buffer = await sharp(imagem.buffer)
+                .resize({ width: resolucaoAlvo })
+                .toFormat('jpeg', { quality: qualidade })
+                .toBuffer();
+    
+            console.log('Imagem processada com qualidade inicial:', qualidade);
+            
+            // Iterativamente reduzir a qualidade até atender ao requisito de tamanho
+            while (buffer.length > tamanhoMaximoBytes && qualidade > 0) {
+                qualidade -= 10;
+    
+                console.log('Reduzindo qualidade para:', qualidade);
+    
+                if (qualidade > 0) {
+                    // Evitar processamento adicional se a qualidade atingir zero
+                    buffer = await sharp(buffer)
+                        .toFormat('jpeg', { quality: qualidade })
+                        .toBuffer();
                 }
+            }
+    
+            console.log('Processamento de imagem concluído.');
+    
+            return buffer.length <= tamanhoMaximoBytes ? buffer : null;
+        } catch (error) {
+            console.error('Erro ao processar a imagem:', error);
+            return null;
+        }
+    };
+    
+    
+    // Uso da função processarImagem
+    const tamanhoMaximoKB = 100; // Ajuste conforme necessário
+    const fotoProcessadaPromise = processarImagem(foto, tamanhoMaximoKB);
+    const foto2ProcessadaPromise = processarImagem(foto2, tamanhoMaximoKB);
+    
+    // Esperar pela resolução das Promises antes de continuar
+    Promise.all([fotoProcessadaPromise, foto2ProcessadaPromise])
+        .then(([fotoProcessada, foto2Processada]) => {
+            if (fotoProcessada) {
+                foto.buffer = fotoProcessada;
+            }
+    
+            if (foto2Processada) {
+                foto2.buffer = foto2Processada;
+            }
+    
+            usuario.findByPk( id_usuario).then( (userResult => { 
+                product.findAndCountAll({ 
+                where: {id_usuario: id_usuario}
+                })
+                .then( produtosResult => {
+                        if (produtosResult.count < userResult.limite_produtos) {
+                            var { originalname: originalname, mimetype: mimetype, buffer: buffer } = foto || {};
+                            var { originalname: originalname2, mimetype: mimetype2, buffer: buffer2 } = foto2 || {};
+        
+                            product.create({
+                                nome_produto: nome_produto,
+                                preco: preco,
+                                descricao: descricao,
+                                tamanho: tamanho,
+                                modelo: modelo,
+                                cor: cor, 
+                                nome_categoria: categoria,
+                                originalname: originalname,
+                                mimetype: mimetype,
+                                foto: foto.buffer,
+        
+                                originalname2: originalname2,
+                                mimetype2: mimetype2,
+                                foto2: foto2.buffer,
+        
+                                slug: slugify(nome_produto),
+                                id_usuario: id_usuario,
+                                marca: marca,
+                                status: status    
+                                                
+                            }).then(() => {
+                            
+                                res.redirect('/admin/produtos')
+                            
+                            
+                            }).catch((err) => {
+                                res.send(err)
+                            })
+                        } else {
+                            res.redirect('/admin/produtos')
+                        }
+                })
+           }))
         })
-   }))
+        .catch((error) => {
+            // Lidar com erros, se necessário
+            console.error('Erro ao processar as imagens:', error);
+        });
+    
+    //----------------------------------------------
+
+   
    
 
   

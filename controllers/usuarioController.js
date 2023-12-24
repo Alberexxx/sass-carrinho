@@ -144,8 +144,11 @@ router.get('/admin/configuracoes', userAuth, (req, res) => {
 })
 
 router.post("/admin/configuracoes/edit",upload.single('logo'), (req, res) => {
+
+  let taxas = JSON.parse(req.body.json_data)
+
   var id_usuario = req.session.usuario.id
-  var tema = req.body.tema;
+  var tema = req.body.tema; 
   var numero = req.body.numero;
   var instagram = req.body.instagram
   var endereco = req.body.endereco
@@ -161,7 +164,8 @@ router.post("/admin/configuracoes/edit",upload.single('logo'), (req, res) => {
     foto: mimetype,
     enderecoLoja: endereco,
     contato: contato,
-    horario: horario
+    horario: horario,
+    taxas: taxas
 },
     { where: {
       id_usuario: id_usuario
@@ -170,7 +174,6 @@ router.post("/admin/configuracoes/edit",upload.single('logo'), (req, res) => {
     }).then(() => {
    
     res.redirect('/admin/produtos')
-
    
    }).catch((err) => {
     res.send(err)
