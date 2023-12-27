@@ -15,7 +15,7 @@ function updateTotal() {
         ValorTotal += parseFloat(cart[i].preco) * parseInt(cart[i].quantidade)
     } else {
 
-    }
+    } 
       //ValorTotal += parseFloat(cart[i].preco) * parseInt(cart[i].quantidade);
     }
     ValorTotal = ValorTotal.toFixed(2);
@@ -345,14 +345,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     updateCartShort(nomeEmpresaValue)
+    
 
     window.adicionar = function(id, preco, nome, empresa) {
         const cartItems = document.querySelector(".cart-items")
         var submit_btn = document.getElementById("submit-btn")
         var popup = document.getElementById("popup");
-    
+
+        let notificacao = document.getElementById('notificacao_carrinho') 
+             
         function mostrarMensagem() {
             popup.style.display = "block";
+
+                
+                notificacao.style.display = 'block'
+           
+
+
             setTimeout(function () { popup.style.display = "none"; }, 2000);
         }
     

@@ -12,11 +12,20 @@
   <div class="main-content">
 
   </div>
+  <div class="carrinhoMinimizado" id="miniaturaCarrinho"> 
+    <img src="/img/carrinho/vista-lateral-vazia-do-carrinho-de-compras.png" alt="">
+        <div class="notificacao_carrinho" id="notificacao_carrinho"></div>
 
+  </div>
   <div class="cart-container" id="carrinho">
+
+    <img src="/img/carrinho/x_resized.png" id="x_icon" alt="">
+    
     <div class="cart-items">
       <!-- Aqui serão exibidos os itens do carrinho -->
     </div>
+   
+  
     <div class="acoes">
       <div class="cart-actions">
         <button class="expand-cart-btn"> Expandir  <img src="/img/public/seta.png" alt="" id="icon_seta">
@@ -28,22 +37,65 @@
       <button class="submit-btn" id="submit-btn" onclick="enviar('<%= empresa %>')">Enviar Pedido para o Whatsapp</button>
     </div>
   </div>
+  
   <script>
-  /*  var empresaa = '<%#= empresa %>'
-    var btn_valor = document.getElementById('btn-total')
-    var stringOriginal = JSON.parse(localStorage.getItem('carrinho:' + empresaa)) || [];
-    var ValorTotal = 0
-    for (var i = 0; i < stringOriginal.length; i++) {
-      stringOriginal[i].preco = stringOriginal[i].preco.replace(",", ".");
-      ValorTotal += parseFloat(stringOriginal[i].preco) * parseInt(stringOriginal[i].quantidade);
+
+
+
+let x_icon = document.getElementById("x_icon")
+let carrinho = document.getElementById("carrinho")
+let miniaturaCarrinho = document.getElementById("miniaturaCarrinho")
+let statusCarrinho = localStorage.getItem('vsb_carrinho')
+let notificacao = document.getElementById('notificacao_carrinho') 
+notificacao.style.display = 'none'
+if (statusCarrinho === 'true') {
+    miniaturaCarrinho.style.display = 'none'
+    carrinho.style.display = 'block'
+    
+} else if (statusCarrinho === 'false') {
+    miniaturaCarrinho.style.display = 'block'
+    carrinho.style.display = 'none'
+}
+
+function esconder_carrinho() {
+ 
+  if (statusCarrinho === 'true') {
+    
+    carrinho.style.display = 'none'
+    miniaturaCarrinho.style.display = 'block'
+
+    if (!localStorage.getItem('vsb_carrinho')) {
+      localStorage.setItem('vsb_carrinho', "false");
+    } else {
+      localStorage.setItem('vsb_carrinho', "false");
+    }
+ 
+    statusCarrinho = "false"
+    notificacao.style.display = 'none'
+
+  } else {
+
+    miniaturaCarrinho.style.display = 'none'
+    carrinho.style.display = 'block'
+    statusCarrinho = "true"
+    notificacao.style.display = 'none'
+    console.log('jkndjdnjn');
 
     
+    if (!localStorage.getItem('vsb_carrinho')) {
+      localStorage.setItem('vsb_carrinho', "true");
+    } else {
+      localStorage.setItem('vsb_carrinho', "true");
     }
-    ValorTotal = ValorTotal.toFixed(2);
-    ValorTotal = ValorTotal.replace('.', ',');
-    btn_valor.innerText = ValorTotal
-    */
 
+
+  }
+}
+
+x_icon.addEventListener("click", esconder_carrinho)
+miniaturaCarrinho.addEventListener("click", esconder_carrinho)
+
+// ---------------------------------------------------
 function enviar(empresa) {
     var stringOriginal = JSON.parse(localStorage.getItem('carrinho:' + empresa)) || [];
     var numero = '<%= numero %>';

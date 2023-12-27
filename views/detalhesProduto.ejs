@@ -36,6 +36,7 @@
   </head>
 
   <body>
+
     <input type="hidden" id="nomeEmpresa" value="<%= empresa %>">
 
     <div id="popup" class="popup" style="display:none;">
@@ -96,7 +97,7 @@
                 <input type="text" style="display: none;" id="foto2" value="/imagem2/<%= produto.id_produto %>">
                 
               </div>
-             
+             <br>
               <img class="imagMiniatura" id="mini1" src="/imagem/<%= produto.id_produto %>" >
               <img class="imagMiniatura" id="mini2" src="/imagem2/<%= produto.id_produto %>"  onerror="substituirImagem()">
 
@@ -109,24 +110,69 @@
               <% if (produto.status == 'indisponivel') { %>
               
              <% } else { %>
-                  <div class="prices">
-                    <span class="price"><% if (produto.preco == '') { %>
-                      <%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %>
-                  <% } else { %>
-                      R$<%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %>
-                  <% } %>
-                  </span>
-                  
-                  à vista ou em até x de R$ no cartão com jurus 
+                 
+                                     
+                                        <div class="price">
+                                           
+                                         
 
-                  <!-- <span class="off">R$129,99</span> -->
+                                            <p> <% if (produto.preco == '') { %>
+                                                <%= produto.preco %>
+                                            <% } else { %>
+                                                <% if (taxas.taxas.avista.taxa == true) { %>
+                                                  </p> 
+                                                    <p class="price_detalhes">
+                                                     <s style="text-decoration: line-through;">  R$<%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %> </s>
+                                                        - 
+                                                      <strong class="preco_estilo" style="font-size: 25px;">R$<%= (produto.preco - (taxas.taxas.avista.valor * produto.preco /100)).toFixed(2).replace('.', ',')  %></strong>  
+                                                    </p>
+                                                    <p>
+                                                <% } else {%>
+                                               <strong class="preco_estiloo">R$<%= produto.preco %></strong> 
+                                               <% } %>
 
-                  </div> 
-                  <div> <% if (produto.tamanho != '') { %>
-                          <p>Tamanho: <%= produto.tamanho %></p>
-                        <% } %>
+                                               <% if (taxas.taxas.credito.taxa === "true") { %>
+                                                <% let opc_credito = [] %>
+                                                <% for( let opc in taxas.taxas.credito.valores ) { %>
+                                                    <% if (taxas.taxas.credito.valores[opc][0]) { %>
+                                                       <% opc_credito.push(opc) %>
+                                                    <% } %>
+                                                   
+                                                <% } %>
+                                                 <% if (opc_credito.length === 0 ) { %>
+                                                    à vista no pix ou cartão de debito
+                                                <% } else { %>
+                                                    <% var maioresOpcoes = opc_credito.sort((a, b) => parseFloat(b) - parseFloat(a)); %>
+                                                    <% var maiorOpcao = maioresOpcoes[0]; %>
+                                                    <% var semX = ''%>
+                                                    <% for( let c in maiorOpcao) { %>
+                                                        <% if (maiorOpcao[c] !== 'x') { %>
+                                                            <% semX += maiorOpcao[c] %>
+                                                        <% } %>
+                                                    <% } %>
+                                                    <% var maiorNum = parseFloat(semX) %>
+                                                    <% var taxaDaMaiorOpcao = taxas.taxas.credito.valores[maiorOpcao][1]; %>
 
-                       </div>
+                                                    <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * produto.preco) / 100) + parseFloat(produto.preco)) / maiorNum).toFixed(2)  %>
+                                                   
+                                                    à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão 
+                                                    <% if (taxaDaMaiorOpcao == 0) { %>
+                                                      sem juros
+                                                    <% } else { %> 
+                                                        com juros
+                                                      <% } %>
+                                                <% } %>
+                                                
+
+
+                                            <% } else {%>
+                                                à vista no pix ou cartão de debito
+                                                
+                                            <% } %>
+
+                                            <% } %>
+                                            </p>
+                                        </div>
                   <!--
                     
                   <div class="select-menu">
@@ -181,30 +227,108 @@
 
          <div class="products" >
         <% produtosRelacionados.forEach(relacionado => { %>
-          <div class="row" id="relacionado" style="width: 200px; " >
-            <a href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>"><img src="/imagem/<%= relacionado.id_produto %>" alt=""  /></a>  
-              <div class="product-text">
+          
+          <div class="row"  >
+            <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
                 
-              </div>
-              
-              <div class="heart-icon" id="btn-coracao">
-                <i class='bx bx-cart'   onclick="adicionar('<%= relacionado.id_produto %>', '<%= relacionado.preco %>', '<%= relacionado.nome_produto %>', '<%= empresa%>')" id="<%= produto.id_produto %>"  ></i>
-              </div>
-
-
-              <div class="price">
-               <!-- <h4><%#= limitarTamanhoString(relacionado.nome_produto) %></h4>-->
-                <h4><%= relacionado.nome_produto %></h4>
-
-                <p> <% if (relacionado.preco == '') { %>
-                  <%= relacionado.preco %>
-              <% } else { %>
-                <strong class="preco_estilo">R$<%= relacionado.preco %>,00</strong>  à vista ou R$xxx em até
-                10x no cartão sem juros
-              <% } %>
-              </p>
-              </div>
+                    <img src="/imagem/<%= relacionado.id_produto %>" id="imgProduto" class="img_antes">
+                    <!-- <img src="/imagem2/<%#= produto.id_produto %>" id="imgProduto" class="img_depois"> -->
+                
+            </a> 
+            <div class="product-text">
+               <!--<h5>Oferta</h5>--> 
             </div>
+
+            <div class="detalhesProduto">
+            
+
+                <% if (relacionado.status == 'indisponivel') { %>
+                    <div class="price">
+
+                   <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 15) %></h4>-->
+                   <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
+
+                    <h4 class="nome_produto"> <%= relacionado.nome_produto %></h4> 
+                  </a>
+
+                    <p style="color: red;">indisponivel</p>
+                    </div>
+
+
+                <% } else { %>
+                    <div class="heart-icon"> <i class='bx bx-cart' id="<%= relacionado.id_produto %> " onclick="adicionar('<%= relacionado.id_produto %>', '<%= relacionado.preco %>', '<%= relacionado.nome_produto %>', '<%= empresa%>')" id="<%= relacionado.id_produto %>"  ></i>
+                    </div>
+                 
+                    <div class="price">
+                      <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 30) %></h4>--> 
+                      <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
+
+                        <h4 class="nome_produto"> <%= relacionado.nome_produto %></h4>
+                      </a>
+
+                        <p> <% if (relacionado.preco == '') { %>
+                            <%= relacionado.preco %>
+                        <% } else { %>
+                            <% if (taxas.taxas.avista.taxa == true) { %>
+                              <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
+
+                                <strong class="preco_estilo">R$<%= (relacionado.preco - (taxas.taxas.avista.valor * relacionado.preco /100)).toFixed(2).replace('.', ',')  %></strong>  
+                              </a>
+                            <% } else {%>
+                            <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
+
+                                <strong class="preco_estilo">R$<%= relacionado.preco %></strong> 
+                            </a>
+                           <% } %>
+
+                           <% if (taxas.taxas.credito.taxa === "true") { %>
+                            <% let opc_credito = [] %>
+                            <% for( let opc in taxas.taxas.credito.valores ) { %>
+                                <% if (taxas.taxas.credito.valores[opc][0]) { %>
+                                   <% opc_credito.push(opc) %>
+                                <% } %>
+                               
+                            <% } %>
+                             <% if (opc_credito.length === 0 ) { %>
+                                à vista no pix ou cartão de debito
+                            <% } else { %>
+                                <% var maioresOpcoes = opc_credito.sort((a, b) => parseFloat(b) - parseFloat(a)); %>
+                                <% var maiorOpcao = maioresOpcoes[0]; %>
+                                <% var semX = ''%>
+                                <% for( let c in maiorOpcao) { %>
+                                    <% if (maiorOpcao[c] !== 'x') { %>
+                                        <% semX += maiorOpcao[c] %>
+                                    <% } %>
+                                <% } %>
+                                <% var maiorNum = parseFloat(semX) %>
+                                <% var taxaDaMaiorOpcao = taxas.taxas.credito.valores[maiorOpcao][1]; %>
+
+                                <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * relacionado.preco) / 100) + parseFloat(relacionado.preco)) / maiorNum).toFixed(2)  %>
+                               
+                                à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão 
+                                <% if (taxaDaMaiorOpcao == 0) { %>
+                                    sem juros
+                                  <% } else { %> 
+                                      com juros
+                                    <% } %>
+                            <% } %>
+                            
+
+
+                        <% } else {%>
+                            à vista no pix ou cartão de debito
+                            
+                        <% } %>
+
+                        <% } %>
+                        </p>
+                    </div>
+                <% } %>
+
+            </div>
+            
+        </div>
+            
             
         <% }) %>
        
@@ -294,20 +418,21 @@ function substituirImagem() {
     var mini1 = document.getElementById("mini1");
     var mini2 = document.getElementById('mini2');
 
-    mini1.addEventListener('click', function () { showImage(foto1)})
-    mini2.addEventListener('click', function () { showImage(foto2)})
+    mini1.addEventListener('click', function () { showImage(foto1, 1)})
+    mini2.addEventListener('click', function () { showImage(foto2, 2)})
 
     let startX;
     
     // Exibe a imagem inicial
    // showImage(currentIndex);
-   showImage(foto1);
+   showImage(foto1, 1);
 
-    // Evento de toque inicial
     imagemContainer.addEventListener('touchstart', function (e) {
       startX = e.touches[0].clientX;
     });
-
+   
+ 
+ 
     // Evento de deslize
     imagemContainer.addEventListener('touchmove', function (e) {
       const currentX = e.touches[0].clientX;
@@ -315,21 +440,46 @@ function substituirImagem() {
 
       // Define um limiar para considerar como um deslize
       const swipeThreshold = 50;
-
+   
       if (Math.abs(diffX) > swipeThreshold) {
-        if (diffX > 0) {
-          // Deslizou para a esquerda
-          showImage(foto2);
-        } else {
-          // Deslizou para a direita'
-          showImage(foto1);
-        }
+        
+          if (diffX > 0) {
+            // Deslizou para a esquerda
+            showImage(foto2, 2);
+          
+          } else {
+            // Deslizou para a direita'
+            showImage(foto1, 1);
+          }
 
-        startX = currentX
-      }
+          startX = currentX
+        } 
+       
+      
     }); 
 
-    function showImage(url) {
+    function showImage(url, x) {
+    var imagem2 = new Image();
+    imagem2.src = foto2;
+
+    imagem2.onload = function () {
+      ContinueShowImage(url, x);
+    };
+
+}
+
+    function ContinueShowImage(url, x) {
+
+
+      if (x === 1) {
+        mini1.style.border = '1px solid gray'
+        mini2.style.border = 'none'
+      } else if (x === 2) {
+        mini2.style.border = '1px solid gray'
+        mini1.style.border = 'none'
+
+      }
+
       imagemExibida.src = url;
     }
       

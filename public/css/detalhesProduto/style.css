@@ -29,7 +29,7 @@ body.dark {
   --color-green: #7cfc00;
   --color-orange: #ff8c00;
   --color-gray: #cccccc;
-  --color-gray2: #f3f3f3;
+  --color-gray2: #a3a3a3;
 
   transition: background 0.2s linear;
 }
@@ -225,6 +225,7 @@ header.sticky {
   background: var(--color-gray);
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
   display: none;
+  
 }
 .select-menu.active .options {
   position: absolute;
@@ -306,9 +307,6 @@ p {
   transition: all 0.4s;
 }
 
-.row img:hover {
-  transform: scale(0.9);
-}
 
 .product-text h5 {
   position: absolute;
@@ -419,6 +417,17 @@ section.contact2 {
 #Produtos-btn:hover {
   color: var(--color-green);
 }
+.price_detalhes {
+  font-size: 20px;
+}
+a#Produtos-btn {
+  height: 40px;
+}
+#imagemExibida {
+  width: 40vw;
+  max-width: 600px;
+}
+
 
 
 /* Responsive-css */
@@ -447,6 +456,9 @@ section.contact2 {
     display: block;
     margin: 18px 0;
   } */
+  .itens {
+    display: block;
+  }
 
   .navmenu.open {
     right: 0;
@@ -489,12 +501,21 @@ section.contact2 {
   .itens {
     margin-top: 50px;
   }
+  
 }
 
 @media (max-width: 630px) {
   .itens {
     margin-top: 50px;
   }
+}
+#imagemExibida {
+  margin: auto;
+  justify-content: center;
+}
+.select-image {
+  max-width: 750px;
+  display: flex;
 }
 
 @media (max-width: 480px) {
@@ -503,6 +524,9 @@ section.contact2 {
     height: auto;
   }
 
+  .button {
+    float: none;
+  }
 
   .products {
         
@@ -512,8 +536,11 @@ section.contact2 {
     margin: auto;
     
 }
+
+
 #imgProduto{
     width: 180px;
+
 }
 .box_img {
     width: 180px;

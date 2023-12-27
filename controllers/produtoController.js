@@ -47,7 +47,7 @@ router.get("/:empresa/detalhes/:id/:slug", (req, res) => {
                 
 
             } else {
-                res.redirect("home")
+                res.redirect("home") 
             }
         })
     })
@@ -58,29 +58,38 @@ router.get("/:empresa/detalhes/:id/:slug", (req, res) => {
 
 // Rota de busca
 
-router.post('/pesquisar', (req, res) => {
+router.get('/pesquisar', (req, res) => {
+    
     var idSessao = req.session.usuario ? req.session.usuario.id : undefined;
-    const valor = req.body.pesquisa;
-    var empresaId = req.body.empresaId
-    var empresa = req.body.empresa
-    var instagram = req.body.instagram
-    var numero = req.body.numero
-    var tema = req.body.tema
-    product.findAll({
+    var valor = req.query.pesquisa;
+    var empresa = req.query.empresa
+    console.log('pesquisa:' + valor, 'empresa:' + empresa, '-----------------------------------------------------------------------------------------')
+
+    if (valor == '') {
+        res.redirect(`/${empresa}`)
+    } else {
+        usuario.findOne({
+        where: {nome: empresa}
+    }).then( (userResult) => {
+         product.findAll({
         where: {
             nome_produto: {
                 [Op.and]: [
                     Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('nome_produto')), 'LIKE', '%' + valor.toLowerCase() + '%')
                 ]
             }, 
-            id_usuario: empresaId           
+            id_usuario: userResult.id_usuario          
         }
     }).then(produtosFiltrados => {
-        res.render("index", { produtos: produtosFiltrados, pesquisa: valor , idSessao: idSessao, empresaId: empresaId, empresa: empresa, instagram: instagram, numero: numero, tema: tema});
+        res.render("index", { produtos: produtosFiltrados, pesquisa: valor , idSessao: idSessao, empresaId: userResult.empresaId, empresa: userResult.nome, instagram: userResult.instagram, numero: userResult.numero, tema: userResult.corTema, enderecoLoja: userResult.enderecoLoja, contato: userResult.contato, horario: userResult.contato, taxas: userResult.taxas});
     }).catch(error => {
         console.error('Erro na busca:', error);
         res.status(500).send('Erro na busca de produtos');
     });
+    })
+   
+    }
+    
 });
 
 router.get('/admin/addProduto', userAuth, (req, res) => {
@@ -156,8 +165,13 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
             console.log('Iniciando processamento de imagem...');
     
             buffer = await sharp(imagem.buffer)
-                .resize({ width: resolucaoAlvo })
-                .toFormat('jpeg', { quality: qualidade })
+                .resize({ 
+                    width: resolucaoAlvo,
+                    height: resolucaoAlvo,
+                    fit: 'contain',
+                    background: { r: 0, g: 0, b: 0, alpha: 0 }
+                 })
+                .toFormat('webp', { quality: qualidade })
                 .toBuffer();
     
             console.log('Imagem processada com qualidade inicial:', qualidade);
@@ -171,7 +185,7 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
                 if (qualidade > 0) {
                     // Evitar processamento adicional se a qualidade atingir zero
                     buffer = await sharp(buffer)
-                        .toFormat('jpeg', { quality: qualidade })
+                        .toFormat('webp', { quality: qualidade })
                         .toBuffer();
                 }
             }
@@ -293,12 +307,11 @@ router.post("/admin/produtos/deletar", (req,res) => {
 
             product.destroy({
                 where: {
-                    id_produto:id
+                    id_produto:id 
                 }
             }).then(() => {
                 res.redirect("/admin/produtos")
             })
-
 
         }else {
             res.redirect("/admin/categories")
@@ -328,6 +341,9 @@ router.post('/admin/produto/edit/env', upload.fields([{name: 'foto', maxCount: 1
     var modelo = req.body.modelo
     var cor = req.body.cor
     var categoria = req.body.categoria
+    var marca = req.body.marca
+    var status = req.body.status
+
     
     var foto = req.files['foto'] ? {
         originalname: req.files['foto'][0].originalname,
@@ -341,45 +357,129 @@ router.post('/admin/produto/edit/env', upload.fields([{name: 'foto', maxCount: 1
         buffer: req.files['foto2'][0].buffer,
     } : null;
 
-    var marca = req.body.marca
-    var status = req.body.status
+  //------------------------------------------------------------
+  if ( foto == null && foto2 != null ) {
+    foto = foto2;
+    foto2 = null
+}
 
-    var { originalname: originalname, mimetype: mimetype, buffer: buffer } = foto || {};
-    var { originalname: originalname2, mimetype: mimetype2, buffer: buffer2 } = foto2 || {}
-    
-    product.update({
-        nome_produto: nome_produto,
-        preco: preco,
-        descricao: descricao,
-        tamanho: tamanho,
-        modelo: modelo,
-        cor: cor, 
-        nome_categoria: categoria,
+//------------- comprimir imagem ---------------
+var processarImagem = async (imagem, tamanhoMaximoKB) => {
+    if (!imagem) {
+        return null;
+    }
 
-        originalname: originalname,
-        mimetype: mimetype,
-        foto: buffer,
+    const tamanhoMaximoBytes = tamanhoMaximoKB * 1024;
+    const resolucaoAlvo = 800;
 
-        originalname2: originalname2,
-        mimetype2: mimetype2,
-        foto2: buffer2,
+    try {
+        let buffer;
+        let qualidade = 100;
 
-        marca: marca,
-        status: status,
-        slug: typeof nome_produto === 'string' ? slugify(nome_produto) : null
-    },
-        { where: {
-            id_produto: id
+        console.log('Iniciando processamento de imagem...');
+
+        buffer = await sharp(imagem.buffer)
+            .resize({ 
+                width: resolucaoAlvo,
+                height: resolucaoAlvo,
+                fit: 'contain',
+                background: { r: 0, g: 0, b: 0, alpha: 0 }
+             })
+            .toFormat('webp', { quality: qualidade })
+            .toBuffer();
+
+        console.log('Imagem processada com qualidade inicial:', qualidade);
+        
+        // Iterativamente reduzir a qualidade até atender ao requisito de tamanho
+        while (buffer.length > tamanhoMaximoBytes && qualidade > 0) {
+            qualidade -= 10;
+
+            console.log('Reduzindo qualidade para:', qualidade);
+
+            if (qualidade > 0) {
+                // Evitar processamento adicional se a qualidade atingir zero
+                buffer = await sharp(buffer)
+                    .toFormat('webp', { quality: qualidade })
+                    .toBuffer();
+            }
         }
+
+        console.log('Processamento de imagem concluído.');
+
+        return buffer.length <= tamanhoMaximoBytes ? buffer : null;
+    } catch (error) {
+        console.error('Erro ao processar a imagem:', error);
+        return null;
+    }
+};
+
+
+// Uso da função processarImagem
+var tamanhoMaximoKB = 100; // Ajuste conforme necessário
+var fotoProcessadaPromise = processarImagem(foto, tamanhoMaximoKB);
+var foto2ProcessadaPromise = processarImagem(foto2, tamanhoMaximoKB);
+
+// Esperar pela resolução das Promises antes de continuar
+Promise.all([fotoProcessadaPromise, foto2ProcessadaPromise])
+    .then(([fotoProcessada, foto2Processada]) => {
+        if (fotoProcessada) {
+            foto.buffer = fotoProcessada;
+        }
+
+        if (foto2Processada) {
+            foto2.buffer = foto2Processada;
+        } 
+
+        var { originalname: originalname, mimetype: mimetype, buffer: buffer } = foto || {};
+        var { originalname: originalname2, mimetype: mimetype2, buffer: buffer2 } = foto2 || {};
+
+            product.update({
+            nome_produto: nome_produto,
+            preco: preco,
+            descricao: descricao,
+            tamanho: tamanho,
+            modelo: modelo,
+            cor: cor, 
+            nome_categoria: categoria,
+
+            originalname: originalname,
+            mimetype: mimetype,
+            foto: buffer,
+
+            originalname2: originalname2,
+            mimetype2: mimetype2,
+            foto2: buffer2,
+
+            marca: marca,
+            status: status,
+            slug: typeof nome_produto === 'string' ? slugify(nome_produto) : null 
+        },
+            { where: { 
+                id_produto: id
+            }
+        
+            }).then(() => {
+        
+            res.redirect('/admin/produtos')
+        
+        
+        }).catch((err) => {
+            res.send(err)
+        })
+        
+                   
+           
+     
+    })
+    .catch((error) => {
+        // Lidar com erros, se necessário
+        console.error('Erro ao processar as imagens:', error);
+    });
+
+ //------------------------------------------------------------
+
     
-        }).then(() => {
-       
-        res.redirect('/admin/produtos')
-    
-       
-       }).catch((err) => {
-        res.send(err)
-       })
+   
 
 })
 

@@ -96,7 +96,8 @@ app.get("/aba",(req, res) => {
 
 app.get("/:empresa",(req, res) => {
     var empresa = req.params.empresa
-    console.log(`o nome da empresa é ${empresa} `);
+    var limite = 4;
+    var pagina = 1;
     usuario.findOne({where: {nome: empresa}}).then((userResult) => {
 
       if ( userResult.situacao == 'bloqueado' ) {
@@ -105,14 +106,97 @@ app.get("/:empresa",(req, res) => {
 
         if ( req.session.usuario != undefined) {
             var idSessao = req.session.usuario.id
-            produto.findAll({where: {id_usuario: userResult.id_usuario,  status: { [Op.not]: 'oculto'} } , 
-                order: Sequelize.literal('rand()')}).then( (produtoResult) => {
-                res.render("index", {produtos: produtoResult, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
+            
+            produto.findAndCountAll({where: {id_usuario: userResult.id_usuario,  status: { [Op.not]: 'oculto'} } , 
+                order: Sequelize.literal('rand()'),
+                limit: limite
+            }).then( (produtoResult) => {
+                
+                var next;
+                if (produtoResult.count <= limite) {
+                    next = false;
+                    
+                } else {
+                    next = true;
+                }
+                res.render("index", {pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
             })
         } else {
-            produto.findAll({where: {id_usuario: userResult.id_usuario, status: { [Op.not]: 'oculto'} } ,
-                order: Sequelize.literal('rand()')}).then( (produtoResult) => {
-                res.render("index", {produtos: produtoResult, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
+            produto.findAndCountAll({where: {id_usuario: userResult.id_usuario, status: { [Op.not]: 'oculto'} } ,
+                order: Sequelize.literal('rand()'),
+                limit: limite
+            }).then( (produtoResult) => {
+                var next;
+                if (produtoResult.count <= limite) {
+                    next = false;
+                    
+                } else {
+                    next = true;
+                }
+                res.render("index", {pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
+             })
+        }
+    
+   }}).catch((err) => {
+        res.send(err)
+    })
+   
+});
+// paginacao -----------------------
+app.get("/:empresa/page/:num",(req, res) => {
+    var empresa = req.params.empresa
+    var page = req.params.num;
+    var offset = 0; 
+    var limite = 4
+
+    if (isNaN(page) || page == 1 || page < 0) {
+        offset = 0;
+        
+    } else {
+        offset = (parseInt(page) -1) * limite ;
+    }
+    
+
+    usuario.findOne({where: {nome: empresa}}).then((userResult) => {
+
+      if ( userResult.situacao == 'bloqueado' ) {
+        res.render('home') 
+      } else { 
+        var pagina = parseInt(page)
+
+        if ( req.session.usuario != undefined) {
+            var idSessao = req.session.usuario.id
+            produto.findAndCountAll({
+                where: {id_usuario: userResult.id_usuario,  status: { [Op.not]: 'oculto'} } , 
+                limit: limite ,
+                offset: offset
+            }).then( (produtoResult) => {
+
+                var next;
+                if (offset + limite >= produtoResult.count) {
+                    next = false;
+                    
+                } else {
+                    next = true;
+                }
+
+                
+                res.render("index", {pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
+            })
+        } else {
+            produto.findAndCountAll({where: {id_usuario: userResult.id_usuario, status: { [Op.not]: 'oculto'} } ,
+                limit: 4 ,
+                offset: offset
+            }).then( (produtoResult) => {
+                var next;
+                if (offset + limite >= produtoResult.count) {
+                    next = false;
+                    
+                } else {
+                    next = true; 
+                }
+
+                res.render("index", {pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
              })
         }
     
