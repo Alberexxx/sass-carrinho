@@ -71,9 +71,9 @@
          <%   } %>
     
         
-        <% var cadastrados = 0 %>
+        <% var cadastrados = produtosCadastrados +1 %>
     <% produtos.forEach(produto => { %>
-        <% cadastrados++ %>
+        <% cadastrados-- %>
             
             <tr>
                 <td><%= cadastrados %></td>

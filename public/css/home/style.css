@@ -512,6 +512,9 @@ section.contact {
     grid-template-columns: repeat(auto-fit, minmax(160px, auto));
     gap: 1rem;
 }
+.infos > p:hover {
+   cursor: text;
+}
 
 .first-info img {
     width: 100px;
@@ -583,6 +586,29 @@ section.contact {
 .a_detalhes {
     width:130px ;
     outline: none;
+}
+.todosProdutos {
+  text-align: center;
+}
+.todosProdutos > h3 {
+    color: gray;
+}
+
+.paginas {
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+.paginas > p {
+    display: inline;
+    margin: 0px 5px 0px 5px;
+    color: var(--color-gray2);
+}
+
+.color_dinamic {
+    color: var(--color-green);
+    font-weight: 900;
+    
 }
 
 

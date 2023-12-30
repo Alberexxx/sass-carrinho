@@ -90,40 +90,39 @@
                 <input class="opc" type="radio" name="opc_crd" id="opc1_crd" value="false">
                 Não
             </label> 
-            <p><%= usuario.taxas.taxas.avista.taxa %></p>
             </div> 
 
             <div id="taxa_credito">
                 <p>selecione e preencha as taxas de credito que sua loja trabalha: </p>
 
-                <input class="opc" type="radio" name="1x_crd" >1x
+                <input class="opc" type="checkbox" name="1x_crd" >1x
                 <input type="number" name="cTaxa1" class="inp_crd" step="0.1" placeholder="ex: 9,5">
-                <input class="opc" type="radio" name="2x_crd"  >2x
+                <input class="opc" type="checkbox" name="2x_crd"  >2x
                 <input type="number" name="Ctaxa2" class="inp_crd" step="0.1" placeholder="ex: 1,5">
                 <br>
-                <input class="opc" type="radio" name="3x_crd" >3x
+                <input class="opc" type="checkbox" name="3x_crd" >3x
                 <input type="number" name="cTaxa3" class="inp_crd" step="0.1" placeholder="ex: 9,9">
-                <input class="opc" type="radio" name="4x_crd" >4x
+                <input class="opc" type="checkbox" name="4x_crd" >4x
                 <input type="number" name="cTaxa4" class="inp_crd" step="0.1" placeholder="ex: 9,5">
                 <br>
-                <input class="opc" type="radio" name="5x_crd"  >5x
+                <input class="opc" type="checkbox" name="5x_crd"  >5x
                 <input type="number" name="cTaxa5" class="inp_crd" step="0.1" placeholder="ex: 2,5">
-                <input class="opc" type="radio" name="6x_crd"  >6x
+                <input class="opc" type="checkbox" name="6x_crd"  >6x
                 <input type="number" name="cTaxa6" class="inp_crd" step="0.1" placeholder="ex: 9,5">
                 <br>
-                <input class="opc" type="radio" name="7x_crd"  >7x
+                <input class="opc" type="checkbox" name="7x_crd"  >7x
                 <input type="number" name="cTaxa7" class="inp_crd" step="0.1" placeholder="ex: 0">
-                <input class="opc" type="radio" name="8x_crd"  >8x
+                <input class="opc" type="checkbox" name="8x_crd"  >8x
                 <input type="number" name="cTaxa8" class="inp_crd" step="0.1" placeholder="ex: 8,5">
                 <br>
-                <input class="opc" type="radio" name="9x_crd"  >9x
+                <input class="opc" type="checkbox" name="9x_crd"  >9x
                 <input type="number" name="cTaxa9" class="inp_crd" step="0.1" placeholder="ex: 9,1">
-                <input class="opc" type="radio" name="10x_crd" >10x
+                <input class="opc" type="checkbox" name="10x_crd" >10x
                 <input type="number" name="cTaxa10" class="inp_crd" step="0.1" placeholder="ex: 0,5">
                 <br>
-                <input class="opc" type="radio" name="11x_crd"  >11x
+                <input class="opc" type="checkbox" name="11x_crd"  >11x
                 <input type="number" name="cTaxa11" class="inp_crd" step="0.1" placeholder="ex: 1,1">
-                <input class="opc" type="radio" name="12x_crd" >12x
+                <input class="opc" type="checkbox" name="12x_crd" >12x
                 <input type="number" name="cTaxa12" class="inp_crd" step="0.1" placeholder="ex: 4,2">
 
                 
@@ -134,49 +133,20 @@
             <div id="opc_debito_container"> 
                 <p class="label-p">sua loja cobra taxas em compras com cartão de debito?</p>
             <label for="opc2">
-                <input class="opc" type="radio" name="opc_deb" id="opc2_deb" value="true"> 
+                <input class="opc" type="radio" name="opc_deb" id="opc2_deb" value="true" > 
                 Sim
             </label>
             <label for="opc1">
-                <input class="opc" type="radio" name="opc_deb" id="opc1_deb" value="false">
+                <input class="opc" type="radio" name="opc_deb" id="opc1_deb" value="false" checked>
                 Não
             </label> 
             
             </div>
 
             <div id="taxa_debito">
-                <p>selecione e preencha as taxas de debito que sua loja trabalha: </p>
+                <p>Digite a porcentagem de desconto: </p>
             
-                <input class="opc" type="radio" name="1x_deb" id="opc1_deb" >1x
-                <input type="number" name="dTaxa1" class="inp_deb" step="0.1" placeholder="ex: 9,5">
-                <input class="opc" type="radio" name="2x_deb" id="opc1_deb" >2x
-                <input type="number" name="dTaxa2" class="inp_deb" step="0.1" placeholder="ex: 1,5">
-                <br>
-                <input class="opc" type="radio" name="3x_deb" id="opc1_deb" >3x
-                <input type="number" name="dTaxa3" class="inp_deb" step="0.1" placeholder="ex: 9,9">
-                <input class="opc" type="radio" name="4x_deb" id="opc1_deb" >4x
-                <input type="number" name="dTaxa4" class="inp_deb" step="0.1" placeholder="ex: 9,5">
-                <br>
-                <input class="opc" type="radio" name="5x_deb" id="opc1_deb" >5x
-                <input type="number" name="dTaxa5" class="inp_deb" step="0.1" placeholder="ex: 2,5">
-                <input class="opc" type="radio" name="6x_deb" id="opc1_deb" >6x
-                <input type="number" name="dTaxa6" class="inp_deb" step="0.1" placeholder="ex: 9,5">
-                <br>
-                <input class="opc" type="radio" name="7x_deb" id="opc1_deb" >7x
-                <input type="number" name="dTaxa7" class="inp_deb" step="0.1" placeholder="ex: 0">
-                <input class="opc" type="radio" name="8x_deb" id="opc1_deb" >8x
-                <input type="number" name="dTaxa8" class="inp_deb" step="0.1" placeholder="ex: 8,5">
-                <br>
-                <input class="opc" type="radio" name="9x_deb" id="opc1_deb" >9x
-                <input type="number" name="dTaxa9" class="inp_deb" step="0.1" placeholder="ex: 9,1">
-                <input class="opc" type="radio" name="10x_deb" id="opc1_deb" >10x
-                <input type="number" name="dTaxa10" class="inp_deb" step="0.1" placeholder="ex: 0,5">
-                <br>
-                <input class="opc" type="radio" name="11x_deb" id="opc1_deb" >11x
-                <input type="number" name="dTaxa11" class="inp_deb" step="0.1" placeholder="ex: 1,1">
-                <input class="opc" type="radio" name="12x_deb" id="opc1_deb" >12x
-                <input type="number" name="dTaxa12" class="inp_deb" step="0.1" placeholder="ex: 4,2">
-
+                <input type="number" id="dTaxa" class="" step="0.1" placeholder="ex: 1,25">
                 
             </div>
         </div>
@@ -199,6 +169,6 @@
     </form>
    </container>
    <script src="/js/configuracoes/configuracoes.js"></script> 
-
+ 
 </body>
 </html>

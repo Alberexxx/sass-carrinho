@@ -413,8 +413,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateTotal()
 
-});
-
+}); 
     
 
 

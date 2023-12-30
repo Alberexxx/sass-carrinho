@@ -154,9 +154,10 @@ function criarJSON() {
             },
             "debito": {
                 "taxa": [],
-                "valores": {}
+                "valor": {}
             }
         }
+       
     };
 
     // Verifica se a opção de desconto para compras a vista/pix está selecionada
@@ -184,21 +185,21 @@ function criarJSON() {
 
 
     // Preenche as taxas de débito
-    for (var i = 1; i <= 12; i++) {
-        var isChecked = document.querySelector('input[name="' + i + 'x_deb"]:checked');
-        var valorElement = document.querySelector('input[name="dTaxa' + i +'"]');
+       let dTaxa = document.getElementById('dTaxa').value  
+       
+       let radio_debito = document.getElementById('opc2_deb')
+        
+       if (radio_debito.checked == true && dTaxa !== '') {
+          jsonData.taxas.debito.taxa = 'true'
+          jsonData.taxas.debito.valor = dTaxa
 
-        // Verifica se o elemento foi encontrado antes de acessar sua propriedade 'value'
-        var valor = isChecked ? (valorElement ? parseFloat(valorElement.value) || 0 : 0) : 0;
+       } else {
 
-        jsonData.taxas.debito.valores[i + 'x'] = isChecked ? [true, valor] : [false];
-    }
-    if(document.getElementsByName("opc_deb")[0].checked) {
-        jsonData.taxas.debito.taxa = document.getElementsByName("opc_deb")[0].value
-
-    } else {
-        jsonData.taxas.debito.taxa = document.getElementsByName("opc_deb")[1].value
-    }
+        jsonData.taxas.debito.taxa = 'false'
+        jsonData.taxas.debito.valor = false
+       }
+        
+   
 
     // Exibe o JSON criado no console (pode ser removido em produção)
    // console.log(JSON.stringify(jsonData, null, 2));
@@ -207,6 +208,8 @@ function criarJSON() {
     inputJson.type = 'hidden';
     inputJson.name = 'json_data';
     inputJson.value = JSON.stringify(jsonData);
+
+ console.log(jsonData);
 
     return inputJson
 }

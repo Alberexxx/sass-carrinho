@@ -45,9 +45,11 @@
 let x_icon = document.getElementById("x_icon")
 let carrinho = document.getElementById("carrinho")
 let miniaturaCarrinho = document.getElementById("miniaturaCarrinho")
-let statusCarrinho = localStorage.getItem('vsb_carrinho')
+let statusCarrinho = localStorage.getItem('vsb_carrinho') ?? 'true';
 let notificacao = document.getElementById('notificacao_carrinho') 
+
 notificacao.style.display = 'none'
+
 if (statusCarrinho === 'true') {
     miniaturaCarrinho.style.display = 'none'
     carrinho.style.display = 'block'
@@ -79,7 +81,6 @@ function esconder_carrinho() {
     carrinho.style.display = 'block'
     statusCarrinho = "true"
     notificacao.style.display = 'none'
-    console.log('jkndjdnjn');
 
     
     if (!localStorage.getItem('vsb_carrinho')) {
@@ -139,7 +140,6 @@ function enviar(empresa) {
     var cabecalho = "------%20Carrinho%20de%20compras%20------%0A%0A";
     var rodape = `%0A%0A*Valor%20Total%20do%20carrinho:*%20R$${ValorTotal}`;
     var mensagemCompleta = "https://wa.me/55" + numero + "?text=" + cabecalho + novaString + rodape;
-    console.log(mensagemCompleta);
 
     if (stringOriginal.length > 0) {
         window.location.href = mensagemCompleta;

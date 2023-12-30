@@ -96,8 +96,8 @@ app.get("/aba",(req, res) => {
 
 app.get("/:empresa",(req, res) => {
     var empresa = req.params.empresa
-    var limite = 4;
-    var pagina = 1;
+    var limite = 10;
+    var pagina = 0;
     usuario.findOne({where: {nome: empresa}}).then((userResult) => {
 
       if ( userResult.situacao == 'bloqueado' ) {
@@ -119,7 +119,7 @@ app.get("/:empresa",(req, res) => {
                 } else {
                     next = true;
                 }
-                res.render("index", {pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
+                res.render("index", {limite: limite, count: produtoResult.count, pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
             })
         } else {
             produto.findAndCountAll({where: {id_usuario: userResult.id_usuario, status: { [Op.not]: 'oculto'} } ,
@@ -133,7 +133,7 @@ app.get("/:empresa",(req, res) => {
                 } else {
                     next = true;
                 }
-                res.render("index", {pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
+                res.render("index", {limite: limite, count: produtoResult.count, pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
              })
         }
     
@@ -147,7 +147,7 @@ app.get("/:empresa/page/:num",(req, res) => {
     var empresa = req.params.empresa
     var page = req.params.num;
     var offset = 0; 
-    var limite = 4
+    var limite = 10;
 
     if (isNaN(page) || page == 1 || page < 0) {
         offset = 0;
@@ -169,7 +169,8 @@ app.get("/:empresa/page/:num",(req, res) => {
             produto.findAndCountAll({
                 where: {id_usuario: userResult.id_usuario,  status: { [Op.not]: 'oculto'} } , 
                 limit: limite ,
-                offset: offset
+                offset: offset,
+                order: [['createdAt', 'DESC']]
             }).then( (produtoResult) => {
 
                 var next;
@@ -181,12 +182,14 @@ app.get("/:empresa/page/:num",(req, res) => {
                 }
 
                 
-                res.render("index", {pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
+                res.render("index", {limite: limite, count: produtoResult.count, pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
             })
         } else {
-            produto.findAndCountAll({where: {id_usuario: userResult.id_usuario, status: { [Op.not]: 'oculto'} } ,
-                limit: 4 ,
-                offset: offset
+            produto.findAndCountAll({
+                where: {id_usuario: userResult.id_usuario, status: { [Op.not]: 'oculto'} } ,
+                limit: limite ,
+                offset: offset,
+                order: [['createdAt', 'DESC']]
             }).then( (produtoResult) => {
                 var next;
                 if (offset + limite >= produtoResult.count) {
@@ -196,10 +199,10 @@ app.get("/:empresa/page/:num",(req, res) => {
                     next = true; 
                 }
 
-                res.render("index", {pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
+                res.render("index", {limite: limite, count: produtoResult.count, pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
              })
         }
-    
+     
    }}).catch((err) => {
         res.send(err)
     })

@@ -31,6 +31,7 @@
     <link rel="shortcut icon" href="/img/home/carrinho-de-compras.png" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/detalhesProduto/style.css" />
+    <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
 
 
   </head>
@@ -123,7 +124,7 @@
                                                   </p> 
                                                     <p class="price_detalhes">
                                                      <s style="text-decoration: line-through;">  R$<%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %> </s>
-                                                        - 
+                                                        
                                                       <strong class="preco_estilo" style="font-size: 25px;">R$<%= (produto.preco - (taxas.taxas.avista.valor * produto.preco /100)).toFixed(2).replace('.', ',')  %></strong>  
                                                     </p>
                                                     <p>
@@ -491,6 +492,7 @@ function substituirImagem() {
       crossorigin="anonymous"></script>
     <script src="/js/home/ajax.js"></script>
     <script src="/js/abaCarrinho/script.js"></script>
+    <script src="\js\home\animation.js"></script>
 
   </body>
 </html>

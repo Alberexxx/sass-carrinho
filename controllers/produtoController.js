@@ -107,7 +107,7 @@ router.get('/admin/produtos', userAuth ,(req, res) => {
     var id_usuario = req.session.usuario.id
 
     usuario.findByPk( id_usuario).then( (userResult => {
-         product.findAndCountAll({where: {id_usuario: id_usuario}}).then((produtosResult) => {
+         product.findAndCountAll({where: {id_usuario: id_usuario}, order: [['createdAt', 'DESC']]}).then((produtosResult) => {
         res.render('produtos', {produtos: produtosResult.rows, produtosCadastrados: produtosResult.count, limite: userResult.limite_produtos, empresa: userResult.nome})
 
     }).catch((err) => {
@@ -144,10 +144,6 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
         buffer: req.files['foto2'][0].buffer,
     } : null;
 
-    if ( foto == null && foto2 != null ) {
-        foto = foto2;
-        foto2 = null
-    }
 
     //------------- comprimir imagem ---------------
     const processarImagem = async (imagem, tamanhoMaximoKB) => {
@@ -204,6 +200,8 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
     const tamanhoMaximoKB = 100; // Ajuste conforme necessário
     const fotoProcessadaPromise = processarImagem(foto, tamanhoMaximoKB);
     const foto2ProcessadaPromise = processarImagem(foto2, tamanhoMaximoKB);
+
+    
     
     // Esperar pela resolução das Promises antes de continuar
     Promise.all([fotoProcessadaPromise, foto2ProcessadaPromise])
@@ -239,7 +237,7 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
         
                                 originalname2: originalname2,
                                 mimetype2: mimetype2,
-                                foto2: foto2.buffer,
+                                foto2: foto2 == null ? null : foto.buffer ,
         
                                 slug: slugify(nome_produto),
                                 id_usuario: id_usuario,
@@ -358,10 +356,7 @@ router.post('/admin/produto/edit/env', upload.fields([{name: 'foto', maxCount: 1
     } : null;
 
   //------------------------------------------------------------
-  if ( foto == null && foto2 != null ) {
-    foto = foto2;
-    foto2 = null
-}
+ 
 
 //------------- comprimir imagem ---------------
 var processarImagem = async (imagem, tamanhoMaximoKB) => {
@@ -416,10 +411,11 @@ var processarImagem = async (imagem, tamanhoMaximoKB) => {
 
 // Uso da função processarImagem
 var tamanhoMaximoKB = 100; // Ajuste conforme necessário
+
 var fotoProcessadaPromise = processarImagem(foto, tamanhoMaximoKB);
 var foto2ProcessadaPromise = processarImagem(foto2, tamanhoMaximoKB);
 
-// Esperar pela resolução das Promises antes de continuar
+
 Promise.all([fotoProcessadaPromise, foto2ProcessadaPromise])
     .then(([fotoProcessada, foto2Processada]) => {
         if (fotoProcessada) {

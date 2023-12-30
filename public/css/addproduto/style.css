@@ -328,7 +328,19 @@ input[type="number"]{
   /* border: none; */
   border:1px solid #45a049;
 }
-
+.x_btn {
+  margin-left: 153px;
+  margin-top: -346px;
+  display: none;
+  background-color: rgb(215, 215, 215);
+  border-radius: 50%;
+}
+.cursor_text:hover {
+  cursor: text;
+}
+.x_btn:hover {
+  cursor: pointer;
+}
 #fotoproduto{
     width: 75%;
 }

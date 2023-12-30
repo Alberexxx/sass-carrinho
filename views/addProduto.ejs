@@ -51,8 +51,10 @@
 
                                     <div class="input-container tamanho">
                                         <br>
-                                        <label>Foto 1 do Produto</label>
+                                        <label class="cursor_text">Foto 1 do Produto </label>
+                                        <br>
                                         <img id="previewImage" src="https://abrai.me/ImPh1" alt="Imagem Preview" style=" max-width: 170px; max-height: 170px; margin: auto;">
+                                       <img class="x_btn" id="limpar_1" src="/img/public/bx-x.svg" alt="" onclick="limpar(1)">
                                         <br>
                                         
                                             
@@ -61,14 +63,18 @@
                                             style="color: rgb(2, 2, 2);">Selecionar foto 1
                                             <img src="https://cdn3.iconfinder.com/data/icons/glypho-generic-icons/64/action-upload-alt-512.png"
                                                 style="width: 20px" />
+                                                
                                         </label>
-                                        <input type="file" accept="image/*" name="foto" id="foto" style="opacity: 0;" >
+                                        <input type="file" accept="image/*" name="foto" id="foto" style="opacity: 0;" required>
                                     </div>
                             <!--foto 2-->
                                     <div class="input-container tamanho">
                                         <br>
-                                        <label>Foto 2 do Produto  </label>
+                                        <label class="cursor_text">Foto 2 do Produto  </label>
+                                        <br>
                                         <img id="previewImage2" src="https://abrai.me/ImPh1" style=" max-width: 170px; max-height: 170px; margin: auto;">
+                                        <img class="x_btn" id="limpar_2" src="/img/public/bx-x.svg"  alt="" onclick="limpar(2)">
+
                                         <br>
                                         
                                             
@@ -157,7 +163,7 @@
                                     </div>
                                     
                                     <div class="input-container">
-                                        <input class="submit" type="submit" value=" cadastrar produto "> -
+                                        <input class="submit" type="submit" value=" cadastrar produto "> 
                                     </div>
                                 </div>
                             </div>
@@ -173,16 +179,19 @@
        function input1() {
             var inputFile = document.getElementById('foto');
             var previewImage = document.getElementById('previewImage');
-
+        	let limpar1 = document.getElementById('limpar_1')
+            
             var file = inputFile.files[0];
 
-            console.log('input 1 executado');
+            
             if (file) {
                 var reader = new FileReader();
+                limpar1.style.display = 'inline'
 
                 reader.onload = function (e) {
                     previewImage.src = e.target.result;
                     previewImage.style.display = 'block';
+                  
                 };
 
                 reader.readAsDataURL(file);
@@ -194,27 +203,51 @@
         function input2() {
             var inputFile2 = document.getElementById('foto2');
             var previewImage2 = document.getElementById('previewImage2');
+            let limpar2 = document.getElementById('limpar_2')
+
             var file = inputFile2.files[0];
 
-            console.log('input 2 executado');
 
             if (file) {
-                console.log('if executado');
                 var reader = new FileReader();
+                limpar2.style.display = 'inline'
 
                 reader.onload = function (e) {
                     previewImage2.src = e.target.result;
                     previewImage2.style.display = 'block';
-                    console.log('render executado');
+                    
+
                 };
 
                 reader.readAsDataURL(file);
-                console.log('data executado');
             }
         };
 
         document.getElementById('foto').addEventListener('change', input1);
         document.getElementById('foto2').addEventListener('change', input2);
+        
+        function limpar(x) {
+            
+            if (x == 1) {
+                var inputFile = document.getElementById('foto');
+                var previewImage = document.getElementById('previewImage');
+                let limpar1 = document.getElementById('limpar_1')
+
+                inputFile.value = '';
+                previewImage.src = 'https://abrai.me/ImPh1';
+                limpar1.style.display = 'none'
+
+            } else if (x == 2) {
+                var inputFile2 = document.getElementById('foto2');
+                var previewImage2 = document.getElementById('previewImage2');
+                let limpar2 = document.getElementById('limpar_2')
+
+                inputFile2.value = '';
+                previewImage2.src = 'https://abrai.me/ImPh1';
+                limpar2.style.display = 'none'
+
+            }
+        }
 
 </script>
 

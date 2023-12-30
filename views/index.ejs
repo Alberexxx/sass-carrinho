@@ -23,10 +23,10 @@
     <link rel="stylesheet" href="/css/todosProdutos/busca.css">
     <link rel="stylesheet" href="/css/painel/style.css">
     <link rel="stylesheet" href="/css/todosProdutos/footer.css">
-   
-
 
     <link rel="shortcut icon" href="/img/home/carrinho-de-compras.png" type="image/x-icon">
+    <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+    
 
 </head>
 
@@ -81,28 +81,45 @@
                     <ul id="searchResults"></ul>
                     <br>
                   
-                    <% if (produtos.length == 0) { %>
-                        <div class="container">
+                    <% if (produtos.length == 0 ) { %>
+                       
 
+                        <% if ( pesquisa == undefined) { %>
+                            
+                            <div class="container">
+                                <h2>Nenhum produto achado</h2>
+                                <p>desculpe, mas a loja não tem nenhum produto cadastrado.</p>
+                            </div>
+
+                        <% } else { %>
+                            
+                            <div class="container">
                             <h2>Nenhum produto achado</h2>
                             <p>desculpe, mas nenhum produto foi encontrado para a pesquisa "<%= pesquisa %>", porfavor tente pesquisar algo diferente</p>
-                        </div>
+                            </div>
+                            <% } %>
+                        
+
+
                     <% } else { %>
 
                         <% if (pesquisa == '' || pesquisa == undefined) { %>
-                            <h2>Todas os <span>Produtos </span> </h2>
+
+    
+                                    <% if (next === true && pagina === 0) { %>
+                                        <h2> <span>Produtos</span> Em Destaque</h2>
+                                            
+                                    <% } else if (pagina >= 1 ){ %>
+
+                                        <h2> Todos os <span>Produtos</span> </h2>
+
+                                    <% } %>
+
                         <% } else { %>
                             <h2>Todas os <span>Produtos</span> encontrados para '<span><%= pesquisa %></span>'</h2>
                         <% } %>
 
-                            <%#  function limitarTamanhoString(str, limite) { %>
-                                <%#   if (str.length > limite) { %>
-                                <%#       return str.slice(0, limite) + "..."; %>
-                                <%#  } else { %>
-                                <%#     return str %>
-                                <%#  } %>
-                            <%#   } %>
-                            
+                           
                         </div>
                         <div class="filtered-products"></div>
                         <div class="products">
@@ -225,30 +242,71 @@
 
 
             </section>
-            <div class="paginas">
-                <div class="proxima">
-                    <% if (next) {%>
-                        <a href="/<%= empresa %>/page/<%= pagina + 1 %>"> proxima >>></a>
-                    <% } %>
-                </div>
-                <div class="paginaAtusl">
-                    <% if ( next || pagina > 1) { %>
-                     <p> <%= pagina %></p>
-                    <% } %>
-                   
-                </div>
-                <div class="anterior">
-                    <% if ( pagina > 2) { %>
-                       <a href="/<%= empresa %>/page/<%= pagina - 1 %>"> <<< anterior </a>
 
-                    <% } else if (pagina == 2) { %>
-                        <a href="/<%= empresa %>"> <<< anterior </a>
+            <% if ( typeof next !== 'undefined') { %>
+              <% if (next === true) { %>
+              <div class="todosProdutos">
+    	        <h3 id="testeScroll" > Todos os <span>Produtos</span></h3>
+            </div>
+            <% } %>
+            
+           
+            
+            <div class="paginas">
+               
+                  
+
+                    <% if ( pagina > 2) { %>
+                        <a href="/<%= empresa %>/page/<%= pagina - 1 %>"> <strong><<</strong> anterior </a>
+ 
+                     <% } else if (pagina == 2) { %>
+                         <a href="/<%= empresa %>"> <strong><<</strong> anterior </a>
+ 
+                         <% } %>
+                
+                    <% if ( next || pagina > 1) { %>
+                        <% total = count/ limite %>
+                      <% total = Math.ceil(total) %>
+
+                      <% if (pagina == 0) { %>
+                        <a href="/<%= empresa %>" class="color_dinamic"><i class='bx bx-home' class="color_dinamic" ></a></i>
+
+                       <% } else { %>
+                        <a href="/<%= empresa %>"><i class='bx bx-home'></i></a>
 
                         <% } %>
+
+
+
+                      <% for( let index = 1; index < total + 1; index++ ) { %>
+                        <% if (pagina == index) { %>
+                        <p > <a class="color_dinamic" href="/<%= empresa %>/page/<%= index %>"><%= index %></p></a>
+
+                        <% } else { %>
+                        <p> <a href="/<%= empresa %>/page/<%= index %>"><%= index %></p></a>
+                        <% } %>
+                      <% } %>
+
+                       
+                    <% } %>
+                   
+              
+                    <% if (next) {%>
+                        <a href="/<%= empresa %>/page/<%= pagina + 1 %>"> proxima <strong>>></strong></a>
+                    <% } %>
+                <br><br>
                 </div>
-                
-            </div>
             
+            <% } else { %>
+                <div class="paginas">              
+                  <a href="/<%= empresa %>"><i class='bx bx-home'></i></a>
+                </div>
+
+            <% } %>
+
+
+
+           
 
     
 
@@ -314,6 +372,8 @@
     <script src="/js/home/ajax.js"></script>
     <script src="/js/abaCarrinho/script.js"></script>
     <script src="/js/home/mudaCor.js"></script>
+    <script src="\js\home\animation.js"></script>
+
 
    
 </body>
