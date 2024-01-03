@@ -178,7 +178,7 @@
                                             <h4 class="nome_produto"> <%= limitarTamanhoString( produto.nome_produto, 40 ) %></h4>
                                         </a>
                                             <p> <% if (produto.preco == '') { %>
-                                                <%= produto.preco %>
+                                               
                                             <% } else { %>
                                                 <% if (taxas.taxas.avista.taxa == true) { %>
                                                     <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
@@ -188,7 +188,7 @@
                                                 <% } else {%>
                                                     <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
 
-                                                        <strong class="preco_estilo">R$<%= produto.preco %></strong> 
+                                                        <strong class="preco_estilo">R$<%= produto.preco.replace('.', ',') %></strong> 
                                                      </a>
                                                <% } %>
 
@@ -228,7 +228,12 @@
 
 
                                             <% } else {%>
-                                                à vista no pix ou cartão de debito
+                                                <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                                   à vista no PIX ou cartão de debito
+                                                <% } else { %>
+                                                        à vista, no PIX 
+                                                    <% } %>
+                                                
                                                 
                                             <% } %>
 
