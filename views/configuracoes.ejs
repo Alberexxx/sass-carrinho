@@ -13,9 +13,7 @@
 <body>
      
     <header class="painel-administrativo" >
-        <div class="logo">
-            <img src="/logo/<%= usuario.nome %>" alt="Logo da Loja" style="margin-top: -20px;" >
-        </div>
+        
         <nav>
             <ul class="opcoes">
                 <% if (empresa == "administrador") { %>
@@ -46,7 +44,7 @@
         <input type="text" id="numeroWhatsapp" placeholder=" ex: 81993856910" name="numero" value="<%= usuario.telefone %>">
        
         <label >Contato no rodapé da pagina:</label>
-        <input type="text" id="contato" placeholder="" name="contato" value="<%= usuario.contato %>" >
+        <input type="text" id="contato" placeholder="ex: (11)45994-5392" name="contato" value="<%= usuario.contato %>" >
 
         <label for="pagamento">taxas de pagamento:</label>
         <div style="display: flex;">
@@ -54,26 +52,47 @@
             <button type="button" class="btn-pagamento" id="btn-avista" >a vista/pix</button>
             <button type="button" class="btn-pagamento" id="btn-credito">credito</button>
             <button type="button" class="btn-pagamento" id="btn-debito">debito</button>
-            <button type="button" class="btn-pagamento" onclick="criarJSON()">montar json</button>
 
         </div>
         <div id="avista_container" >
             <div id="opc_avista_container"> 
                     <p class="label-p">aplicar desconto para compras a vista/pix?</p>
+
+                    <% if (usuario.taxas.taxas.avista.taxa) { %>
+                        <label for="opc2">
+                            <input class="opc" type="radio" name="opc" id="opc2" value="true" checked>
+                            Sim
+                        </label>
+                        <label for="opc1">
+                            <input class="opc" type="radio" name="opc" id="opc1"  value="false" >
+                            Não
+                        </label>
+
+                    <% } else { %>
+                        <label for="opc2">
+                            <input class="opc" type="radio" name="opc" id="opc2" value="true" >
+                            Sim
+                        </label>
+                        <label for="opc1">
+                            <input class="opc" type="radio" name="opc" id="opc1"  value="false" checked>
+                            Não
+                        </label>
+                    <% } %>
                 
-                <label for="opc1">
-                    <input class="opc" type="radio" name="opc" id="opc1" checked value="false">
-                    Não
-                </label>
-                <label for="opc2">
-                    <input class="opc" type="radio" name="opc" id="opc2" value="true">
-                    Sim
-                </label>
+               
+
+               
             </div>
             <div id="taxa_avista">
                 <br>
-                <label for="avistaTaxa">digite o porcentagem do desconto:</label>
-                <input type="number" name="avistaTaxa" id="avistaTaxa" step="0.1" placeholder="ex: 9,5%">
+                <label for="avistaTaxa">digite o porcentagem do desconto: de 1 a 100</label>
+                <% if (usuario.taxas.taxas.avista.taxa) { %>
+                    <input type="number" name="avistaTaxa" id="avistaTaxa" step="0.1" placeholder="ex: 9,5%" value="<%= usuario.taxas.taxas.avista.valor %>">
+
+                    <% } else { %>
+                        <input type="number" name="avistaTaxa" id="avistaTaxa" step="0.1" placeholder="ex: 9,5%">
+
+                    <% } %>
                 <br><br>
             </div>
         
@@ -82,48 +101,164 @@
         <div class="credito_container" id="credito_container">
             <div id="opc_credito_container"> 
                 <p class="label-p">sua loja cobra taxas em compras com cartão de credito?</p>
-            <label for="opc2">
-                <input class="opc" type="radio" name="opc_crd" id="opc2_crd" value="true" > 
-                Sim
-            </label>
-            <label for="opc1">
-                <input class="opc" type="radio" name="opc_crd" id="opc1_crd" value="false">
-                Não
-            </label> 
+                <% if (usuario.taxas.taxas.credito.taxa) { %>
+                    <label for="opc2">
+                        <input class="opc" type="radio" name="opc_crd" id="opc2_crd" value="true" checked> 
+                        Sim
+                    </label>
+                    <label for="opc1">
+                        <input class="opc" type="radio" name="opc_crd" id="opc1_crd" value="false">
+                        Não
+                    </label> 
+                <% } else { %>
+                    <label for="opc2">
+                        <input class="opc" type="radio" name="opc_crd" id="opc2_crd" value="true">
+                        Sim
+                    </label>
+                    <label for="opc1">
+                        <input class="opc" type="radio" name="opc_crd" id="opc1_crd" value="false" checked>
+                        Não
+                    </label> 
+                <% } %>
+            
+           
             </div> 
 
             <div id="taxa_credito">
                 <p>selecione e preencha as taxas de credito que sua loja trabalha: </p>
 
-                <input class="opc" type="checkbox" name="1x_crd" >1x
-                <input type="number" name="cTaxa1" class="inp_crd" step="0.1" placeholder="ex: 9,5">
-                <input class="opc" type="checkbox" name="2x_crd"  >2x
-                <input type="number" name="Ctaxa2" class="inp_crd" step="0.1" placeholder="ex: 1,5">
+                <% if (usuario.taxas.taxas.credito.valores['1x'][0]) { %>
+                    <input class="opc" type="checkbox" name="1x_crd" checked>1x
+                    <input type="number" name="cTaxa1" class="inp_crd" step="0.1" placeholder="ex: 9,5" value="<%= usuario.taxas.taxas.credito.valores['1x'][1] %>">
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="1x_crd" >1x
+                    <input type="number" name="cTaxa1" class="inp_crd" step="0.1" placeholder="ex: 9,5" >
+               <% } %>
+                
+               <% if (usuario.taxas.taxas.credito.valores['2x'][0]) { %>
+                <input class="opc" type="checkbox" name="2x_crd"  checked>2x
+                <input type="number" name="Ctaxa2" class="inp_crd" step="0.1" placeholder="ex: 1,5" value="<%= usuario.taxas.taxas.credito.valores['2x'][1] %>">
+                
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="2x_crd"  >2x
+                    <input type="number" name="Ctaxa2" class="inp_crd" step="0.1" placeholder="ex: 1,5">
+                <% } %>
+
                 <br>
-                <input class="opc" type="checkbox" name="3x_crd" >3x
-                <input type="number" name="cTaxa3" class="inp_crd" step="0.1" placeholder="ex: 9,9">
-                <input class="opc" type="checkbox" name="4x_crd" >4x
-                <input type="number" name="cTaxa4" class="inp_crd" step="0.1" placeholder="ex: 9,5">
+                <% if (usuario.taxas.taxas.credito.valores['3x'][0]) { %>
+                    <input class="opc" type="checkbox" name="3x_crd" checked>3x
+                    <input type="number" name="cTaxa3" class="inp_crd" step="0.1" placeholder="ex: 9,9" value="<%= usuario.taxas.taxas.credito.valores['3x'][1] %>">
+                         
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="3x_crd" >3x
+                    <input type="number" name="cTaxa3" class="inp_crd" step="0.1" placeholder="ex: 9,9">
+    
+                <% } %>
+
+                <% if (usuario.taxas.taxas.credito.valores['4x'][0]) { %>
+                    <input class="opc" type="checkbox" name="4x_crd" checked>4x
+                    <input type="number" name="cTaxa4" class="inp_crd" step="0.1" placeholder="ex: 9,5" value="<%= usuario.taxas.taxas.credito.valores['4x'][1] %>">
+    
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="4x_crd" >4x
+                    <input type="number" name="cTaxa4" class="inp_crd" step="0.1" placeholder="ex: 9,5">
+    
+                <% } %>
+
                 <br>
-                <input class="opc" type="checkbox" name="5x_crd"  >5x
-                <input type="number" name="cTaxa5" class="inp_crd" step="0.1" placeholder="ex: 2,5">
-                <input class="opc" type="checkbox" name="6x_crd"  >6x
-                <input type="number" name="cTaxa6" class="inp_crd" step="0.1" placeholder="ex: 9,5">
+                <% if (usuario.taxas.taxas.credito.valores['5x'][0]) { %>
+                    <input class="opc" type="checkbox" name="5x_crd"  checked>5x
+                    <input type="number" name="cTaxa5" class="inp_crd" step="0.1" placeholder="ex: 2,5" value="<%= usuario.taxas.taxas.credito.valores['5x'][1]  %>">
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="5x_crd"  >5x
+                    <input type="number" name="cTaxa5" class="inp_crd" step="0.1" placeholder="ex: 2,5">
+
+                 <% } %>
+
+            
+                 <% if (usuario.taxas.taxas.credito.valores['6x'][0]) { %>
+                    <input class="opc" type="checkbox" name="6x_crd"  checked>6x
+                    <input type="number" name="cTaxa6" class="inp_crd" step="0.1" placeholder="ex: 9,5" value="<%=  usuario.taxas.taxas.credito.valores['6x'][1]   %>">
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="6x_crd"  >6x
+                    <input type="number" name="cTaxa6" class="inp_crd" step="0.1" placeholder="ex: 9,5">
+
+                 <% } %>
+
                 <br>
-                <input class="opc" type="checkbox" name="7x_crd"  >7x
-                <input type="number" name="cTaxa7" class="inp_crd" step="0.1" placeholder="ex: 0">
-                <input class="opc" type="checkbox" name="8x_crd"  >8x
-                <input type="number" name="cTaxa8" class="inp_crd" step="0.1" placeholder="ex: 8,5">
+
+                
+
+                <% if (usuario.taxas.taxas.credito.valores['7x'][0]) { %>
+                    <input class="opc" type="checkbox" name="7x_crd"  checked>7x
+                    <input type="number" name="cTaxa7" class="inp_crd" step="0.1" placeholder="ex: 0" value="<%= usuario.taxas.taxas.credito.valores['7x'][1]  %>">
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="7x_crd"  >7x
+                    <input type="number" name="cTaxa7" class="inp_crd" step="0.1" placeholder="ex: 0">
+
+                <% } %>
+
+                <% if (usuario.taxas.taxas.credito.valores['8x'][0]) { %>
+                    <input class="opc" type="checkbox" name="8x_crd"  checked>8x
+                    <input type="number" name="cTaxa8" class="inp_crd" step="0.1" placeholder="ex: 8,5" value="<%= usuario.taxas.taxas.credito.valores['8x'][1] %>">
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="8x_crd"  >8x
+                    <input type="number" name="cTaxa8" class="inp_crd" step="0.1" placeholder="ex: 8,5">
+
+                <% } %>
+
                 <br>
-                <input class="opc" type="checkbox" name="9x_crd"  >9x
-                <input type="number" name="cTaxa9" class="inp_crd" step="0.1" placeholder="ex: 9,1">
-                <input class="opc" type="checkbox" name="10x_crd" >10x
-                <input type="number" name="cTaxa10" class="inp_crd" step="0.1" placeholder="ex: 0,5">
+
+                <% if (usuario.taxas.taxas.credito.valores['9x'][0]) { %>
+                    <input class="opc" type="checkbox" name="9x_crd" checked >9x
+                    <input type="number" name="cTaxa9" class="inp_crd" step="0.1" placeholder="ex: 9,1" value="<%= usuario.taxas.taxas.credito.valores['9x'][1]  %>">
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="9x_crd"  >9x
+                    <input type="number" name="cTaxa9" class="inp_crd" step="0.1" placeholder="ex: 9,1">
+
+                <% } %>
+
+               
+
+                <% if (usuario.taxas.taxas.credito.valores['10x'][0]) { %>
+                    <input class="opc" type="checkbox" name="10x_crd" checked >10x
+                    <input type="number" name="cTaxa10" class="inp_crd" step="0.1" placeholder="ex: 0,5" value="<%= usuario.taxas.taxas.credito.valores['10x'][1]  %>">
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="10x_crd" >10x
+                    <input type="number" name="cTaxa10" class="inp_crd" step="0.1" placeholder="ex: 0,5">
+
+                <% } %>
                 <br>
-                <input class="opc" type="checkbox" name="11x_crd"  >11x
-                <input type="number" name="cTaxa11" class="inp_crd" step="0.1" placeholder="ex: 1,1">
-                <input class="opc" type="checkbox" name="12x_crd" >12x
-                <input type="number" name="cTaxa12" class="inp_crd" step="0.1" placeholder="ex: 4,2">
+
+                <% if (usuario.taxas.taxas.credito.valores['11x'][0]) { %>
+                    <input class="opc" type="checkbox" name="11x_crd"  checked>11x
+                    <input type="number" name="cTaxa11" class="inp_crd" step="0.1" placeholder="ex: 1,1" value="<%= usuario.taxas.taxas.credito.valores['11x'][1]  %>">
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="11x_crd"  >11x
+                    <input type="number" name="cTaxa11" class="inp_crd" step="0.1" placeholder="ex: 1,1">
+
+                <% } %>
+                
+
+                <% if (usuario.taxas.taxas.credito.valores['12x'][0]) { %>
+                    <input class="opc" type="checkbox" name="12x_crd" checked >12x
+                    <input type="number" name="cTaxa12" class="inp_crd" step="0.1" placeholder="ex: 4,2" value="<%= usuario.taxas.taxas.credito.valores['12x'][1]   %>">
+
+                <% } else { %>
+                    <input class="opc" type="checkbox" name="12x_crd" >12x
+                    <input type="number" name="cTaxa12" class="inp_crd" step="0.1" placeholder="ex: 4,2">
+
+                <% } %>
+
+              
 
                 
             </div>
@@ -132,33 +267,55 @@
         <div class="debito_container" id="debito_container">
             <div id="opc_debito_container"> 
                 <p class="label-p">sua loja cobra taxas em compras com cartão de debito?</p>
-            <label for="opc2">
-                <input class="opc" type="radio" name="opc_deb" id="opc2_deb" value="true" > 
-                Sim
-            </label>
-            <label for="opc1">
-                <input class="opc" type="radio" name="opc_deb" id="opc1_deb" value="false" checked>
-                Não
-            </label> 
+                <% if (usuario.taxas.taxas.debito.taxa) { %>
+                    <label for="opc2">
+                        <input class="opc" type="radio" name="opc_deb" id="opc2_deb" value="true" checked > 
+                        Sim
+                    </label>
+
+                    <label for="opc1">
+                        <input class="opc" type="radio" name="opc_deb" id="opc1_deb" value="false" >
+                        Não
+                    </label> 
+                <% } else { %>
+                    <label for="opc2">
+                        <input class="opc" type="radio" name="opc_deb" id="opc2_deb" value="true"  > 
+                        Sim
+                    </label>
+
+                    <label for="opc1">
+                        <input class="opc" type="radio" name="opc_deb" id="opc1_deb" value="false" checked>
+                        Não
+                    </label> 
+                <% } %>
+            
+           
             
             </div>
 
             <div id="taxa_debito">
-                <p>Digite a porcentagem de desconto: </p>
+                <p>Digite a porcentagem de desconto: de 1 a 100</p>
+                <% if (usuario.taxas.taxas.debito.taxa) { %>
+                    <input type="number" id="dTaxa" class="" step="0.1" placeholder="ex: 1,25" value="<%= usuario.taxas.taxas.debito.valor %>">
+
+                <% } else { %>
+                    <input type="number" id="dTaxa" class="" step="0.1" placeholder="ex: 1,25">
+
+                <% } %>
+
             
-                <input type="number" id="dTaxa" class="" step="0.1" placeholder="ex: 1,25">
                 
             </div>
         </div>
 
-        <label for="horario">horario de funcionamento:</label>
-        <input type="text" id="horario" placeholder=" ex: funcionamos das 8:00h às 16:00h" name="horario" value="<%= usuario.horario %>">
+        <label for="horario">horario e dias de funcionamento :</label>
+        <input type="text" id="horario" maxlength="240" placeholder=" ex: funcionamos das 8:00h às 16:00h" name="horario" value="<%= usuario.horario %>">
 
         <label for="endereco">Endereço:</label>
-        <input type="text" id="endereco" placeholder=" ex: Rua das flores nº159" name="endereco" value="<%= usuario.enderecoLoja  %>">
+        <input type="text" id="endereco" maxlength="240" placeholder=" ex: Rua das flores nº159" name="endereco" value="<%= usuario.enderecoLoja  %>">
 
         <label for="linkInstagram">Link da página do Instagram:</label>
-        <input type="text" id="linkInstagram" placeholder="https://instagram.com/meuUsuario?igshid=MzdddhbsU2YQ==" name="instagram" value="<%= usuario.instagram %>">
+        <input type="text" id="linkInstagram" maxlength="230" placeholder="https://instagram.com/meuUsuario?igshid=MzdddhbsU2YQ==" name="instagram" value="<%= usuario.instagram %>">
        
         <label for="logo">Envie uma nova logo:</label>
         <input type="file" id="logo" name="logo">

@@ -31,6 +31,16 @@
 </head>
 
 <body>
+
+    <!-- Seu arquivo EJS -->
+
+<% 
+    function limitarTamanhoString(suaVariavel, maxLength) {
+      return suaVariavel.length > maxLength ? `${suaVariavel.slice(0, maxLength)}...` : suaVariavel;
+    } 
+%>
+  
+
     <input type="hidden" id="nomeEmpresa" value="<%= empresa %>">
 
     <% if (idSessao === empresaId) { %>
@@ -124,8 +134,14 @@
                         <div class="filtered-products"></div>
                         <div class="products">
 
-                        <% produtos.forEach(produto => { %>           
-                            <div class="row"  >
+                        <% produtos.forEach(produto => { %>   
+                                   
+                            <div class="row">
+                                <div class="icon_carrinho">
+                                    <div class="heart-icon"> <i class='bx bx-cart' id="<%= produto.id_produto %> " onclick="adicionar('<%= produto.id_produto %>', '<%= produto.preco %>', '<%= produto.nome_produto %>', '<%= empresa%>')" id="<%= produto.id_produto %>"  ></i>
+                            </div> 
+                                </div>
+                                
                                 <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
 
                                     <div class="box_img" id="box_img">
@@ -146,21 +162,20 @@
  
                                        <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 15) %></h4>-->
                                        <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
-                                            <h4 class="nome_produto"> <%= produto.nome_produto %></h4> 
+                                            <h4 class="nome_produto"> <%= limitarTamanhoString( produto.nome_produto, 40 ) %></h4> 
                                         </a>
                                         <p style="color: red;">indisponivel</p>
                                         </div>
 
 
                                     <% } else { %>
-                                        <div class="heart-icon"> <i class='bx bx-cart' id="<%= produto.id_produto %> " onclick="adicionar('<%= produto.id_produto %>', '<%= produto.preco %>', '<%= produto.nome_produto %>', '<%= empresa%>')" id="<%= produto.id_produto %>"  ></i>
-                                        </div>
+                                        
                                      
                                         <div class="price">
                                           <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 30) %></h4>--> 
                                           <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
 
-                                            <h4 class="nome_produto"> <%= produto.nome_produto %></h4>
+                                            <h4 class="nome_produto"> <%= limitarTamanhoString( produto.nome_produto, 40 ) %></h4>
                                         </a>
                                             <p> <% if (produto.preco == '') { %>
                                                 <%= produto.preco %>

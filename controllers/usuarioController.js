@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs")
 const usuario = require("../models/usuario")
 const carrinho = require("../models/carrinho")
 const multer = require("multer")
+const { Op } = require('sequelize');
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -38,8 +39,15 @@ router.post('/login/create', (req, res) => {
   var senha = req.body.senha;
   var nome = req.body.nome;
 
-  usuario.findOne({ where: { email: email } }).then((user) => {
-    if (user == undefined) {
+  usuario.findOne({ 
+    where: { 
+      [Op.or]:[
+        { email: email }, 
+        {nome: nome }
+      ]
+    }
+    }).then((user) => {
+    if (user == undefined ) {
       var salt = bcrypt.genSaltSync(3);
       var hash = bcrypt.hashSync(senha, salt);
 
@@ -68,8 +76,8 @@ router.post('/login/create', (req, res) => {
         });
     } else {
       res.redirect(
-        `/login?mensagem=${encodeURIComponent(
-          'Já existe um cadastro com esse email, tente usar outro.'
+        `/cadastro?mensagem=${encodeURIComponent(
+          'Já existe um cadastro com esse nome ou email, tente usar outro.'
         )}`
       );
     }
@@ -139,11 +147,45 @@ router.post('/validaEmail', (req, res) => {
 router.get('/admin/configuracoes', userAuth, (req, res) => {
   var usuario_id = req.session.usuario.id
   usuario.findOne({where: {id_usuario: usuario_id}}).then( (userResult) => {
+    if (userResult.taxas === null) {
+                 
+      userResult.taxas = {
+          "taxas": {
+              "avista": {
+                  "taxa": false,
+                  "valor": []
+              },
+              "credito": {
+                  "taxa": false,
+                  "valores": {
+                              "1x": [false], 
+                              "2x": [false], 
+                              "3x": [false],
+                              "4x": [false],
+                              "5x": [false], 
+                              "6x": [false],
+                              "7x": [false],
+                              "8x": [false],
+                              "9x": [false], 
+                              "10x": [false], 
+                              "11x": [false], 
+                              "12x": [false]
+                            
+              }
+            },
+              "debito": {
+                  "taxa": false,
+                  "valor": {}
+              }
+          }
+
+      }
+  }
     res.render('configuracoes', {usuario: userResult, empresa: userResult.nome})
   })
 })
 
-router.post("/admin/configuracoes/edit",upload.single('logo'), (req, res) => {
+router.post("/admin/configuracoes/edit", userAuth , upload.single('logo'), (req, res) => {
 
   let taxas = JSON.parse(req.body.json_data)
 

@@ -230,6 +230,11 @@
         <% produtosRelacionados.forEach(relacionado => { %>
           
           <div class="row"  >
+            <div class="icon_carrinho">
+              <div class="heart-icon"> <i class='bx bx-cart' id="<%= relacionado.id_produto %> " onclick="adicionar('<%= relacionado.id_produto %>', '<%= relacionado.preco %>', '<%= relacionado.nome_produto %>', '<%= empresa%>')" id="<%= relacionado.id_produto %>"  ></i>
+              </div>
+          </div>
+
             <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
                 
                     <img src="/imagem/<%= relacionado.id_produto %>" id="imgProduto" class="img_antes">
@@ -257,8 +262,7 @@
 
 
                 <% } else { %>
-                    <div class="heart-icon"> <i class='bx bx-cart' id="<%= relacionado.id_produto %> " onclick="adicionar('<%= relacionado.id_produto %>', '<%= relacionado.preco %>', '<%= relacionado.nome_produto %>', '<%= empresa%>')" id="<%= relacionado.id_produto %>"  ></i>
-                    </div>
+                    
                  
                     <div class="price">
                       <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 30) %></h4>--> 

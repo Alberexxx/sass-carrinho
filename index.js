@@ -119,6 +119,28 @@ app.get("/:empresa",(req, res) => {
                 } else {
                     next = true;
                 }
+                if (userResult.taxas === null) {
+                    
+                    userResult.taxas = {
+                        "taxas": {
+                            "avista": {
+                                "taxa": false,
+                                "valor": []
+                            },
+                            "credito": {
+                                "taxa": [],
+                                "valores": {}
+                            },
+                            "debito": {
+                                "taxa": [],
+                                "valor": {}
+                            }
+                        }
+
+                    }
+                }
+
+                
                 res.render("index", {limite: limite, count: produtoResult.count, pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
             })
         } else {
@@ -132,6 +154,27 @@ app.get("/:empresa",(req, res) => {
                     
                 } else {
                     next = true;
+                }
+
+                if (userResult.taxas === null) {
+                    
+                    userResult.taxas = {
+                        "taxas": {
+                            "avista": {
+                                "taxa": false,
+                                "valor": []
+                            },
+                            "credito": {
+                                "taxa": [],
+                                "valores": {}
+                            },
+                            "debito": {
+                                "taxa": [],
+                                "valor": {}
+                            }
+                        }
+
+                    }
                 }
                 res.render("index", {limite: limite, count: produtoResult.count, pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
              })
@@ -180,7 +223,26 @@ app.get("/:empresa/page/:num",(req, res) => {
                 } else {
                     next = true;
                 }
+                if (userResult.taxas === null) {
+                    
+                    userResult.taxas = {
+                        "taxas": {
+                            "avista": {
+                                "taxa": false,
+                                "valor": []
+                            },
+                            "credito": {
+                                "taxa": [],
+                                "valores": {}
+                            },
+                            "debito": {
+                                "taxa": [],
+                                "valor": {}
+                            }
+                        }
 
+                    }
+                }
                 
                 res.render("index", {limite: limite, count: produtoResult.count, pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, idSessao: idSessao, empresaId : userResult.id_usuario, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
             })
@@ -198,7 +260,26 @@ app.get("/:empresa/page/:num",(req, res) => {
                 } else {
                     next = true; 
                 }
+                if (userResult.taxas === null) {
+                    
+                    userResult.taxas = {
+                        "taxas": {
+                            "avista": {
+                                "taxa": false,
+                                "valor": []
+                            },
+                            "credito": {
+                                "taxa": [],
+                                "valores": {}
+                            },
+                            "debito": {
+                                "taxa": [],
+                                "valor": {}
+                            }
+                        }
 
+                    }
+                }
                 res.render("index", {limite: limite, count: produtoResult.count, pagina: pagina, next: next, produtos: produtoResult.rows, empresa: userResult.nome, tema: userResult.corTema, instagram: userResult.instagram, logo: userResult.logo, numero: userResult.telefone,  mimetype: userResult.foto, empresaId : userResult.id_usuario,  idSessao: undefined, pesquisa: undefined, horario: userResult.horario, contato: userResult.contato, enderecoLoja: userResult.enderecoLoja, taxas: userResult.taxas})
              })
         }

@@ -26,12 +26,13 @@ router.get("/produtos" , (req, res) => {
 router.get("/:empresa/detalhes/:id/:slug", (req, res) => {
     
     var slug = req.params.slug
+    var id_produto = req.params.id
     var empresa = req.params.empresa
     const Op = Sequelize.Op
     var idSession = req.session.usuario ? req.session.usuario.id : undefined;
     
     usuario.findOne({where: {nome: empresa}}).then((userResult) => {
-        product.findOne({where: {slug: slug}}).then( produto => {
+        product.findOne({where: {id_produto: id_produto}}).then( produto => {
         if(produto !== undefined){
             
             product.findAll({
@@ -42,6 +43,26 @@ router.get("/:empresa/detalhes/:id/:slug", (req, res) => {
                 limit: 4
             
             }).then( produtosRelacionados => {
+                if (userResult.taxas === null) {
+                    
+                    userResult.taxas = {
+                        "taxas": {
+                            "avista": {
+                                "taxa": false,
+                                "valor": []
+                            },
+                            "credito": {
+                                "taxa": [],
+                                "valores": {}
+                            },
+                            "debito": {
+                                "taxa": [],
+                                "valor": {}
+                            }
+                        }
+
+                    }
+                }
                     res.render("detalhesProduto", {produto: produto, produtosRelacionados: produtosRelacionados, empresa: empresa, tema: userResult.corTema, logo: userResult.logo, instagram: userResult.instagram, numero: userResult.telefone, empresa: userResult.nome, mimetype: userResult.foto, idSession: idSession, empresaId: userResult.id_usuario, enderecoLoja: userResult.enderecoLoja, contato: userResult.contato, horario: userResult.horario, taxas: userResult.taxas})
                 })
                 
@@ -63,7 +84,6 @@ router.get('/pesquisar', (req, res) => {
     var idSessao = req.session.usuario ? req.session.usuario.id : undefined;
     var valor = req.query.pesquisa;
     var empresa = req.query.empresa
-    console.log('pesquisa:' + valor, 'empresa:' + empresa, '-----------------------------------------------------------------------------------------')
 
     if (valor == '') {
         res.redirect(`/${empresa}`)
@@ -81,6 +101,27 @@ router.get('/pesquisar', (req, res) => {
             id_usuario: userResult.id_usuario          
         }
     }).then(produtosFiltrados => {
+
+        if (userResult.taxas === null) {
+                    
+            userResult.taxas = {
+                "taxas": {
+                    "avista": {
+                        "taxa": false,
+                        "valor": []
+                    },
+                    "credito": {
+                        "taxa": [],
+                        "valores": {}
+                    },
+                    "debito": {
+                        "taxa": [],
+                        "valor": {}
+                    }
+                }
+
+            }
+        }
         res.render("index", { produtos: produtosFiltrados, pesquisa: valor , idSessao: idSessao, empresaId: userResult.empresaId, empresa: userResult.nome, instagram: userResult.instagram, numero: userResult.numero, tema: userResult.corTema, enderecoLoja: userResult.enderecoLoja, contato: userResult.contato, horario: userResult.contato, taxas: userResult.taxas});
     }).catch(error => {
         console.error('Erro na busca:', error);
@@ -131,6 +172,9 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
    var id_usuario = req.session.usuario.id
    var marca = req.body.marca
    var status = req.body.status
+   
+   preco = preco.replace('R$','')
+   preco = preco.replace(',', '.');
    
     var foto = req.files['foto'] ? {
         originalname: req.files['foto'][0].originalname,
@@ -330,7 +374,7 @@ router.post("/admin/editar-produto", userAuth, (req, res) => {
 
    
 
-router.post('/admin/produto/edit/env', upload.fields([{name: 'foto', maxCount: 1}, {name: 'foto2', maxCount: 1}]), (req, res) => {
+router.post('/admin/produto/edit/env', userAuth, upload.fields([{name: 'foto', maxCount: 1}, {name: 'foto2', maxCount: 1}]), (req, res) => {
     var id = req.body.id
     var nome_produto = req.body.nome
     var preco = req.body.preco
@@ -342,6 +386,25 @@ router.post('/admin/produto/edit/env', upload.fields([{name: 'foto', maxCount: 1
     var marca = req.body.marca
     var status = req.body.status
 
+    console.log(preco);
+
+    // Certifique-se de que 'preco' é uma string
+    if (typeof preco !== 'string') {
+        preco = preco.toString();
+    }
+    
+    preco = preco.replace('R$', '');
+    
+    // Verifique se 'preco' é uma string válida antes de realizar operações de manipulação de string
+    if (preco === '' || isNaN(parseFloat(preco))) {
+        preco = '0.00';
+    }
+    
+    preco = preco.replace(',', '.');
+    preco = parseFloat(preco).toFixed(2);
+    
+    console.log(preco);
+  
     
     var foto = req.files['foto'] ? {
         originalname: req.files['foto'][0].originalname,
@@ -426,8 +489,18 @@ Promise.all([fotoProcessadaPromise, foto2ProcessadaPromise])
             foto2.buffer = foto2Processada;
         } 
 
+        
+
         var { originalname: originalname, mimetype: mimetype, buffer: buffer } = foto || {};
         var { originalname: originalname2, mimetype: mimetype2, buffer: buffer2 } = foto2 || {};
+
+        if (foto2 === null) {
+            originalname2 = mimetype2 = buffer2 = null
+        } else {
+
+        }
+
+        console.log(originalname2, mimetype2, buffer2);
 
             product.update({
             nome_produto: nome_produto,

@@ -85,7 +85,6 @@ router.post("/admin/usuario/email", (req,res) => {
 router.post("/admin/usuario/telefone", (req,res) => {
    var id = req.body.id;
    var telefone = req.body.telefone
-   console.log('------------------------------------------- entrou na rota de telefone -- -----------------------------------------');
    if (id == 1){
       res.redirect('/admin/usuarios')
    } else {
@@ -106,7 +105,6 @@ router.post("/admin/usuario/senha", (req,res) => {
    var senha = req.body.senha
    var salt = bcrypt.genSaltSync(3);
    var hash = bcrypt.hashSync(senha, salt);
-   console.log('------------------------------------------- entrou na rota de telefone -- -----------------------------------------');
    if (id == 1){
       res.redirect('/admin/usuarios')
    } else {
@@ -126,7 +124,6 @@ router.post("/admin/usuario/senha", (req,res) => {
 router.post("/admin/usuario/excluir_usuario", (req,res) => {
    var id = req.body.id;
   
-   console.log('------------------------------------------- entrou na rota de telefone -- -----------------------------------------');
    if (id == 1){
       res.redirect('/admin/usuarios')
    } else {

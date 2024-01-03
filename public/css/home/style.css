@@ -1,7 +1,7 @@
 :root {
     --color-black: #000;
     --color-whiter: #fff;
-    --color-green: #7CFC00;
+    --color-green: #69d200;
     --color-orange: #FF8C00;
     --color-gray: #1b1b1b;
     --color-gray2: #131313;
@@ -32,7 +32,7 @@ body {
 body.dark {
     --color-black: #fff;
     --color-whiter: #000;
-    --color-green: #7CFC00;
+    --color-green: #69d200;
     --color-orange: #FF8C00;
     --color-gray: #a6a6a6;
     --color-gray2: #f3f3f3;
@@ -57,6 +57,8 @@ body.dark {
     color: var(--color-black);
     text-transform: capitalize;
 }
+
+
 
 /*
 #navbar {
@@ -320,7 +322,7 @@ header.sticky {
     transition: all 0.4s;
     margin: auto;
     width: 200px;
-    height: 350px;
+    height: 360px;
     border: 1px solid var(--color-gray3);
     border-radius: 6px;
     background-color: var(--color-back);
@@ -339,11 +341,12 @@ header.sticky {
     border-radius: 5px 5px 0px 0px;
 }
 .detalhesProduto {
-    padding: 10px;
+    padding: 0px 10px 10px 10px;
 }
 .nome_produto {
-    width: 155px;
+    width: 177px;
     margin-right: -10px;
+    padding-top: 7px;
 }
 
 
@@ -366,12 +369,15 @@ a {
 a:hover {
     color: var(--color-green);
 }
+.icon_carrinho{
+    height: 25px;
+}
 
 .heart-icon {
     position: absolute;
     right: 0;
     font-size: 20px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .heart-icon {
@@ -715,7 +721,7 @@ section.contact {
         width: 180px;
     }
     .nome_produto {
-        width: 120px;
+        width: 150px;
     }
 }
 @media(max-width: 375px) {
@@ -744,6 +750,6 @@ section.contact {
         width: 155px;
     }
     .nome_produto {
-        width: 100px;
+        width: 133px;
     }
 }

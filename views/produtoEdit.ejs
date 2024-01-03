@@ -14,9 +14,7 @@
 
 <body>
     <header class="painel-administrativo">
-        <div class="logo">
-            <img src="/logo/<%= empresa %>" alt="Logo da Loja">
-        </div>
+        
     
         <nav>
             <ul class="opcoes">
@@ -45,7 +43,7 @@
                             <div class="div-form">
                                 <div class="div1" id="tamanho">
                                     <div class="input-container tamanho">
-                                        <label>Foto do Produto</label>
+                                        <label>Foto 1 do Produto</label>
 
                                         <br>
                                     <form action="/admin/produto/edit/env" method="post" enctype="multipart/form-data">
@@ -61,8 +59,12 @@
                                         <div class="input-container tamanho">
                                             <br>
                                             <label>Foto 2 do Produto  </label>
-                                            <img id="previewImage2" src="/imagem2/<%= produto.id_produto %>" style=" max-width: 170px; max-height: 170px; margin: auto;" onerror="fotoExemplo()">
-                                            <br><br>
+                                            <img id="previewImage2" src="/imagem2/<%= produto.id_produto %>" style=" max-width: 170px; max-height: 170px; margin: auto;" >
+                                            <br>
+
+                                            <img class="x_btn" id="limpar_2" src="/img/public/bx-x.svg"  alt="" onclick="limpar()">
+
+                                            <br>
                                             
                                                 
                                             </label>
@@ -155,29 +157,33 @@
                                 <div class="div1">
                                     <div class="input-container">
                                         <label for="nome">Nome</label>
-                                        <input type="text" name="nome" id="nome" placeholder="Nome do Produto" value="<%= produto.nome_produto %>" required>
+                                        <input type="text" name="nome" id="nome" required maxlength="60" placeholder="Nome do Produto" value="<%= produto.nome_produto %>" required>
                                     </div>
                                     <div class="input-container">
                                         <label for="categoria">Marca</label>
                                         <input type="text" name="marca" id="marca"
-                                            placeholder="Digite a marca" value="<%= produto.marca %>" required>
+                                            placeholder="Digite a marca" value="<%= produto.marca %>"  maxlength="100">
                                     </div>
                                     <div class="input-container">
                                         <label for="descricao">descrição</label>
-                                        <input type="text" name="descricao" id="" placeholder="digite uma descricao para o produto" value="<%= produto.descricao %>">
+                                        <input type="text" name="descricao" id="" placeholder="digite uma descricao para o produto" value="<%= produto.descricao %>" maxlength="950">
                                         <label for="cor">Cor</label>
-                                        <input type="text" name="cor" id="cor" placeholder="Digite a cor"  value="<%= produto.cor %>">
+                                        <input type="text" name="cor" id="cor" placeholder="Digite a cor"  value="<%= produto.cor %>" maxlength="100" >
                                     </div>
                                     <div class="input-container">
                                         <label for="categoria">Categoria</label>
                                         <input type="text" name="categoria" id="categoria"
-                                            placeholder="Digite a Categoria" required value="<%= produto.nome_categoria %>">
+                                            placeholder="Digite a Categoria"  value="<%= produto.nome_categoria %>" maxlength="50">
+
                                             <input type="hidden" name="id" value="<%= produto.id_produto %>">
                                     </div>
                                     <div class="input-container">
                                         <label for="valor">Valor</label>
                                         <input type="text"  id="valor" name="preco" step="0.01"
-                                            placeholder="Digite o Valor"  value="<%= produto.preco %>">
+                                        <% 
+                                            valorReplace = produto.preco.replace('.', ',')
+                                        %>
+                                            placeholder="Digite o Valor"  value="R$<%= valorReplace %>"  oninput="formatarInput(this)">
                                     </div>
                                     <div class="input-container tamanho">
                                         <label for="Status">Status</label>
@@ -228,14 +234,22 @@
         </div>
     </div>
 </body>
-<script>
+<script >
+
+   var previewImage2 = document.getElementById('previewImage2');
 
     function fotoExemplo() {
-       
+        console.log('mensagem exibida');
+        let limpar2 = document.getElementById('limpar_2')
+        limpar2.style.display = 'none'
+
         console.log('func do eneerror ativada');
         let img2 = document.getElementById('previewImage2')
         img2.src = 'https://abrai.me/ImPh1'
     }
+
+previewImage2.addEventListener('error',  fotoExemplo)
+
         let inputFile = document.getElementById('foto');
         let previewImage = document.getElementById('fotoproduto');
 
@@ -258,9 +272,10 @@
             var inputFile2 = document.getElementById('foto2');
             var previewImage2 = document.getElementById('previewImage2');
             var file = inputFile2.files[0];
+            let limpar2 = document.getElementById('limpar_2')
 
             console.log('input 2 executado');
-
+            
             if (file) {
                 console.log('if executado');
                 var reader = new FileReader();
@@ -273,10 +288,40 @@
 
                 reader.readAsDataURL(file);
                 console.log('data executado');
+                limpar2.style.display = 'inline'
+
             }
         };
 
         document.getElementById('foto2').addEventListener('change', input2);
+
+
+        function limpar() {
+            
+            var inputFile2 = document.getElementById('foto2');
+            var previewImage2 = document.getElementById('previewImage2');
+            let limpar2 = document.getElementById('limpar_2')
+
+            inputFile2.value = '';
+            previewImage2.src = 'https://abrai.me/ImPh1';
+            limpar2.style.display = 'none'
+
+        }
+        function formatarInput(input) {
+    let valor = input.value;
+    // Remove todos os caracteres que não são dígitos, ponto ou vírgula
+    valor = valor.replace(/[^\d.,]/g, '');
+
+    // Substitui a vírgula por ponto
+    valor = valor.replace('.', ',');
+
+    // Adiciona 'R$' no início do valor
+    valor = 'R$' + valor;
+
+    // Atualiza o valor do input
+    input.value = valor;
+}
+        
 </script>
 
 </html>

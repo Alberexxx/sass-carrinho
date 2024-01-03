@@ -16,9 +16,7 @@
   
 
     <header class="painel-administrativo">
-        <div class="logo">
-            <img src="/logo/<%= empresa %>" alt="Logo da Loja">
-        </div>
+        
         
         <nav >
             <ul class="opcoes">
@@ -39,7 +37,7 @@
         <div class="container">
             <div class="login-box">
                 <div class="login-header">
-                    <h2>Adicionar Produtos</h2>
+                    <h2>Adicionar Produto</h2>
                     <p>complete as informações abaixo! </p>
                 </div>
                 <form id="signup-form" action="/produtos/save" method="post" enctype="multipart/form-data">
@@ -118,32 +116,30 @@
                                         </div>
                                     </div>
                            ------------------------------------------------------------------------------------------------- -->
-                                    
                               </div>
                                 <div class="div1" >
                                     <div class="input-container">
                                         <label for="nome">Nome</label>
-                                        <input type="text" name="nome" id="nome" placeholder="Nome do Produto" required>
+                                        <input type="text" name="nome" id="nome" placeholder="Nome do Produto" required maxlength="60">
                                     </div>
                                     <div class="input-container">
                                         <label for="categoria">Marca</label>
-                                        <input type="text" name="marca" id="marca"
-                                            placeholder="Digite a marca" required>
+                                        <input type="text" name="marca" id="marca" placeholder="Digite a marca" maxlength="100">
                                     </div>
                                     <div class="input-container">
                                         <label for="descricao">descrição</label>
-                                        <input type="text" name="descricao" id="" placeholder="descricao para o produto">
+                                        <input type="text" name="descricao" id="" placeholder="descricao para o produto" maxlength="950">
                                         <label for="cor">Cor</label>
-                                        <input type="text" name="cor" id="cor" placeholder="Digite a cor" >
+                                        <input type="text" name="cor" id="cor" placeholder="Digite a cor" maxlength="100">
                                     </div>
                                     <div class="input-container">
                                         <label for="categoria">Categoria</label>
-                                        <input type="text" name="categoria" id="categoria"
+                                        <input type="text" name="categoria" id="categoria" maxlength="50"
                                             placeholder="Digite a Categoria" >
                                     </div>
                                     <div class="input-container">
                                         <label for="valor">Valor</label>
-                                        <input type="text" id="valor" name="preco" placeholder="ex: 56,40" >
+                                        <input type="text" id="valor" name="preco"  placeholder="R$0,00"  oninput="formatarInput(this)">
                                     </div>
                                     <div class="input-container tamanho">
                                         <label for="Status">Status</label>
@@ -249,6 +245,20 @@
             }
         }
 
-</script>
+function formatarInput(input) {
+    let valor = input.value;
+    // Remove todos os caracteres que não são dígitos, ponto ou vírgula
+    valor = valor.replace(/[^\d.,]/g, '');
 
+    // Substitui a vírgula por ponto
+    valor = valor.replace('.', ',');
+
+    // Adiciona 'R$' no início do valor
+    valor = 'R$' + valor;
+
+    // Atualiza o valor do input
+    input.value = valor;
+}
+</script>
+ 
 </html>

@@ -54,7 +54,7 @@ function updateCart(nomeEmpresaValue) {
         itemName.classList.add('itemName')
 
         const itemPrice = document.createElement('span');
-        itemPrice.textContent = `R$${product.preco} - Qtd:`;
+        itemPrice.textContent = `R$${product.preco.replace('.', ',')} - Qtd:`;
         itemPrice.classList.add('itemprice')
 
         const itemQuantity = document.createElement('span');
@@ -172,7 +172,7 @@ function updateCartShort(nomeEmpresaValue) {
         itemName.classList.add('itemName')
 
         const itemPrice = document.createElement('span');
-        itemPrice.textContent = `R$${product.preco} - Qtd:`;
+        itemPrice.textContent = `R$${product.preco.replace('.', ',')} - Qtd:`;
         itemPrice.classList.add('itemprice')
 
         const itemQuantity = document.createElement('span');
@@ -224,7 +224,7 @@ function updateCartShort(nomeEmpresaValue) {
         });
 
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Excluir';
+        deleteButton.textContent = 'Excluir'; 
         deleteButton.classList.add('delete-btn');
         deleteButton.addEventListener('click', function () {
             cart.splice(index, 1);

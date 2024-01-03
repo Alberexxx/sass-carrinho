@@ -16,7 +16,7 @@ const Product = connection.define("products", {
         type: Sequelize.STRING,
         allowNull: true
     }, descricao: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
         allowNull: true
     }, foto: {
         type: Sequelize.BLOB,

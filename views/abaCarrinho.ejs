@@ -34,10 +34,43 @@
         <button class="btn-total" id="btn-total" ><strong>Total: </strong> R$0,00 </button>
 
       </div> 
-      <button class="submit-btn" id="submit-btn" onclick="enviar('<%= empresa %>')">Enviar Pedido para o Whatsapp</button>
+      <button class="submit-btn" id="submit-btn" onclick="escolherPagamento()">Finalizar Pedido</button>
     </div>
   </div>
-  
+
+  <div class="divPagamento" id="div_pagamento">
+    <p>Escolha a forma de pagamento:</p> 
+    <% jsonString = JSON.stringify(taxas.taxas)
+      %>
+    <button onclick="escolherformaPag(1,'<%= jsonString %>')">Avista</button>
+    <button onclick="escolherformaPag(2,'<%= jsonString %>')">Credito</button>
+    <button onclick="escolherformaPag(3,'<%= jsonString %>')">Debito</button>
+    <button onclick="esconderEscolha()">Cancelar</button>
+  </div> 
+
+  <div class="pag_avista" id="pag_avista">
+    Metodo de pagamento: Avista
+
+    <button>voltar</button>
+    <button>enviar</button>
+  </div>
+
+  <div class="pag_credito">
+    Metodo de pagamento: Avista
+
+
+
+    <button>voltar</button>
+    <button>enviar</button>
+  </div>
+
+  <div class="pag_debito">
+    Metodo de pagamento: Avista
+
+    <button>voltar</button>
+    <button>enviar</button>
+  </div>
+
   <script>
 
 
@@ -93,8 +126,87 @@ function esconder_carrinho() {
   }
 }
 
+
+
 x_icon.addEventListener("click", esconder_carrinho)
 miniaturaCarrinho.addEventListener("click", esconder_carrinho)
+
+function escolherPagamento() {
+  console.log('function disparada');
+  let div_carrinho = document.getElementById('carrinho');
+  let div_pagamento = document.getElementById('div_pagamento');
+
+  let larguraOriginal = div_carrinho.offsetWidth;
+  let alturaOriginal = div_carrinho.offsetHeight;
+
+  div_pagamento.style.backgroundColor = 'blue'
+
+  div_pagamento.style.height = `${alturaOriginal}px `
+  div_pagamento.style.width = `${larguraOriginal}px ` 
+  div_pagamento.style.display = 'block'
+
+  div_carrinho.style.display = 'none'
+}
+
+
+function escolherformaPag(forma, taxa) {
+  let div_carrinho = document.getElementById('carrinho');
+  let div_pagamento = document.getElementById('div_pagamento');
+  let total = document.getElementById('btn-total').innerText
+  total = total.replace(/[^\d,]/g, '')
+  total = total.replace(',', '.')
+  total = parseFloat(total)
+
+  var taxasObj = JSON.parse(taxa);
+  console.log(taxasObj);
+
+  if (forma == 1) {
+    if (taxasObj.avista.taxa == true) {
+      let taxaAvista = parseFloat(taxasObj.avista.valor)
+      let valorTotal = total - ((taxaAvista * total)/100) 
+      valorTotal = valorTotal.toFixed(2)
+
+      console.log(taxasObj.avista.valor);
+      console.log(total);
+
+      console.log(valorTotal);
+
+      confirmarAvista(valorTotal, taxaAvista) 
+
+
+    
+    } else {
+
+    }
+  }
+  if (forma == 2) {
+    
+  }
+  if (forma == 3) {
+    
+  }
+ 
+}
+function confirmarAvista(total, taxa) {
+  console.log('func confirmarAvista');
+  let divPagamento = document.getElementById("div_pagamento")
+  let pag_avista = document.getElementById("pag_avista")
+  
+  let larguraOriginal = divPagamento.offsetWidth;
+  let alturaOriginal = divPagamento.offsetHeight;
+
+  pag_avista.style.height = `${alturaOriginal}px `
+  pag_avista.style.width = `${larguraOriginal}px `
+  pag_avista.style.display = 'block'
+  divPagamento.style.display = 'none'
+}
+function esconderEscolha() {
+  let div_carrinho = document.getElementById('carrinho');
+  let div_pagamento = document.getElementById('div_pagamento');
+
+  div_pagamento.style.display = 'none'
+  div_carrinho.style.display = 'block'
+}
 
 // ---------------------------------------------------
 function enviar(empresa) {
@@ -109,7 +221,8 @@ function enviar(empresa) {
         let cor = stringOriginal[i].cor ? "Cor: " + stringOriginal[i].cor + ", " : "";
         let tamanho = stringOriginal[i].tamanho ? "Tamanho: " + stringOriginal[i].tamanho : "";
         let quantidade = stringOriginal[i].quantidade ? "Qtd " + stringOriginal[i].quantidade + ", " : "";
-        let preco = stringOriginal[i].preco ? "preço: R$" + stringOriginal[i].preco : "";
+
+        let preco = stringOriginal[i].preco ? "preço: R$" + stringOriginal[i].preco.replace('.', ',') : "";
 
         novaString += produto + cor + tamanho + quantidade + preco;
 

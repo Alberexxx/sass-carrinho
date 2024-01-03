@@ -331,10 +331,11 @@ input[type="number"]{
 .x_btn {
   margin-left: 153px;
   margin-top: -346px;
-  display: none;
   background-color: rgb(215, 215, 215);
   border-radius: 50%;
+  display: none;
 }
+
 .cursor_text:hover {
   cursor: text;
 }

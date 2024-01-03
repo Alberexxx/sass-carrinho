@@ -23,9 +23,7 @@
  
     
      <header class="painel-administrativo">
-            <div class="logo">
-                <img src="/logo/<%= empresa %>" alt="Logo da Loja">
-            </div>
+            
             <nav >
                 <ul class="opcoes">
                     <% if (empresa == "administrador") { %>
@@ -78,7 +76,10 @@
             <tr>
                 <td><%= cadastrados %></td>
                 <td ><%= limitarTamanhoString(produto.nome_produto,15) %></td>
-                <td class="esconder">R$<%= produto.preco %></td>
+                <% 
+                    preco = produto.preco.replace('.', ',')
+                 %> 
+                <td class="esconder">R$<%= preco%></td>
                 <td class="esconder"><%= produto.status %></td>
                 
 
