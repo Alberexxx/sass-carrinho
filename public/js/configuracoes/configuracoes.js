@@ -163,7 +163,7 @@ function criarJSON() {
     // Verifica se a opção de desconto para compras a vista/pix está selecionada
     jsonData.taxas.avista.taxa = document.getElementById('opc2').checked;
     if (document.getElementById('opc2').checked) {
-        jsonData.taxas.avista.valor = document.getElementById("avistaTaxa").value
+        jsonData.taxas.avista.valor = (document.getElementById("avistaTaxa").value == '') ? 0 : document.getElementById("avistaTaxa").value
     }
 
     // Preenche as taxas de crédito
@@ -190,8 +190,8 @@ function criarJSON() {
        let radio_debito = document.getElementById('opc2_deb')
         
        if (radio_debito.checked == true && dTaxa !== '') {
-          jsonData.taxas.debito.taxa = 'true'
-          jsonData.taxas.debito.valor = dTaxa
+        jsonData.taxas.debito.taxa = 'true'
+        jsonData.taxas.debito.valor = dTaxa
 
        } else {
 
@@ -201,7 +201,7 @@ function criarJSON() {
         
    
 
-    // Exibe o JSON criado no console (pode ser removido em produção)
+   // Exibe o JSON criado no console (pode ser removido em produção)
    // console.log(JSON.stringify(jsonData, null, 2));
 
     var inputJson = document.createElement('input');
@@ -209,7 +209,7 @@ function criarJSON() {
     inputJson.name = 'json_data';
     inputJson.value = JSON.stringify(jsonData);
 
- console.log(jsonData);
+    console.log(jsonData);
 
     return inputJson
 }

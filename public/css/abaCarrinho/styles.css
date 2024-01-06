@@ -274,9 +274,10 @@
     cursor: pointer;
   }
  .divPagamento {
-  background-color: red;
+  background-color: #F9F9F9;
   position: fixed;
   border-radius: 20px 20px 0px 0px;
+  border-top: 1px solid #e9e8e8;
   width: 200px;
   height: 200px;
   z-index: 1;
@@ -284,37 +285,166 @@
   right: 0px;
   bottom: 0px;
  }
+ .divPagamento > p {
+  color: black;
+  font-size: 20px;
+  margin-top: 20px;
+  
+  text-align: center;
+ }
+ .botoes_pagamento {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+ }
+ .botoes_pagamento > button {
+  border-radius: 10px;
+  border: 1px solid rgb(255, 255, 255);
+  background-color: #4CAF50;
+  width: 80px;
+  height: 30px;
+  padding: 3px;
+  color: white;
+ }
+ .botoes_pagamento > button:hover {
+  cursor: pointer;
+  background-color: #54d658;
+ }
+ .btn-cancelar {
+  border-radius: 50px;
+  border: 1px solid rgb(189, 189, 189);
+  background-color: rgb(253, 253, 253);
+  width: 80px;
+  height: 35px;
+  padding: 3px;
+  margin-left: 10px;
+  font-size: 17px;
+ }
+#btn_pagamento_valor {
+  align-items: end;
+  border-radius: 50px;
+  border: 1px solid rgb(189, 189, 189);
+  background-color: rgb(253, 253, 253);
+  width: 150px;
+  height: 35px;
+  padding: 3px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 17px;
+}
+.div-btn-cancelar{
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0px;
+  background-color: #E7E6E6;
+  border-radius: 15px 15px 0px 0px;
+  height: 70px;
+  align-items: center;
+  width: inherit;
 
- .pag_avista{
-  background-color: green;
+}
+.btn-cancelar:hover {
+  cursor: pointer;
+  background-color: #ddd;
+}
+.pag_avista{
+  background-color: #F9F9F9;
+  border-top: 1px solid #e9e8e8;
+
   position: fixed;
   border-radius: 20px 20px 0px 0px;
   width: 150px;
-  height: 200px;
+  word-wrap: break-word;
+  min-height: 224px;
   z-index: 1;
   display: none;
   right: 0px;
   bottom: 0px;
+}
+
+ .metd_name {
+  margin-top: 20px;
+  margin-left: 10px;
+  font-weight: 500;
+  color: black;
  }
+ .infos_pagamento{
+  margin-top: 0px;
+  padding: 10px;
+ }
+ .infos_pagamento > p{
+  color: black;
+ }
+.btn-voltar{
+  border-radius: 50px;
+  border: 1px solid #e1dfdf;
+  background-color: rgb(253, 253, 253);
+  width: 70px;
+  height: 35px;
+  font-size: 17px;
+  padding: 3px;
+  margin-left: 10px;
+}
+.btn-voltar:hover {
+  cursor: pointer;
+  border: 1px solid #d0d0d0;
+
+  background-color: #ddd;
+}
+.btn-enviar-wtsp {
+  border-radius: 50px;
+  border: 1px solid #E7E6E6;
+  background-color: #4CAF50;
+  color: white;
+  width: 75%;
+  height: 35px;
+  font-size: 17px;
+  padding: 3px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.btn-enviar-wtsp:hover {
+  cursor: pointer;
+  background-color: #54d658;
+}
+
 
  .pag_credito{
-  background-color: green;
+  background-color: #F9F9F9;
+  border-top: 1px solid #e9e8e8;
   position: fixed;
   border-radius: 20px 20px 0px 0px;
   width: 160px;
-  height: 200px;
+  height: 90vh;
+ 
   z-index: 1;
   display: none;
   right: 0px;
   bottom: 0px;
+  overflow-y: auto;
  }
+ #taxas_credito {
+  padding: 10px;
+ }
+ input[type="radio"] {
+  margin-right: 5px;
+}
+.texto_credito {
+  color: black;
+  margin-left: 10px;
+}
 
  .pag_debito{
-  background-color: green;
+  background-color: #F9F9F9;
+  border-top: 1px solid #e9e8e8;
   position: fixed;
   border-radius: 20px 20px 0px 0px;
   width: 170px;
-  height: 200px;
+  
+  word-wrap: break-word;
+  min-height: 224px;
   z-index: 1;
   display: none;
   right: 0px;
@@ -322,7 +452,8 @@
  }
 
   .btn-total {
-    padding: 3px;
+    padding: 3px 6px 3px 6px;
+    
     margin-top: 10px;
     background-color: #f1eded;
     color: rgb(0, 0, 0);
@@ -330,6 +461,9 @@
     border-radius: 50px ;
     cursor: pointer; 
     float: right;
+  }
+  .btn-total:hover {
+    cursor: auto;
   }
   .item-hr {
     border: none;
@@ -421,6 +555,7 @@
   padding: 10px 10px 10px 10px;
   border-radius: 15px 15px 0px 0px;
  }
+ 
  @media (max-width: 514px) { 
 
   .cart-container {
@@ -436,6 +571,12 @@
     right: 0;
     overflow: visible;
   }
+  .pag_credito{
+    
+    height: 90vh;
+    overflow-y: auto;
+    
+   }
   #x_icon {
     
     margin-left: 3px;
@@ -443,5 +584,20 @@
     margin-bottom: -5px;
     
  }
+
+ .btn-voltar{
+  
+  height: 38px;
+  font-size: 20px;
+  padding: 3px;
+ 
+}
+
+.btn-enviar-wtsp {
+ 
+  height: 38px;
+  font-size: 20px;
+  padding: 3px;
+}
 }
 

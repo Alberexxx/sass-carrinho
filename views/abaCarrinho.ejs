@@ -40,56 +40,83 @@
 
   <div class="divPagamento" id="div_pagamento">
     <p>Escolha a forma de pagamento:</p> 
+
+    <div class="botoes_pagamento">
     <% jsonString = JSON.stringify(taxas.taxas)
       %>
-    <button onclick="escolherformaPag(1,'<%= jsonString %>')">Avista</button>
-    <button onclick="escolherformaPag(2,'<%= jsonString %>')">Credito</button>
-    <button onclick="escolherformaPag(3,'<%= jsonString %>')">Debito</button>
-    <button onclick="esconderEscolha(1)">Cancelar</button>
+      <% if (taxas.taxas.avista.taxa == true) { %>
+        <button onclick="escolherformaPag(1,'<%= jsonString %>')">À Vista/PIX</button>
+      <% } %>
+      <% if (taxas.taxas.credito.taxa == 'true') { %>
+        <button onclick="escolherformaPag(2,'<%= jsonString %>')">Credito</button>
+      <% } %>
+      <% if (taxas.taxas.debito.taxa == 'true') { %>
+        <button onclick="escolherformaPag(3,'<%= jsonString %>')">Debito</button>
+      <% } %>
+      <br>
+    
+  </div>
+  <div class="div-btn-cancelar"> 
+     <button class="btn-cancelar" onclick="esconderEscolha(1)">Cancelar</button>
+     <button id="btn_pagamento_valor"></button>
+
+</div>
+
   </div> 
 
   <div class="pag_avista" id="pag_avista">
-    Metodo de pagamento: Avista
-    <br>
-
+    <p class="metd_name">Metodo de pagamento: À Vista/PIX</p>
     
+
+    <div class="infos_pagamento">
     <p id="total_semDesconto_v"></p>
     <p id="desconto_v"></p>
     <p id="total_final_v"></p>
-
+  </div>
     <input type="hidden" id="value_semDesconto_v">
     <input type="hidden" id="value_desconto_v">
     <input type="hidden" id="value_total_v">
 
-
-    <button onclick="esconderEscolha(2)">voltar</button>
-    <button onclick="enviar('<%= empresa %>', 1)">enviar</button>
+    <div class="div-btn-cancelar">
+    <button class="btn-voltar" onclick="esconderEscolha(2)">voltar</button>
+    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 1)">enviar para o whatsApp</button>
+  </div>
   </div>
 
-  <div class="pag_credito">
 
-
-
-
-    <button>voltar</button>
-    <button>enviar</button>
-  </div>
 <!--   --------------------------------------------------------------------------------------->
   <div class="pag_debito" id="pag_debito">
-    Metodo de pagamento: Debito
-    <br>
-
+    <p class="metd_name"> Metodo de pagamento: Debito </p>
+    
+  <div class="infos_pagamento">
     <p id="total_semDesconto_d"></p>
     <p id="desconto_d"></p>
     <p id="total_final_d"></p>
-
+  </div>
+  
     <input type="hidden" id="value_semDesconto_d">
     <input type="hidden" id="value_desconto_d">
     <input type="hidden" id="value_total_d">
 
+  
+    <div class="div-btn-cancelar">
+    <button class="btn-voltar" onclick="esconderEscolha(3)">voltar</button>
+    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 3)">enviar para o whatsApp</button>
+  </div>
+  </div>
 
-    <button onclick="esconderEscolha(3)">voltar</button>
-    <button onclick="enviar('<%= empresa %>', 3)">enviar</button>
+  <div class="pag_credito" id="pag_credito">
+    <p class="metd_name">Metodo de pagamento: Credito</p>
+
+  <p class="texto_credito"> Como deseja parcelar a compra?</p>
+    
+    <div id="taxas_credito"><br></div>
+    <br><br><br><br>
+
+    <div class="div-btn-cancelar">
+    <button class="btn-voltar" onclick="esconderEscolha(4)" id="btn_credito_voltar">voltar</button>
+    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 2)">enviar para o whatsApp</button>
+  </div>
   </div>
 
   <script>
@@ -153,16 +180,21 @@ x_icon.addEventListener("click", esconder_carrinho)
 miniaturaCarrinho.addEventListener("click", esconder_carrinho)
 
 function escolherPagamento() {
+  console.log('escolher pagamento');
+
+  let total = document.getElementById('btn-total').innerText
+  total = total.replace(/[^\d,]/g, '')
+  
+  let btn_pagamento_valor = document.getElementById('btn_pagamento_valor')
+  
+  btn_pagamento_valor.innerHTML = `<strong>Total:</strong> R$${total}`
+
   console.log('function disparada');
   let div_carrinho = document.getElementById('carrinho');
   let div_pagamento = document.getElementById('div_pagamento');
 
   let larguraOriginal = div_carrinho.offsetWidth;
-  let alturaOriginal = div_carrinho.offsetHeight;
 
-  div_pagamento.style.backgroundColor = 'blue'
-
-  div_pagamento.style.height = `${alturaOriginal}px `
   div_pagamento.style.width = `${larguraOriginal}px ` 
   div_pagamento.style.display = 'block'
 
@@ -202,6 +234,15 @@ function escolherformaPag(forma, taxa) {
   }
   if (forma == 2) {
     
+    if (taxasObj.credito.taxa == 'true') {
+
+      confirmarCredito(taxasObj.credito, total) 
+
+    } else {
+
+      confirmarCredito(taxasObj.credito, total) 
+    }
+
   }
   if (forma == 3) {
     if (taxasObj.debito.taxa == 'true') {
@@ -240,29 +281,28 @@ function confirmarAvista(x, semDesconto, total, taxa) {
     let value_total_v = document.getElementById("value_total_v")
     
     let larguraOriginal = divPagamento.offsetWidth;
-    let alturaOriginal = divPagamento.offsetHeight;
 
-    pag_avista.style.height = `${alturaOriginal}px `
     pag_avista.style.width = `${larguraOriginal}px `
     pag_avista.style.display = 'block'
+    divPagamento.style.display = 'none'
 
-    if (total == undefined && taxa == undefined) {
+    if (total == undefined && taxa == undefined || taxa == 0 ) {
 
-      desconto_v.innerText = `Valor Final da compra: R$${semDesconto}`
+      desconto_v.innerHTML = `<strong> Valor Final:</strong> R$${semDesconto}`
       value_total_v.value = semDesconto
 
     } else {
       
-      total_semDesconto.innerText = `total: R$${semDesconto}`
-      desconto_v.innerText = `- R$${String(((taxa * parseFloat(semDesconto))/100).toFixed(2)).replace('.',',')} do desconto avista (${String(taxa).replace('.', ',')}%)  `
-      total_final_v.innerText = `valor final: R$${total.replace('.', ',')}`
+      total_semDesconto.innerHTML = `<strong> Total: </strong>R$${semDesconto}`
+      desconto_v.innerHTML = `<strong> - </strong> R$${String(((taxa * parseFloat(semDesconto))/100).toFixed(2)).replace('.',',')} de desconto(${String(taxa).replace('.', ',')}%)  `
+      total_final_v.innerHTML = `<strong> Valor Final: </strong> R$${total.replace('.', ',')}`
 
       value_semDesconto_v.value = semDesconto
       semDesconto = parseFloat(semDesconto)
       value_desconto_v.value = (parseFloat((taxa * semDesconto)/100).toFixed(2)).replace('.', ',')
       value_total_v.value = total.replace('.', ',')
 
-      divPagamento.style.display = 'none'
+      
     }
 
   
@@ -275,22 +315,21 @@ function confirmarAvista(x, semDesconto, total, taxa) {
     let total_final_v = document.getElementById("total_final_d")
 
     let larguraOriginal = divPagamento.offsetWidth;
-    let alturaOriginal = divPagamento.offsetHeight;
 
-    pag_avista.style.height = `${alturaOriginal}px `
-    pag_avista.style.width = `${larguraOriginal}px `
+    pag_avista.style.width = `${larguraOriginal}px`
     pag_avista.style.display = 'block'
+    divPagamento.style.display = 'none'
 
-    if (total == undefined && taxa == undefined) {
+    if (total == undefined && taxa == undefined || taxa == 0) {
 
       desconto_v.innerText = `Valor Final da compra: R$${semDesconto}`
       value_total_d.value = semDesconto
 
     } else {
 
-      total_semDesconto.innerText = `total: R$${semDesconto}`
-      desconto_v.innerText = `+  R$${String(((taxa * parseFloat(semDesconto))/100).toFixed(2)).replace('.',',')} de juros no cartão de debito (${String(taxa).replace('.', ',')}%) `
-      total_final_v.innerText = `valor final: R$${total.replace('.', ',')} `
+      total_semDesconto.innerHTML = `<strong> Total: </strong> R$${semDesconto}`
+      desconto_v.innerHTML = `<strong> + </strong> R$${String(((taxa * parseFloat(semDesconto))/100).toFixed(2)).replace('.',',')} de juros no cartão de debito (${String(taxa).replace('.', ',')}%) `
+      total_final_v.innerHTML = `<strong> Valor Final: </strong> R$${total.replace('.', ',')} `
 
       
       value_semDesconto_d.value = semDesconto
@@ -299,13 +338,94 @@ function confirmarAvista(x, semDesconto, total, taxa) {
       value_total_d.value = total.replace('.', ',')
 
 
-      divPagamento.style.display = 'none'
+      
     }
   }
   
 
 }
 
+function confirmarCredito(taxas, total) {
+    
+
+  console.log(taxas, total);
+    let divPagamento = document.getElementById("div_pagamento")
+    let pag_credito = document.getElementById("pag_credito")
+    let total_semDesconto = document.getElementById("total_semDesconto_d")
+    let desconto_v = document.getElementById("desconto_d")
+    let total_final_v = document.getElementById("total_final_d")
+    let taxas_credito = document.getElementById("taxas_credito")
+
+    //limpar taxas
+    taxas_credito.innerHTML = '';
+
+    let larguraOriginal = divPagamento.offsetWidth;
+
+    pag_credito.style.width = `${larguraOriginal}px`
+    pag_credito.style.display = 'block'
+    divPagamento.style.display = 'none'
+
+    let botoesExistents = document.getElementById("btn_credito_voltar")
+
+    // Obtenha o objeto de valores do JSON
+    let valores = taxas.valores;
+
+    let primeiroRadioCriado = false
+    // Itere sobre as chaves do objeto
+    for (let chave in valores) {
+    // Extraia os valores do array correspondente à chave
+      let [isChecked, valorTaxa] = valores[chave];
+
+    // Verifique se o primeiro elemento do array é verdadeiro
+      if (isChecked) {
+        let numeroParcela = parseInt(chave.replace('x', ''))
+        let juros = ((total * valorTaxa)/100).toFixed(2)
+        
+        let valorFinal = (total + parseFloat(juros)).toFixed(2)
+        let parcela = (valorFinal/numeroParcela).toFixed(2)
+        let temJuros = '';
+
+       
+
+        console.log(`${numeroParcela} parcelas de ${parcela}, com ${juros} de jurus num total de R$${valorFinal} `);
+        // Crie um elemento de input do tipo radio
+        let radioBtn = document.createElement("input");
+        radioBtn.type = "radio";
+        radioBtn.name = "opcao_pagamento_credito"; // Use o mesmo nome para agrupar os botões
+
+        // Crie um elemento de label
+        let label = document.createElement("label");
+
+              // Verifique se o primeiro elemento do array é verdadeiro
+        if (isChecked && !primeiroRadioCriado) {
+            primeiroRadioCriado = true; // Marque que o primeiro radio foi criado
+            radioBtn.checked = isChecked;
+        } else {
+            isChecked = false; // Desmarque os demais radios
+        }
+
+
+        // Adicione o valor da taxa à label
+        if (valorTaxa > 0) {
+
+          label.textContent = `${chave} de R$${String(parcela).replace('.',',')} com juros (${valorTaxa}%)   Total: R$${String(valorFinal).replace('.',',')} `;
+
+        } else {
+           label.textContent = `${chave} de R$${String(parcela).replace('.',',')} sem juros    Total: R$${String(valorFinal).replace('.',',')} `;
+        }
+
+        // Adicione o botão de rádio e a label ao elemento pai
+        taxas_credito.appendChild(radioBtn);
+        taxas_credito.appendChild(label);
+
+        // Adicione quebras de linha para melhorar a legibilidade
+        taxas_credito.appendChild(document.createElement("br"));
+    }
+}
+
+}
+
+ 
 
 function esconderEscolha(x) {
   if (x == 1) {
@@ -328,6 +448,13 @@ function esconderEscolha(x) {
     div_pagamento.style.display = 'block'
     pag_avista.style.display = 'none'
     
+  }  else if (x == 4) {
+    let div_pagamento = document.getElementById('div_pagamento');
+    let pag_credito = document.getElementById('pag_credito');
+
+    div_pagamento.style.display = 'block'
+    pag_credito.style.display = 'none'
+    
   } 
   
 }
@@ -346,7 +473,7 @@ function enviar(empresa, x) {
         let tamanho = stringOriginal[i].tamanho ? "Tamanho: " + stringOriginal[i].tamanho : "";
         let quantidade = stringOriginal[i].quantidade ? "Qtd " + stringOriginal[i].quantidade + ", " : "";
 
-        let preco = stringOriginal[i].preco ? "preço: R$" + stringOriginal[i].preco.replace('.', ',') : "";
+        let preco = stringOriginal[i].preco ? "preço unid: R$" + stringOriginal[i].preco.replace('.', ',') : "";
 
         novaString += produto + cor + tamanho + quantidade + preco;
 
@@ -385,16 +512,34 @@ function enviar(empresa, x) {
       let value_total_v = document.getElementById("value_total_v").value
 
       if (value_desconto_v == '') {
-        var rodape = `%0A%0APagamento:%20*Avista*%0A%0A*Valor%20Total%20Final%20do%20carrinho:*%20R$${value_total_v}`;
+        var rodape = `%0A%0A*Pagamento:%20À%20vista/PIX*%0A%0A*Valor%20Final%20do%20carrinho:*%20R$${value_total_v}`;
 
       } else {
-        var rodape = `%0A%0APagamento:%20*Avista*%0ATotal:%20R$${value_semDesconto_v}%0ADesconto:%20R$${value_desconto_v}%0A%0A*Valor%20Total%20Final%20do%20carrinho:*%20R$${value_total_v}`;
+        var rodape = `%0A%0A*Pagamento:%20À%20vista/PIX*%0A*Total:*%20R$${value_semDesconto_v}%0A*Desconto:*%20R$${value_desconto_v}%0A%0A*Valor%20Final%20do%20carrinho:*%20R$${value_total_v}`;
 
       }
 
 //---------------------------------------------------------------------------------------------------------------------->
     } else if (x == 2) {
-      var rodape = `%0A%0A*Valor%20Total%20do%20carrinho:*%20R$${ValorTotal}`;
+      let escolhaParcela = '';
+  
+    let inputsRadio = document.querySelectorAll('input[type="radio"][name="opcao_pagamento_credito"]');
+    
+    for (let i = 0; i < inputsRadio.length; i++) {
+        if (inputsRadio[i].checked) {
+            // O input está marcado, você pode obter o valor da label correspondente
+            let labelAssociada = inputsRadio[i].nextElementSibling; // Assume que a label está imediatamente após o input
+            let valorLabel = labelAssociada.textContent;
+            
+           escolhaParcela = valorLabel
+        }
+    }
+
+    let regex = /Total: ([^ ]+)/;
+    let match = escolhaParcela.match(regex);
+
+
+      var rodape = `%0A%0A*Pagamento:%20Cartão%20de%20Credito*%0A*Numero%20de%20parcelas%20escolhido*:%20${escolhaParcela}%0A%0A*Valor%20Final%20do%20carrinho:*%20${match[1]}`;
 
 //---------------------------------------------------------------------------------------------------------------------->
     } else if (x == 3) {
@@ -406,10 +551,10 @@ function enviar(empresa, x) {
       console.log(value_desconto_d,value_semDesconto_d, value_total_d);
 
       if (value_desconto_d == '') {
-        var rodape = ` %0A*Valor%20Total%20Final%20do%20carrinho:*%20R$${value_total_d}`;
+        var rodape = ` %0A*Valor%20Final%20do%20carrinho:*%20R$${value_total_d}`;
 
       } else {
-        var rodape = ` %0A%0APagamento:%20*Cartão%20de%20Debito*%0ATotal:%20R$${value_semDesconto_d}%0AJuros:%20R$${value_desconto_d}%0A%0A*Valor%20Total%20Final%20do%20carrinho:*%20R$${value_total_d}`;
+        var rodape = ` %0A%0A*Pagamento:%20Cartão%20de%20Debito*%0A*Total:*%20R$${value_semDesconto_d}%0A*Juros:*%20R$${value_desconto_d}%0A%0A*Valor%20Final%20do%20carrinho:*%20R$${value_total_d}`;
 
       }
 
@@ -418,9 +563,9 @@ function enviar(empresa, x) {
     }
     var mensagemCompleta = "https://wa.me/55" + numero + "?text=" + cabecalho + novaString + rodape;
 //-----------------------------------------------------------------------------------------------
-   if (stringOriginal.length > 0) {
+  if (stringOriginal.length > 0) {
     window.location.href = mensagemCompleta;
-  }
+  } 
 }
 
   </script>

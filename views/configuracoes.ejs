@@ -56,7 +56,7 @@
         </div>
         <div id="avista_container" >
             <div id="opc_avista_container"> 
-                    <p class="label-p">aplicar desconto para compras a vista/pix?</p>
+                    <p class="label-p">Sua loja aceita compras à vista/pix?</p>
 
                     <% if (usuario.taxas.taxas.avista.taxa) { %>
                         <label for="opc2">
@@ -85,7 +85,7 @@
             </div>
             <div id="taxa_avista">
                 <br>
-                <label for="avistaTaxa">digite o porcentagem do desconto: de 0,1 a 100</label>
+                <label for="avistaTaxa">se desejar aplicar deconto nas compras à vista, digite a porcentagem do desconto: de 0,1 a 100 ou 0 , caso não queira dar desconto.</label>
                 <% if (usuario.taxas.taxas.avista.taxa) { %>
                     <input type="number" name="avistaTaxa" id="avistaTaxa" step="0.1" placeholder="ex: 9,5%" value="<%= usuario.taxas.taxas.avista.valor %>">
 
@@ -125,8 +125,8 @@
             </div> 
 
             <div id="taxa_credito">
-                <p>selecione e preencha as taxas de credito que sua loja trabalha: </p>
-
+                <p>selecione e preencha de (0 à 100) as taxas de credito que sua loja trabalha: </p>
+                
                 <% if (usuario.taxas.taxas.credito.valores['1x'][0]) { %>
                     <input class="opc" type="checkbox" name="1x_crd" checked>1x
                     <input type="number" name="cTaxa1" class="inp_crd" step="0.1" placeholder="ex: 9,5" value="<%= usuario.taxas.taxas.credito.valores['1x'][1] %>">
@@ -257,7 +257,7 @@
                     <input type="number" name="cTaxa12" class="inp_crd" step="0.1" placeholder="ex: 4,2">
 
                 <% } %>
-
+ 
               
 
                 
@@ -266,7 +266,7 @@
 
         <div class="debito_container" id="debito_container">
             <div id="opc_debito_container"> 
-                <p class="label-p">sua loja cobra taxas em compras com cartão de debito?</p>
+                <p class="label-p">sua loja aceita compras com cartão de debito?</p>
                 <% if (usuario.taxas.taxas.debito.taxa == 'true') { %>
                     <label for="opc2">
                         <input class="opc" type="radio" name="opc_deb" id="opc2_deb" value="true" checked > 
@@ -294,7 +294,7 @@
             </div>
 
             <div id="taxa_debito">
-                <p>Digite a porcentagem de desconto: de 0,1 a 100</p>
+                <p>Digite a porcentagem de juros na compra no debito: de 0 a 100</p>
                 <% if (usuario.taxas.taxas.debito.taxa) { %>
                     <input type="number" id="dTaxa" class="" step="0.1" placeholder="ex: 1,25" value="<%= usuario.taxas.taxas.debito.valor %>">
 

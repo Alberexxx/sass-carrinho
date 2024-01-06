@@ -120,7 +120,7 @@
                                             <p> <% if (produto.preco == '') { %>
                                                 <%= produto.preco %>
                                             <% } else { %>
-                                                <% if (taxas.taxas.avista.taxa == true) { %>
+                                                <% if (taxas.taxas.avista.taxa == true && taxas.taxas.avista.valor > 0) { %>
                                                   </p> 
                                                     <p class="price_detalhes">
                                                      <s style="text-decoration: line-through;">  R$<%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %> </s>
@@ -129,7 +129,7 @@
                                                     </p>
                                                     <p>
                                                 <% } else {%>
-                                               <strong class="preco_estiloo">R$<%= produto.preco %></strong> 
+                                               <strong class="preco_estilo" style="font-size: 25px;">R$<%= produto.preco.replace('.', ',')  %></strong> 
                                                <% } %>
 
                                                <% if (taxas.taxas.credito.taxa === "true") { %>
@@ -156,7 +156,7 @@
 
                                                     <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * produto.preco) / 100) + parseFloat(produto.preco)) / maiorNum).toFixed(2)  %>
                                                    
-                                                    à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão 
+                                                    à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão de credito
                                                     <% if (taxaDaMaiorOpcao == 0) { %>
                                                       sem juros
                                                     <% } else { %> 
@@ -282,7 +282,7 @@
                             <% } else {%>
                             <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
 
-                                <strong class="preco_estilo">R$<%= relacionado.preco %></strong> 
+                                <strong class="preco_estilo">R$<%= relacionado.preco.replace('.', ',')  %></strong> 
                             </a>
                            <% } %>
 
@@ -310,7 +310,7 @@
 
                                 <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * relacionado.preco) / 100) + parseFloat(relacionado.preco)) / maiorNum).toFixed(2)  %>
                                
-                                à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão 
+                                à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão de credito
                                 <% if (taxaDaMaiorOpcao == 0) { %>
                                     sem juros
                                   <% } else { %> 

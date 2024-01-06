@@ -138,8 +138,15 @@
                                    
                             <div class="row">
                                 <div class="icon_carrinho">
-                                    <div class="heart-icon"> <i class='bx bx-cart' id="<%= produto.id_produto %> " onclick="adicionar('<%= produto.id_produto %>', '<%= produto.preco %>', '<%= produto.nome_produto %>', '<%= empresa%>')" id="<%= produto.id_produto %>"  ></i>
-                            </div> 
+                                    <% if (produto.status == 'indisponivel') { %>
+                                        <div class="heart-icon"> </div>
+
+                                    <% } else {%>
+                                        <div class="heart-icon"> <i class='bx bx-cart' id="<%= produto.id_produto %> " onclick="adicionar('<%= produto.id_produto %>', '<%= produto.preco %>', '<%= produto.nome_produto %>', '<%= empresa%>')" id="<%= produto.id_produto %>"  ></i>
+                                        </div>
+                                    <% } %>
+
+                             
                                 </div>
                                 
                                 <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
@@ -201,7 +208,11 @@
                                                    
                                                 <% } %>
                                                  <% if (opc_credito.length === 0 ) { %>
-                                                    à vista no pix ou cartão de debito
+                                                    <% if (taxas.taxas.avista.taxa === true) { %>
+                                                        à vista/PIX
+                                                    <% } %>
+
+                                                     ou cartão de debito
                                                 <% } else { %>
                                                     <% var maioresOpcoes = opc_credito.sort((a, b) => parseFloat(b) - parseFloat(a)); %>
                                                     <% var maiorOpcao = maioresOpcoes[0]; %>
@@ -215,8 +226,10 @@
                                                     <% var taxaDaMaiorOpcao = taxas.taxas.credito.valores[maiorOpcao][1]; %>
 
                                                     <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * produto.preco) / 100) + parseFloat(produto.preco)) / maiorNum).toFixed(2)  %>
-
-                                                  à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão 
+                                                    <% if (taxas.taxas.avista.taxa === true) { %>
+                                                        à vista/PIX ou
+                                                    <% } %>
+                                                  em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão de credito 
                                               
                                                     <% if (taxaDaMaiorOpcao == 0) { %>
                                                         sem juros
@@ -229,9 +242,15 @@
 
                                             <% } else {%>
                                                 <% if (taxas.taxas.debito.taxa == 'true') { %>
-                                                   à vista no PIX ou cartão de debito
+                                                    <% if (taxas.taxas.avista.taxa === true) { %>
+                                                        à vista/PIX
+                                                    <% } %>
+                                                  ou cartão de debito
                                                 <% } else { %>
-                                                        à vista, no PIX 
+                                                    <% if (taxas.taxas.avista.taxa === true) { %>
+                                                        à vista/PIX
+                                                    <% } %>
+                                                       
                                                     <% } %>
                                                 
                                                 
