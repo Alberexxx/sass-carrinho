@@ -246,19 +246,18 @@
         }
 
 function formatarInput(input) {
-    let valor = input.value;
-    // Remove todos os caracteres que não são dígitos, ponto ou vírgula
-    valor = valor.replace(/[^\d.,]/g, '');
+    console.log(input.value);
+    let campoMonetario = input.value
+    let formataValor = new Intl.NumberFormat('pt-BR', {style: 'currency', currency:'BRL'});
+ 
+    let valorBruto = campoMonetario.replace(/\D/g, '');
+    let valorFinal = (formataValor.format(parseFloat(valorBruto / 100)));
+    input.value = valorFinal;
 
-    // Substitui a vírgula por ponto
-    valor = valor.replace('.', ',');
-
-    // Adiciona 'R$' no início do valor
-    valor = 'R$' + valor;
-
-    // Atualiza o valor do input
-    input.value = valor;
 }
+let v_valor = document.getElementById("valor")
+v_valor.value = "R$ 0,00"
+
 </script>
  
 </html>

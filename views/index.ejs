@@ -134,7 +134,27 @@
                         <div class="filtered-products"></div>
                         <div class="products">
 
+                            <% function formatarInput(input) { %>
+    
+                                <%  let campoMonetario = input
+                                    let formataValor = new Intl.NumberFormat('pt-BR', {style: 'currency', currency:'BRL'});
+                                 
+                                    let valorBruto = campoMonetario.replace(/\D/g, '');
+                                    let valorFinal = (formataValor.format(parseFloat(valorBruto / 100)));
+                                    return valorFinal; %>
+                                
+                              <% } %>
+
+                            <%  function desformatarInput(input) { %>
+
+                             <% input = formatarInput(input)   
+                                input = input.replace(/\./g, '').replace(",", ".").replace('R$', '').trim()
+                                input = parseFloat(input) 
+                                return input; %>
+                         <% } %>
+                         
                         <% produtos.forEach(produto => { %>   
+
                                    
                             <div class="row">
                                 <div class="icon_carrinho">
@@ -189,13 +209,14 @@
                                             <% } else { %>
                                                 <% if (taxas.taxas.avista.taxa == true) { %>
                                                     <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
+                                                        <% let preco_c_desconto_avista =  ( desformatarInput(produto.preco) - (taxas.taxas.avista.valor * desformatarInput(produto.preco) /100)) %>
 
-                                                        <strong class="preco_estilo">R$<%= (produto.preco - (taxas.taxas.avista.valor * produto.preco /100)).toFixed(2).replace('.', ',')  %></strong>  
+                                                        <strong class="preco_estilo"><%= formatarInput(String(preco_c_desconto_avista.toFixed(2)))  %></strong>  
                                                     </a>
                                                 <% } else {%>
                                                     <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
 
-                                                        <strong class="preco_estilo">R$<%= produto.preco.replace('.', ',') %></strong> 
+                                                        <strong class="preco_estilo"><%= formatarInput(produto.preco) %></strong> 
                                                      </a>
                                                <% } %>
 
@@ -245,7 +266,16 @@
                                                     <% if (taxas.taxas.avista.taxa === true) { %>
                                                         à vista/PIX
                                                     <% } %>
-                                                  ou cartão de debito
+                                                    <% if (taxas.taxas.avista.taxa === true && taxas.taxas.debito.taxa == 'true') { %>
+                                                        ou
+                                                    <% } %>
+                                                    <% if (taxas.taxas.avista.taxa == false && taxas.taxas.debito.taxa == 'true') { %>
+                                                        no
+                                                    <% } %>
+                                                    <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                                        cartão de debito
+                                                    <% } %>
+
                                                 <% } else { %>
                                                     <% if (taxas.taxas.avista.taxa === true) { %>
                                                         à vista/PIX
@@ -302,7 +332,7 @@
                          <a href="/<%= empresa %>"> <strong><<</strong> anterior </a>
  
                          <% } %>
-                
+                 
                     <% if ( next || pagina > 1) { %>
                         <% total = count/ limite %>
                       <% total = Math.ceil(total) %>

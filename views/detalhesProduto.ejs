@@ -106,6 +106,26 @@
           </div>
           <div class="right-side">
             <div class="content">
+
+              <% function formatarInput(input) { %>
+    
+                <%  let campoMonetario = input
+                    let formataValor = new Intl.NumberFormat('pt-BR', {style: 'currency', currency:'BRL'});
+                 
+                    let valorBruto = campoMonetario.replace(/\D/g, '');
+                    let valorFinal = (formataValor.format(parseFloat(valorBruto / 100)));
+                    return valorFinal; %>
+                
+              <% } %>
+              <%  function desformatarInput(input) { %>
+
+                <% input = formatarInput(input)   
+                   input = input.replace(/\./g, '').replace(",", ".").replace('R$', '').trim()
+                   input = parseFloat(input) 
+                   return input; %>
+            <% } %>
+
+
               <h6><%= produto.marca %></h6>
               <h1><%= produto.nome_produto %></h1>
               <% if (produto.status == 'indisponivel') { %>
@@ -117,19 +137,20 @@
                                            
                                          
 
-                                            <p> <% if (produto.preco == '') { %>
-                                                <%= produto.preco %>
+                                        <p> <% if (produto.preco == '') { %>
+                                                
                                             <% } else { %>
-                                                <% if (taxas.taxas.avista.taxa == true && taxas.taxas.avista.valor > 0) { %>
-                                                  </p> 
-                                                    <p class="price_detalhes">
-                                                     <s style="text-decoration: line-through;">  R$<%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %> </s>
-                                                        
-                                                      <strong class="preco_estilo" style="font-size: 25px;">R$<%= (produto.preco - (taxas.taxas.avista.valor * produto.preco /100)).toFixed(2).replace('.', ',')  %></strong>  
-                                                    </p>
-                                                    <p>
+                                                  <% if (taxas.taxas.avista.taxa == true && taxas.taxas.avista.valor > 0) { %>
+                                                      </p> 
+                                                        <p class="price_detalhes">
+                                                        <s style="text-decoration: line-through;">  <%= formatarInput(produto.preco) %> </s>
+                                                        <% let preco_c_desconto_avista =  ( desformatarInput(produto.preco) - (taxas.taxas.avista.valor * desformatarInput(produto.preco) /100)) %>
+
+                                                          <strong class="preco_estilo" style="font-size: 25px;"><%=formatarInput(String(preco_c_desconto_avista.toFixed(2))) %></strong>  
+                                                        </p>
+                                                        <p>
                                                 <% } else {%>
-                                               <strong class="preco_estilo" style="font-size: 25px;">R$<%= produto.preco.replace('.', ',')  %></strong> 
+                                                       <strong class="preco_estilo" style="font-size: 25px;"><%= formatarInput(produto.preco)  %></strong> 
                                                <% } %>
 
                                                <% if (taxas.taxas.credito.taxa === "true") { %>
@@ -141,7 +162,10 @@
                                                    
                                                 <% } %>
                                                  <% if (opc_credito.length === 0 ) { %>
-                                                    à vista no pix ou cartão de debito
+                                                  <% if (taxas.taxas.avista.taxa === true) { %>
+                                                    à vista/PIX
+                                                <% } %>
+                                                    ou cartão de debito
                                                 <% } else { %>
                                                     <% var maioresOpcoes = opc_credito.sort((a, b) => parseFloat(b) - parseFloat(a)); %>
                                                     <% var maiorOpcao = maioresOpcoes[0]; %>
@@ -167,7 +191,14 @@
 
 
                                             <% } else {%>
-                                                à vista no pix ou cartão de debito
+                                              <% if (taxas.taxas.avista.taxa == true) { %>
+                                                à vista/PIX 
+                                              <% } %>
+                                               
+                                                <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                                 ou cartão de debito1
+                                                <% } %>
+                                                
                                                 
                                             <% } %>
 
@@ -272,17 +303,22 @@
                       </a>
 
                         <p> <% if (relacionado.preco == '') { %>
-                            <%= relacionado.preco %>
+                            
                         <% } else { %>
                             <% if (taxas.taxas.avista.taxa == true) { %>
                               <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
 
-                                <strong class="preco_estilo">R$<%= (relacionado.preco - (taxas.taxas.avista.valor * relacionado.preco /100)).toFixed(2).replace('.', ',')  %></strong>  
+                                <% let preco_c_desconto_avista_relacionado =  ( desformatarInput(relacionado.preco) - (taxas.taxas.avista.valor * desformatarInput(relacionado.preco) /100)) %>
+
+                                <strong class="preco_estilo" ><%=formatarInput(String(preco_c_desconto_avista_relacionado.toFixed(2))) %></strong>  
+
                               </a>
                             <% } else {%>
                             <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
+                              <% let preco_c_desconto_avista_relacionado =  ( desformatarInput(relacionado.preco) - (taxas.taxas.avista.valor * desformatarInput(relacionado.preco) /100)) %>
 
-                                <strong class="preco_estilo">R$<%= relacionado.preco.replace('.', ',')  %></strong> 
+                                <strong class="preco_estilo" ><%=formatarInput(String(preco_c_desconto_avista_relacionado.toFixed(2))) %></strong>  
+                                
                             </a>
                            <% } %>
 
@@ -295,7 +331,7 @@
                                
                             <% } %>
                              <% if (opc_credito.length === 0 ) { %>
-                                à vista no pix ou cartão de debito
+                                à vista no pix ou cartão de debito2
                             <% } else { %>
                                 <% var maioresOpcoes = opc_credito.sort((a, b) => parseFloat(b) - parseFloat(a)); %>
                                 <% var maiorOpcao = maioresOpcoes[0]; %>
@@ -321,7 +357,14 @@
 
 
                         <% } else {%>
-                            à vista no pix ou cartão de debito
+                          <% if (taxas.taxas.avista.taxa == true) { %>
+                            à vista/PIX 
+                          <% } %>
+                             
+                            <% if (taxas.taxas.debito.taxa == 'true') { %>
+                              ou cartão de debito
+                            <% } %>
+                           
                             
                         <% } %>
 
@@ -368,7 +411,9 @@
      
   </footer>
     <script>
-     
+  
+
+
       var tema = '<%= tema %>'
       var body = document.querySelector('body');
       var btn = document.getElementById('button')

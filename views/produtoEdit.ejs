@@ -180,10 +180,8 @@
                                     <div class="input-container">
                                         <label for="valor">Valor</label>
                                         <input type="text"  id="valor" name="preco" step="0.01"
-                                        <% 
-                                            valorReplace = produto.preco.replace('.', ',')
-                                        %>
-                                            placeholder="Digite o Valor"  value="R$<%= valorReplace %>"  oninput="formatarInput(this)">
+                                       
+                                        placeholder="Digite o Valor"  value="R$<%= produto.preco %>"   oninput="formatarInput(this)">
                                     </div>
                                     <div class="input-container tamanho">
                                         <label for="Status">Status</label>
@@ -307,20 +305,19 @@ previewImage2.addEventListener('error',  fotoExemplo)
             limpar2.style.display = 'none'
 
         }
-        function formatarInput(input) {
-    let valor = input.value;
-    // Remove todos os caracteres que não são dígitos, ponto ou vírgula
-    valor = valor.replace(/[^\d.,]/g, '');
+function formatarInput(input) {
+    console.log(input.value);
+    let campoMonetario = input.value
+    let formataValor = new Intl.NumberFormat('pt-BR', {style: 'currency', currency:'BRL'});
+ 
+    let valorBruto = campoMonetario.replace(/\D/g, '');
+    let valorFinal = (formataValor.format(parseFloat(valorBruto / 100)));
+    input.value = valorFinal;
 
-    // Substitui a vírgula por ponto
-    valor = valor.replace('.', ',');
-
-    // Adiciona 'R$' no início do valor
-    valor = 'R$' + valor;
-
-    // Atualiza o valor do input
-    input.value = valor;
 }
+let v_input = document.getElementById("valor")
+formatarInput(v_input)
+
         
 </script>
 

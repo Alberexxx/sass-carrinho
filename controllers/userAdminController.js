@@ -85,9 +85,7 @@ router.post("/admin/usuario/email", (req,res) => {
 router.post("/admin/usuario/telefone", (req,res) => {
    var id = req.body.id;
    var telefone = req.body.telefone
-   if (id == 1){
-      res.redirect('/admin/usuarios')
-   } else {
+  
       usuario.update({
          contato_profissional: telefone
    },
@@ -97,7 +95,7 @@ router.post("/admin/usuario/telefone", (req,res) => {
       ).then( () => {
          res.redirect(`/admin/usuario/detalhes/${id}`)
       })
-   }
+   
    
 })
 router.post("/admin/usuario/senha", (req,res) => {
@@ -105,9 +103,7 @@ router.post("/admin/usuario/senha", (req,res) => {
    var senha = req.body.senha
    var salt = bcrypt.genSaltSync(3);
    var hash = bcrypt.hashSync(senha, salt);
-   if (id == 1){
-      res.redirect('/admin/usuarios')
-   } else {
+  
       usuario.update({
          senha: hash
    },
@@ -117,9 +113,8 @@ router.post("/admin/usuario/senha", (req,res) => {
       ).then( () => {
          res.redirect(`/admin/usuario/detalhes/${id}`)
       })
-   }
-   
-}) 
+   } 
+)
 
 router.post("/admin/usuario/excluir_usuario", (req,res) => {
    var id = req.body.id;
@@ -142,14 +137,12 @@ router.post("/admin/usuario/excluir_usuario", (req,res) => {
 router.get("/admin/usuario/detalhes/:id", (req,res) => {
    var id = req.params.id;
 
-   if (id == 1){
-      res.redirect('/admin/usuarios')
-   } else {
+   
       usuario.findByPk(id).then( (user) => {
          res.render('usuario', {usuario: user, empresa: user.nome})
       })
       
-}
+
 })
 
 

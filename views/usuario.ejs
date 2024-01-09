@@ -131,7 +131,7 @@
                     </form>
                    
             </td>
-           
+            
             <td>
                 <form action="/admin/usuario/senha" method="post" style="display: inline;"> 
                     <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
@@ -140,10 +140,13 @@
                 </form>
             </td>
             <td>
-                <form action="/admin/usuario/excluir_usuario" method="post" style="display: inline;"> 
+                <% if (usuario.id_usuario != 1) { %>
+                 <form action="/admin/usuario/excluir_usuario" method="post" style="display: inline;"> 
                     <input type="hidden" name="id"  value="<%= usuario.id_usuario %>">
-                    <button class="btn " style="background-color: rgb(255, 0, 0); color: black; "> EXCLUIR</button>
+                    <button class="btn" onclick="return confirmar(this.form)" style="background-color: rgb(255, 0, 0); color: black;  "> EXCLUIR</button>
                 </form>
+                <% } %>
+                
             </td>
     <br>
     
@@ -151,4 +154,18 @@
 </body>
 </table>
 <br><br><br>
+<script>
+    
+    function confirmar(form) {
+       
+        var confirmacao = confirm("Tem certeza que deseja excluir este Usuario????");
+        if (confirmacao) {
+            form.submit()
+        } else {
+            console.log("Exclusão cancelada pelo usuário.");
+            return false
+        }
+       
+    }
+</script>
 </html>

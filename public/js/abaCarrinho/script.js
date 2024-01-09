@@ -2,26 +2,48 @@
 var nomeEmpresa = document.getElementById("nomeEmpresa")
 var nomeEmpresaValue =  nomeEmpresa.value
 
+
+function formatarInput(input) {
+    
+    let campoMonetario = input
+    let formataValor = new Intl.NumberFormat('pt-BR', {style: 'currency', currency:'BRL'});
+    
+    let valorBruto = campoMonetario.replace(/\D/g, '');
+    let valorFinal = (formataValor.format(parseFloat(valorBruto / 100)));
+    return valorFinal; 
+} 
+function desformatarInput(input) {
+    input = formatarInput(input)   
+    input = input.replace(/\./g, '').replace(",", ".").replace('R$', '').trim()
+    input = parseFloat(input) 
+    return input;
+}
+//console.log(desformatarInput('7.421.07'));
+
+
 function updateTotal() {
-    const cartString = localStorage.getItem('carrinho:'+ nomeEmpresaValue);
+    const cartString = localStorage.getItem('carrinho:' + nomeEmpresaValue);
     const cart = cartString ? JSON.parse(cartString) : [];
 
-    var btn_valor = document.getElementById('btn-total')
-    var ValorTotal = 0
+    var btn_valor = document.getElementById('btn-total');
+    var ValorTotal = 0;
+
     for (var i = 0; i < cart.length; i++) {
-      cart[i].preco = cart[i].preco.replace(",", ".");
-
-      if (parseFloat(cart[i].preco) && !isNaN(parseFloat(cart[i].preco))) {
-        ValorTotal += parseFloat(cart[i].preco) * parseInt(cart[i].quantidade)
-    } else {
-
-    } 
-      //ValorTotal += parseFloat(cart[i].preco) * parseInt(cart[i].quantidade);
+        // Converte e formata o preço do produto
+        let precoFormatado = desformatarInput(cart[i].preco);
+        
+        if (!isNaN(precoFormatado)) {
+            console.log('precoFormatado:', precoFormatado, 'quantidade:', cart[i].quantidade);
+            ValorTotal += precoFormatado * parseInt(cart[i].quantidade, 10);
+        } 
     }
-    ValorTotal = ValorTotal.toFixed(2);
-    ValorTotal = ValorTotal.replace('.', ',');
-    btn_valor.innerHTML = '<strong>Total:</strong> R$' + ValorTotal;
+
+    // Formata o total antes de exibir no botão
+    btn_valor.innerHTML = '<strong>Total: </strong>' + formatarInput(ValorTotal.toFixed(2));
 }
+
+
+
 function limitarTamanhoString(str) {
     var larguraJanela = window.innerWidth /12;
     if (str.length > larguraJanela) {
@@ -54,7 +76,7 @@ function updateCart(nomeEmpresaValue) {
         itemName.classList.add('itemName')
 
         const itemPrice = document.createElement('span');
-        itemPrice.textContent = `R$${product.preco.replace('.', ',')} - Qtd:`;
+        itemPrice.textContent = `${formatarInput(product.preco)} - Qtd:`;
         itemPrice.classList.add('itemprice')
 
         const itemQuantity = document.createElement('span');
@@ -172,7 +194,7 @@ function updateCartShort(nomeEmpresaValue) {
         itemName.classList.add('itemName')
 
         const itemPrice = document.createElement('span');
-        itemPrice.textContent = `R$${product.preco.replace('.', ',')} - Qtd:`;
+        itemPrice.textContent = `${formatarInput(product.preco)} - Qtd:`;
         itemPrice.classList.add('itemprice')
 
         const itemQuantity = document.createElement('span');
@@ -284,6 +306,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const eightyPercentHeight = windowHeight * 0.8;
 
     let isExpanded = false;
+    let isExpand_inp = document.getElementById('isExpand_inp');
+    isExpand_inp.value = false;
+
     let originalHeight = cartItems.clientHeight;
 
     icon_seta.style.transform = "rotate(180deg)"
@@ -296,8 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submit_btn.style.backgroundColor = "gray"
     } 
     
-
-    expandBtn.addEventListener('click', function () {
+  window.f_expandBtn = function() {
         const icon_seta = document.getElementById("icon_seta")
         const cartString = localStorage.getItem('carrinho:'+ nomeEmpresaValue);
         let cart = cartString ? JSON.parse(cartString) : [];
@@ -311,12 +335,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 cartItems.style.height = `${eightyPercentHeight}px`;
                 icon_seta.style.transform = ""
                 isExpanded = true;
+                isExpand_inp.value = true;
                 expandBtn.childNodes[0].nodeValue = " diminuir "
                 updateCart(nomeEmpresaValue)
             } else {
                 cartItems.style.height = `${eightyPercentHeight}px`;
                 icon_seta.style.transform = ""
                 isExpanded = true;
+                isExpand_inp.value = true;
                 expandBtn.childNodes[0].nodeValue = " diminuir "
                 updateCart(nomeEmpresaValue)
             }
@@ -340,9 +366,11 @@ document.addEventListener('DOMContentLoaded', function () {
             } 
             updateCartShort(nomeEmpresaValue)
             isExpanded = false;
+            isExpand_inp.value = false;
         }
+    }
 
-    });
+    expandBtn.addEventListener('click', f_expandBtn);
 
     updateCartShort(nomeEmpresaValue)
     
@@ -351,6 +379,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const cartItems = document.querySelector(".cart-items")
         var submit_btn = document.getElementById("submit-btn")
         var popup = document.getElementById("popup");
+
+        
 
         let notificacao = document.getElementById('notificacao_carrinho') 
              
@@ -418,17 +448,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function LimparCarrinho(empresa) {
-    
-    const cartItems = document.querySelector(".cart-items")
-    cartItems.style.height = "0px"
-    localStorage.removeItem('carrinho:'+ empresa);
-    var submit_btn = document.getElementById("submit-btn")
-    const cartString = localStorage.getItem('carrinho:'+empresa);
+  let  isExpand_inp = document.getElementById('isExpand_inp')
+    console.log(isExpand_inp.value);
 
-    if ( cartString === '' || cartString === null )  {
-        submit_btn.style.backgroundColor = "gray"
-    } 
-   updateCartShort(empresa);
-   updateTotal()
+    if ( isExpand_inp.value == 'true') {
+        console.log('entrou no if');
+        f_expandBtn()
+         
+        const cartItems = document.querySelector(".cart-items")
+        cartItems.style.height = "0px"
+        localStorage.removeItem('carrinho:'+ empresa);
+        var submit_btn = document.getElementById("submit-btn")
+        const cartString = localStorage.getItem('carrinho:'+empresa);
+
+        if ( cartString === '' || cartString === null )  {
+            submit_btn.style.backgroundColor = "gray"
+        } 
+        updateCartShort(empresa);
+        updateTotal()
+    } else {
+        console.log('entrou no else');
+       
+        const cartItems = document.querySelector(".cart-items")
+        cartItems.style.height = "0px"
+        localStorage.removeItem('carrinho:'+ empresa);
+        var submit_btn = document.getElementById("submit-btn")
+        const cartString = localStorage.getItem('carrinho:'+empresa);
+
+        if ( cartString === '' || cartString === null )  {
+            submit_btn.style.backgroundColor = "gray"
+        } 
+        updateCartShort(empresa);
+        updateTotal()
+    }
+   
 }
+
+
 

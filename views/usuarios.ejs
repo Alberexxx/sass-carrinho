@@ -66,9 +66,7 @@
 
     <% usuarios.forEach(usuario => { %>
 
-        <% if (usuario.id_usuario == 1) { %>
-         
-        <% } else { %>
+      
             </form>
             <tr>
                 <td><%= usuario.id_usuario %></td>
@@ -80,7 +78,7 @@
                     <a href="/admin/usuario/detalhes/<%= usuario.id_usuario %> "> <button class="btn " style="background-color: rgb(242, 255, 0); color: black; ">  editar </button></a> 
                    
                 </td>
-        <% } %>
+      
 
    
     <% }) %>

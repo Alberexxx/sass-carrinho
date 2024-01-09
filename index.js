@@ -96,7 +96,7 @@ app.get("/aba",(req, res) => {
 
 app.get("/:empresa",(req, res) => {
     var empresa = req.params.empresa
-    var limite = 10;
+    var limite = 25;
     var pagina = 0;
     usuario.findOne({where: {nome: empresa}}).then((userResult) => {
 
@@ -190,7 +190,7 @@ app.get("/:empresa/page/:num",(req, res) => {
     var empresa = req.params.empresa
     var page = req.params.num;
     var offset = 0; 
-    var limite = 10;
+    var limite = 25;
 
     if (isNaN(page) || page == 1 || page < 0) {
         offset = 0;

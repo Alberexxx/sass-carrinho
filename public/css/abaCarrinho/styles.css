@@ -325,9 +325,9 @@
   border-radius: 50px;
   border: 1px solid rgb(189, 189, 189);
   background-color: rgb(253, 253, 253);
-  width: 150px;
+ 
   height: 35px;
-  padding: 3px;
+  padding: 3px 10px 3px 10px;
   margin-left: 10px;
   margin-right: 10px;
   font-size: 17px;
@@ -356,7 +356,7 @@
   border-radius: 20px 20px 0px 0px;
   width: 150px;
   word-wrap: break-word;
-  min-height: 224px;
+  min-height: 260px;
   z-index: 1;
   display: none;
   right: 0px;
@@ -444,7 +444,7 @@
   width: 170px;
   
   word-wrap: break-word;
-  min-height: 224px;
+  min-height: 260px;
   z-index: 1;
   display: none;
   right: 0px;

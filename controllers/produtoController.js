@@ -174,7 +174,8 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
    var status = req.body.status
    
    preco = preco.replace('R$','')
-   preco = preco.replace(',', '.');
+   preco = preco.replace(/,/g, ('.'))
+
    
     var foto = req.files['foto'] ? {
         originalname: req.files['foto'][0].originalname,
@@ -386,25 +387,10 @@ router.post('/admin/produto/edit/env', userAuth, upload.fields([{name: 'foto', m
     var marca = req.body.marca
     var status = req.body.status
 
-    console.log(preco);
+    preco = preco.replace('R$','').trim();
+    preco = preco.replace(/,/g, ('.'))
 
-    // Certifique-se de que 'preco' é uma string
-    if (typeof preco !== 'string') {
-        preco = preco.toString();
-    }
-    
-    preco = preco.replace('R$', '');
-    
-    // Verifique se 'preco' é uma string válida antes de realizar operações de manipulação de string
-    if (preco === '' || isNaN(parseFloat(preco))) {
-        preco = '0.00';
-    }
-    
-    preco = preco.replace(',', '.');
-    preco = parseFloat(preco).toFixed(2);
-    
     console.log(preco);
-  
     
     var foto = req.files['foto'] ? {
         originalname: req.files['foto'][0].originalname,
