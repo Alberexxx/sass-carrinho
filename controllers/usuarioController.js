@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs")
 const usuario = require("../models/usuario")
 const carrinho = require("../models/carrinho")
 const multer = require("multer")
+const sharp = require("sharp")
+
 const { Op } = require('sequelize');
 
 const storage = multer.memoryStorage();
@@ -191,37 +193,110 @@ router.post("/admin/configuracoes/edit", userAuth , upload.single('logo'), (req,
 
   var id_usuario = req.session.usuario.id
   var tema = req.body.tema; 
-  var numero = req.body.numero;
+  var numero = req.body.numero; 
   var instagram = req.body.instagram
   var endereco = req.body.endereco
   var horario = req.body.horario
   var contato = req.body.contato
+
   var { originalname, mimetype, buffer } = req.file ?? {};
 
-  usuario.update({
-    corTema: tema,
-    instagram: instagram ,
-    telefone: numero,
-    logo: buffer ,
-    foto: mimetype,
-    enderecoLoja: endereco,
-    contato: contato,
-    horario: horario,
-    taxas: taxas
-},
-    { where: {
-      id_usuario: id_usuario
+
+  const processarImagem = async (imagem, tamanhoMaximoKB) => {
+    if (!imagem) {
+        return null;
     }
 
-    }).then(() => {
-   
-    res.redirect('/admin/produtos')
-   
-   }).catch((err) => {
-    res.send(err)
-   })
+    const tamanhoMaximoBytes = tamanhoMaximoKB * 1024;
+    const resolucaoAlvo = 800;
+
+    try {
+        let buffer;
+        let qualidade = 100;
+
+        console.log('Iniciando processamento de imagem...');
+
+        buffer = await sharp(imagem.buffer)
+            .resize({ 
+                width: resolucaoAlvo,
+                height: resolucaoAlvo,
+                fit: 'contain',
+                background: { r: 0, g: 0, b: 0, alpha: 0 }
+             })
+            .toFormat('webp', { quality: qualidade })
+            .rotate()
+            .toBuffer(); 
+
+        console.log('Imagem processada com qualidade inicial:', qualidade);
+        
+        // Iterativamente reduzir a qualidade até atender ao requisito de tamanho
+        while (buffer.length > tamanhoMaximoBytes && qualidade > 0) {
+            qualidade -= 10;
+
+            console.log('Reduzindo qualidade para:', qualidade);
+
+            if (qualidade > 0) {
+                // Evitar processamento adicional se a qualidade atingir zero
+                buffer = await sharp(buffer)
+                    .toFormat('webp', { quality: qualidade })
+                    .rotate()
+                    .toBuffer();
+            }
+        }
+
+        console.log('Processamento de imagem concluído.');
+
+        return buffer.length <= tamanhoMaximoBytes ? buffer : null;
+    } catch (error) {
+        console.error('Erro ao processar a imagem:', error);
+        return null;
+    }
+};
+
+
+// Uso da função processarImagem
+const tamanhoMaximoKB = 100; // Ajuste conforme necessário
+const fotoProcessadaPromise = processarImagem(req.file, tamanhoMaximoKB);
+
+
+// Esperar pela resolução das Promises antes de continuar
+Promise.all([fotoProcessadaPromise])
+    .then(([fotoProcessada]) => {
+      let buffer;
+        if (fotoProcessada) {
+          buffer = fotoProcessada;
+        }
+
+        usuario.update({
+          corTema: tema,
+          instagram: instagram ,
+          telefone: numero,
+          logo: buffer ,
+          foto: mimetype,
+          enderecoLoja: endereco,
+          contato: contato,
+          horario: horario,
+          taxas: taxas
+      },
+          { where: {
+            id_usuario: id_usuario
+          }
+      
+          }).then(() => {
+         
+          res.redirect('/admin/produtos')
+         
+         }).catch((err) => {
+          res.send(err)
+         })
+    })
 
 })
+
+
+
+
+
 router.get('/logo/:empresa', (req, res) => {
     var empresa = req.params.empresa
     console.log(empresa);

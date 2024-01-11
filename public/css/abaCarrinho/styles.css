@@ -555,6 +555,13 @@
   padding: 10px 10px 10px 10px;
   border-radius: 15px 15px 0px 0px;
  }
+
+ .hr_credito {
+  border: none;
+  border-top: 1px solid rgb(235, 235, 235);
+  margin-top: 5px;
+  margin-bottom: 7px;
+ }
  
  @media (max-width: 514px) { 
 

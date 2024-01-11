@@ -85,7 +85,6 @@ function escolherPagamento(empresa) {
     
     btn_pagamento_valor.innerHTML = `<strong>Total:</strong> ${formatarInput(total)}`
 
-    console.log('function disparada');
     let div_carrinho = document.getElementById('carrinho');
     let div_pagamento = document.getElementById('div_pagamento');
 
@@ -110,18 +109,12 @@ function escolherformaPag(forma, taxa) {
   total = parseFloat(total)
 
   var taxasObj = JSON.parse(taxa);
-  console.log(taxasObj);
 
   if (forma == 1) {
     if (taxasObj.avista.taxa == true) {
       let taxaAvista = parseFloat(taxasObj.avista.valor)
       let valorTotal = total - ((taxaAvista * total)/100) 
       valorTotal = valorTotal.toFixed(2)
-
-      console.log(taxasObj.avista.valor);
-      console.log(total);
-
-      console.log(valorTotal);
 
       confirmarAvista(1, semDesconto, valorTotal ,taxaAvista) 
 
@@ -149,10 +142,7 @@ function escolherformaPag(forma, taxa) {
       let valorTotal = total + ((taxaDebito * total)/100) 
       valorTotal = valorTotal.toFixed(2)
 
-      console.log(taxasObj.avista.valor);
-      console.log(total);
-
-      console.log(valorTotal);
+     
 
       confirmarAvista(3, semDesconto, valorTotal ,taxaDebito) 
 
@@ -167,7 +157,6 @@ function escolherformaPag(forma, taxa) {
 function confirmarAvista(x, semDesconto, total, taxa) {
 
   if (x == 1) {
-    console.log('func confirmarAvista');
     let divPagamento = document.getElementById("div_pagamento")
     let pag_avista = document.getElementById("pag_avista")
     let total_semDesconto = document.getElementById("total_semDesconto_v")
@@ -188,7 +177,6 @@ function confirmarAvista(x, semDesconto, total, taxa) {
       semDesconto = semDesconto.replace(",", ".")
       desconto_v.innerHTML = `<strong> Valor Final:</strong> ${formatarInput(semDesconto)}`
       value_total_v.value = semDesconto
-      console.log('value_total: ',value_total_v.value);
 
     } else {
       
@@ -209,7 +197,6 @@ function confirmarAvista(x, semDesconto, total, taxa) {
 
   
   } else if(x == 3) {
-    console.log('func confirmarAvista');
     let divPagamento = document.getElementById("div_pagamento")
     let pag_avista = document.getElementById("pag_debito")
     let total_semDesconto = document.getElementById("total_semDesconto_d")
@@ -251,7 +238,6 @@ function confirmarAvista(x, semDesconto, total, taxa) {
 function confirmarCredito(taxas, total) {
     
 
-  console.log(taxas, total);
     let divPagamento = document.getElementById("div_pagamento")
     let pag_credito = document.getElementById("pag_credito")
     let total_semDesconto = document.getElementById("total_semDesconto_d")
@@ -291,7 +277,6 @@ function confirmarCredito(taxas, total) {
 
        
 
-        console.log(`${numeroParcela} parcelas de ${parcela}, com ${juros} de jurus num total de R$${valorFinal} `);
         // Crie um elemento de input do tipo radio
         let radioBtn = document.createElement("input");
         radioBtn.type = "radio";
@@ -299,6 +284,9 @@ function confirmarCredito(taxas, total) {
 
         // Crie um elemento de label
         let label = document.createElement("label");
+        let hr = document.createElement("hr");
+        
+        hr.classList.add("hr_credito");
 
               // Verifique se o primeiro elemento do array é verdadeiro
         if (isChecked && !primeiroRadioCriado) {
@@ -317,13 +305,15 @@ function confirmarCredito(taxas, total) {
         } else {
            label.textContent = `${chave} de R$${formatarInput(String(parcela))} sem juros    Total: R$${formatarInput(String(valorFinal))} `;
         }
-
-        // Adicione o botão de rádio e a label ao elemento pai
+        
+        
         taxas_credito.appendChild(radioBtn);
         taxas_credito.appendChild(label);
+       
 
         // Adicione quebras de linha para melhorar a legibilidade
         taxas_credito.appendChild(document.createElement("br"));
+        taxas_credito.appendChild(hr);
     }
 }
 
@@ -364,15 +354,15 @@ function esconderEscolha(x) {
 }
 
 // ---------------------------------------------------
-function enviar(empresa, x) {
+function enviar(empresa, x, numero) {
     var stringOriginal = JSON.parse(localStorage.getItem('carrinho:' + empresa)) || [];
-    var numero = '<%= numero %>';
+    
 
     var novaString = "";
     let ValorTotal = 0;
 
     for (var i = 0; i < stringOriginal.length; i++) {
-        let produto = stringOriginal[i].produto ? "Produto: " + stringOriginal[i].produto + ", " : "";
+        let produto = stringOriginal[i].produto ? stringOriginal[i].produto + ", " : "";
         let cor = stringOriginal[i].cor ? "Cor: " + stringOriginal[i].cor + ", " : "";
         let tamanho = stringOriginal[i].tamanho ? "Tamanho: " + stringOriginal[i].tamanho : "";
         let quantidade = stringOriginal[i].quantidade ? "Qtd " + stringOriginal[i].quantidade + ", " : "";
@@ -444,12 +434,10 @@ function enviar(empresa, x) {
 
 //---------------------------------------------------------------------------------------------------------------------->
     } else if (x == 3) {
-      console.log('entrou no else if com x==3');
       let value_semDesconto_d = document.getElementById("value_semDesconto_d").value
       let value_desconto_d = document.getElementById("value_desconto_d").value
       let value_total_d = document.getElementById("value_total_d").value
 
-      console.log(value_desconto_d,value_semDesconto_d, value_total_d);
 
       if (value_desconto_d == '') {
         var rodape = ` *Pagamento:%20Cartão%20de%20Debito*%0A%0A*Valor%20Final%20do%20carrinho:*%20${formatarInput(value_total_d)}`;
@@ -464,7 +452,8 @@ function enviar(empresa, x) {
     }
     var mensagemCompleta = "https://wa.me/55" + numero + "?text=" + cabecalho + novaString + rodape;
 //-----------------------------------------------------------------------------------------------
-  if (stringOriginal.length > 0) {
-    window.location.href = mensagemCompleta;
-  } 
+  
+   window.location.href = mensagemCompleta;
+
+ 
 }

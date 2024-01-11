@@ -115,15 +115,17 @@
 
                         <% if (pesquisa == '' || pesquisa == undefined) { %>
 
-    
-                                    <% if (next === true && pagina === 0) { %>
-                                        <h2> <span>Produtos</span> Em Destaque</h2>
-                                            
-                                    <% } else if (pagina >= 1 ){ %>
 
-                                        <h2> Todos os <span>Produtos</span> </h2>
+                            <% if (next === true && pagina === 0) { %>
+                                <h2> <span>Produtos</span> Em Destaque</h2>
+                                    
+                            <% } else if (pagina >= 1 ){ %>
 
-                                    <% } %>
+                                <h2> Todos os <span>Produtos</span> </h2>
+
+                            <% } else { %>
+                                <h2> Todos os <span>Produtos</span> </h2>
+                            <% } %>
 
                         <% } else { %>
                             <h2>Todas os <span>Produtos</span> encontrados para '<span><%= pesquisa %></span>'</h2>
@@ -219,8 +221,9 @@
                                                         <strong class="preco_estilo"><%= formatarInput(produto.preco) %></strong> 
                                                      </a>
                                                <% } %>
-
+ 
                                                <% if (taxas.taxas.credito.taxa === "true") { %>
+
                                                 <% let opc_credito = [] %>
                                                 <% for( let opc in taxas.taxas.credito.valores ) { %>
                                                     <% if (taxas.taxas.credito.valores[opc][0]) { %>
@@ -228,12 +231,30 @@
                                                     <% } %>
                                                    
                                                 <% } %>
-                                                 <% if (opc_credito.length === 0 ) { %>
-                                                    <% if (taxas.taxas.avista.taxa === true) { %>
-                                                        à vista/PIX
-                                                    <% } %>
 
-                                                     ou cartão de debito
+                                                 <% if (opc_credito.length === 0 ) { %>
+
+                                                    <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                                        <% if (taxas.taxas.avista.taxa === true) { %>
+                                                            à vista/PIX
+                                                        <% } %>
+                                                        <% if (taxas.taxas.avista.taxa === true && taxas.taxas.debito.taxa == 'true') { %>
+                                                            ou
+                                                        <% } %>
+                                                        <% if (taxas.taxas.avista.taxa == false && taxas.taxas.debito.taxa == 'true') { %>
+                                                            no
+                                                        <% } %>
+                                                        <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                                            cartão de debito
+                                                        <% } %>
+    
+                                                    <% } else { %>
+                                                        <% if (taxas.taxas.avista.taxa === true) { %>
+                                                            à vista/PIX
+                                                        <% } %>
+                                                           
+                                                        <% } %>
+                                                    
                                                 <% } else { %>
                                                     <% var maioresOpcoes = opc_credito.sort((a, b) => parseFloat(b) - parseFloat(a)); %>
                                                     <% var maiorOpcao = maioresOpcoes[0]; %>
@@ -246,11 +267,13 @@
                                                     <% var maiorNum = parseFloat(semX) %>
                                                     <% var taxaDaMaiorOpcao = taxas.taxas.credito.valores[maiorOpcao][1]; %>
 
-                                                    <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * produto.preco) / 100) + parseFloat(produto.preco)) / maiorNum).toFixed(2)  %>
+                                                    <% var preco_formt_c = desformatarInput(formatarInput(produto.preco)) %>
+                                                    <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * preco_formt_c) / 100) + parseFloat(preco_formt_c)) / maiorNum).toFixed(2)  %>
+                                                    
                                                     <% if (taxas.taxas.avista.taxa === true) { %>
                                                         à vista/PIX ou
                                                     <% } %>
-                                                  em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão de credito 
+                                                  em até <%= maiorNum%>x de <%= formatarInput(jurusMaior) %> no cartão de credito 
                                               
                                                     <% if (taxaDaMaiorOpcao == 0) { %>
                                                         sem juros
@@ -393,8 +416,8 @@
         var body = document.querySelector('body');
 
             if(tema == "Roxo") {
-                document.documentElement.style.setProperty('--color-green', '#8800a7');
-                body.style.setProperty('--color-green', '#8800a7')
+                document.documentElement.style.setProperty('--color-green', '#ae00d5');
+                body.style.setProperty('--color-green', '#ae00d5')
 
             } else if (tema == "Vermelho"){
                 document.documentElement.style.setProperty('--color-green', '#ff0000');
@@ -408,8 +431,8 @@
                 body.style.setProperty('--color-green', '#00acfc')
 
             } else if (tema == "Amarelo"){
-                document.documentElement.style.setProperty('--color-green', '#eaff00');
-                body.style.setProperty('--color-green', '#eaff00')
+                document.documentElement.style.setProperty('--color-green', '#c8da00');
+                body.style.setProperty('--color-green', '#c8da00')
 
             } else if (tema == "Laranja"){
                 document.documentElement.style.setProperty('--color-green', '#e19406');

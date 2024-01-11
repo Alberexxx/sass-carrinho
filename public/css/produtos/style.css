@@ -15,7 +15,7 @@
 
 /* Estilize a imagem do logo */
 #titulo {
-  margin-left: 50px;
+  margin-left: 30px;
 }
 .logo img {
   align-items: center;
@@ -120,9 +120,20 @@ a {
  margin: auto;
 }
 
+
 @media(max-width: 730px) {
 .esconder{
   display: none;
+}
+.limite_de_produtos {
+  text-align: center;
+}
+#titulo {
+  margin-left: 0px;
+
+
+
+  background-color: #c8da00;
 }
 
 }

@@ -48,24 +48,31 @@
                                         <br>
                                     <form action="/admin/produto/edit/env" method="post" enctype="multipart/form-data">
                                         <label for="foto">
-                                            <img id="fotoproduto" style=" max-width: 170px; max-height: 170px; margin: auto;" src="/imagem/<%= produto.id_produto %>" alt="" />
+                                            <img id="fotoproduto" style=" max-width: 170px; max-height: 170px; " src="/imagem/<%= produto.id_produto %>" alt="" />
                                         </label>
-                                        <label class="borda-arredondada input" for="foto"
-                                            style="color: rgb(26, 255, 0);">Selecionar um arquivo
+                                        <label class="borda-arredondada input" for="foto">Selecionar foto 1
                                             <img src="https://cdn3.iconfinder.com/data/icons/glypho-generic-icons/64/action-upload-alt-512.png"
                                                 style="width: 20px" />
                                         </label>
                                         <input type="file" accept="image/*" name="foto" id="foto" style="opacity: 0;">
                                         <div class="input-container tamanho">
-                                            <br>
-                                            <label>Foto 2 do Produto  </label>
-                                            <img id="previewImage2" src="/imagem2/<%= produto.id_produto %>" style=" max-width: 170px; max-height: 170px; margin: auto;" >
-                                            <br>
-
-                                            <img class="x_btn" id="limpar_2" src="/img/public/bx-x.svg"  alt="" onclick="limpar()">
-
-                                            <br>
                                             
+                                            <label>Foto 2 do Produto  </label>
+                                                <br>
+                                                <% if (produto.foto2 === null || produto.foto2 === undefined) { %>
+                                                    <img id="previewImage2" src="https://abrai.me/ImPh1" style=" max-width: 170px; max-height: 170px; " >
+                                                    
+                                                    <img class="x_btn" id="limpar_2" src="/img/public/bx-x.svg" alt="" onclick="limpar()">
+                                                    <input type="hidden" name="foto2_existe" id="foto2_existe" value="false">
+
+                                                <% } else { %>
+                                                    <img id="previewImage2" src="/imagem2/<%= produto.id_produto %>" style=" max-width: 170px; max-height: 170px;" >
+                                                   
+                                                    <img class="x_btn" id="limpar_2" style="display: inline;" src="/img/public/bx-x.svg" alt="" onclick="limpar()">
+                                                    <input type="hidden" name="foto2_existe" id="foto2_existe" value="true">
+                                                <% } %>
+
+                                          
                                                 
                                             </label>
                                             <label class="borda-arredondada input" for="foto2"
@@ -271,6 +278,7 @@ previewImage2.addEventListener('error',  fotoExemplo)
             var previewImage2 = document.getElementById('previewImage2');
             var file = inputFile2.files[0];
             let limpar2 = document.getElementById('limpar_2')
+            let foto2_existe = document.getElementById('foto2_existe')
 
             console.log('input 2 executado');
             
@@ -280,11 +288,15 @@ previewImage2.addEventListener('error',  fotoExemplo)
 
                 reader.onload = function (e) {
                     previewImage2.src = e.target.result;
-                    previewImage2.style.display = 'block';
+                   
+
                     console.log('render executado');
                 };
-
+                previewImage2.style.display = 'inline';
+                previewImage2.style.marginBottom = '-10px'
                 reader.readAsDataURL(file);
+                foto2_existe.value = 'false'
+
                 console.log('data executado');
                 limpar2.style.display = 'inline'
 
@@ -299,10 +311,18 @@ previewImage2.addEventListener('error',  fotoExemplo)
             var inputFile2 = document.getElementById('foto2');
             var previewImage2 = document.getElementById('previewImage2');
             let limpar2 = document.getElementById('limpar_2')
+            let foto2_existe = document.getElementById('foto2_existe')
 
             inputFile2.value = '';
             previewImage2.src = 'https://abrai.me/ImPh1';
+            previewImage2.style.marginBottom = '10px'
             limpar2.style.display = 'none'
+
+            if (foto2_existe) {
+                console.log('entrou no if de limpar');
+                foto2_existe.value = 'false'
+            }
+            console.log(foto2_existe.value);
 
         }
 function formatarInput(input) {

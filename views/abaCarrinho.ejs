@@ -79,14 +79,14 @@
 
     <div class="div-btn-cancelar">
     <button class="btn-voltar" onclick="esconderEscolha(2)">voltar</button>
-    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 1)">enviar para o whatsApp</button>
+    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 1, '<%= numero %>')"> enviar para o whatsApp</button>
   </div>
   </div>
 
 
 <!--   --------------------------------------------------------------------------------------->
   <div class="pag_debito" id="pag_debito">
-    <p class="metd_name"> Metodo de pagamento: Debito </p>
+    <p class="metd_name"> Metodo de pagamento: Cartão de Debito </p>
     
   <div class="infos_pagamento">
     <p id="total_semDesconto_d"></p>
@@ -101,12 +101,12 @@
   
     <div class="div-btn-cancelar">
     <button class="btn-voltar" onclick="esconderEscolha(3)">voltar</button>
-    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 3)">enviar para o whatsApp</button>
+    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 3, '<%= numero %>')">enviar para o whatsApp</button>
   </div>
   </div>
 
   <div class="pag_credito" id="pag_credito">
-    <p class="metd_name">Metodo de pagamento: Credito</p>
+    <p class="metd_name">Metodo de pagamento: Cartão de Credito</p>
 
   <p class="texto_credito"> Como deseja parcelar a compra?</p>
     
@@ -115,7 +115,7 @@
 
     <div class="div-btn-cancelar">
     <button class="btn-voltar" onclick="esconderEscolha(4)" id="btn_credito_voltar">voltar</button>
-    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 2)">enviar para o whatsApp</button>
+    <button class="btn-enviar-wtsp" onclick="enviar('<%= empresa %>', 2,'<%= numero %>')">enviar para o whatsApp</button>
   </div>
   </div>
 

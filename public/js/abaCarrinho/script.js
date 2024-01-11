@@ -18,7 +18,6 @@ function desformatarInput(input) {
     input = parseFloat(input) 
     return input;
 }
-//console.log(desformatarInput('7.421.07'));
 
 
 function updateTotal() {
@@ -33,7 +32,6 @@ function updateTotal() {
         let precoFormatado = desformatarInput(cart[i].preco);
         
         if (!isNaN(precoFormatado)) {
-            console.log('precoFormatado:', precoFormatado, 'quantidade:', cart[i].quantidade);
             ValorTotal += precoFormatado * parseInt(cart[i].quantidade, 10);
         } 
     }
@@ -449,10 +447,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function LimparCarrinho(empresa) {
   let  isExpand_inp = document.getElementById('isExpand_inp')
-    console.log(isExpand_inp.value);
 
     if ( isExpand_inp.value == 'true') {
-        console.log('entrou no if');
         f_expandBtn()
          
         const cartItems = document.querySelector(".cart-items")
@@ -467,7 +463,6 @@ function LimparCarrinho(empresa) {
         updateCartShort(empresa);
         updateTotal()
     } else {
-        console.log('entrou no else');
        
         const cartItems = document.querySelector(".cart-items")
         cartItems.style.height = "0px"

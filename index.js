@@ -5,6 +5,22 @@ const session = require("express-session")
 const Sequelize = require("sequelize")
 const { Op } = require('sequelize'); 
 
+/*  ----------- DESCOMENTAR ISSO NO SERVIDOR ------------  ***talvez seja necessario instalar as bibliotecas  {npm install http https fs express-sslify}
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const enforce = require('express-sslify');
+
+const sslOptions = {
+  key: fs.readFileSync('/etc/letsencrypt/live/hydr4.online/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/hydr4.online/fullchain.pem'),
+};
+
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
+
+
+*/
+
 
 app.use(express.urlencoded({ extended: true })); // Para analisar dados de formulário
 app.use(express.json()); //Para analisar dados JSON
@@ -291,21 +307,28 @@ app.get("/:empresa/page/:num",(req, res) => {
 });
 
 
+/*  --------------------------------- configuracao de redirecionamento para o https --------------------------------- descomentar
+const httpServer = http.createServer((req, res) => {
+    res.writeHead(301, { "Location": `https://${req.headers.host}${req.url}` });
+    res.end();
+});
+
+httpServer.listen(80, () => {
+    console.log('Servidor HTTP para redirecionamento está ouvindo na porta 80');
+});
+
+
+const server = https.createServer(sslOptions, app);
+
+server.listen(443, () => {
+  console.log(`Servidor Express com SSL está ouvindo na porta 443`);
+});
+
+*/
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+// ========================== servidor de producao ================================= comentar
 
 app.listen(8080,() => {
     console.log("Servidor rodando"); 

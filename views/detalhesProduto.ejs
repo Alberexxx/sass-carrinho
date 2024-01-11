@@ -129,7 +129,8 @@
               <h6><%= produto.marca %></h6>
               <h1><%= produto.nome_produto %></h1>
               <% if (produto.status == 'indisponivel') { %>
-              
+                <p style="color: red;">produto indisponivel</p>
+
              <% } else { %>
                  
                                      
@@ -177,10 +178,15 @@
                                                     <% } %>
                                                     <% var maiorNum = parseFloat(semX) %>
                                                     <% var taxaDaMaiorOpcao = taxas.taxas.credito.valores[maiorOpcao][1]; %>
+                                                    <% var preco_formt_c = desformatarInput(formatarInput(produto.preco)) %>
 
-                                                    <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * produto.preco) / 100) + parseFloat(produto.preco)) / maiorNum).toFixed(2)  %>
+                                                    <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * preco_formt_c) / 100) + parseFloat(preco_formt_c)) / maiorNum).toFixed(2)  %>
                                                    
-                                                    à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão de credito
+                                                    <% if (taxas.taxas.avista.taxa === true) { %>
+                                                      à vista/PIX ou
+                                                  <% } %>
+                                                    em até <%= maiorNum%>x de <%= formatarInput(jurusMaior) %> no cartão de credito 
+
                                                     <% if (taxaDaMaiorOpcao == 0) { %>
                                                       sem juros
                                                     <% } else { %> 
@@ -191,14 +197,28 @@
 
 
                                             <% } else {%>
-                                              <% if (taxas.taxas.avista.taxa == true) { %>
-                                                à vista/PIX 
-                                              <% } %>
-                                               
-                                                <% if (taxas.taxas.debito.taxa == 'true') { %>
-                                                 ou cartão de debito1
+                                             
+                                              <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                                <% if (taxas.taxas.avista.taxa === true) { %>
+                                                    à vista/PIX
                                                 <% } %>
-                                                
+                                                <% if (taxas.taxas.avista.taxa === true && taxas.taxas.debito.taxa == 'true') { %>
+                                                    ou
+                                                <% } %>
+                                                <% if (taxas.taxas.avista.taxa == false && taxas.taxas.debito.taxa == 'true') { %>
+                                                    no
+                                                <% } %>
+                                                <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                                    cartão de debito
+                                                <% } %>
+
+                                            <% } else { %>
+                                                <% if (taxas.taxas.avista.taxa === true) { %>
+                                                    à vista/PIX
+                                                <% } %>
+                                                   
+                                                <% } %>
+                                            
                                                 
                                             <% } %>
 
@@ -331,7 +351,23 @@
                                
                             <% } %>
                              <% if (opc_credito.length === 0 ) { %>
-                                à vista no pix ou cartão de debito2
+                              
+                              
+                              <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                <% if (taxas.taxas.avista.taxa === true) { %>
+                                    à vista/PIX
+                                <% } %>
+                                <% if (taxas.taxas.avista.taxa === true && taxas.taxas.debito.taxa == 'true') { %>
+                                    ou
+                                <% } %>
+                                <% if (taxas.taxas.avista.taxa == false && taxas.taxas.debito.taxa == 'true') { %>
+                                    no
+                                <% } %>
+                                <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                    cartão de debito
+                                <% } %>
+                              <% } %>
+
                             <% } else { %>
                                 <% var maioresOpcoes = opc_credito.sort((a, b) => parseFloat(b) - parseFloat(a)); %>
                                 <% var maiorOpcao = maioresOpcoes[0]; %>
@@ -344,9 +380,14 @@
                                 <% var maiorNum = parseFloat(semX) %>
                                 <% var taxaDaMaiorOpcao = taxas.taxas.credito.valores[maiorOpcao][1]; %>
 
-                                <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * relacionado.preco) / 100) + parseFloat(relacionado.preco)) / maiorNum).toFixed(2)  %>
-                               
-                                à vista ou em até <%= maiorNum%>x de R$<%= jurusMaior.replace('.', ",") %> no cartão de credito
+                                <% var preco_formt_cc = desformatarInput(formatarInput(relacionado.preco)) %>
+                                <% var jurusMaior = ((((parseFloat(taxaDaMaiorOpcao) * preco_formt_cc) / 100) + parseFloat(preco_formt_cc)) / maiorNum).toFixed(2)  %>
+                                      
+                                <% if (taxas.taxas.avista.taxa === true) { %>
+                                  à vista/PIX ou
+                              <% } %>
+                                em até <%= maiorNum%>x de <%= formatarInput(jurusMaior) %> no cartão de credito 
+
                                 <% if (taxaDaMaiorOpcao == 0) { %>
                                     sem juros
                                   <% } else { %> 
@@ -357,14 +398,28 @@
 
 
                         <% } else {%>
-                          <% if (taxas.taxas.avista.taxa == true) { %>
-                            à vista/PIX 
-                          <% } %>
-                             
-                            <% if (taxas.taxas.debito.taxa == 'true') { %>
-                              ou cartão de debito
+                          
+                          <% if (taxas.taxas.debito.taxa == 'true') { %>
+                            <% if (taxas.taxas.avista.taxa === true) { %>
+                                à vista/PIX
                             <% } %>
-                           
+                            <% if (taxas.taxas.avista.taxa === true && taxas.taxas.debito.taxa == 'true') { %>
+                                ou
+                            <% } %>
+                            <% if (taxas.taxas.avista.taxa == false && taxas.taxas.debito.taxa == 'true') { %>
+                                no
+                            <% } %>
+                            <% if (taxas.taxas.debito.taxa == 'true') { %>
+                                cartão de debito
+                            <% } %>
+
+                        <% } else { %>
+                            <% if (taxas.taxas.avista.taxa === true) { %>
+                                à vista/PIX
+                            <% } %>
+                               
+                            <% } %>
+                        
                             
                         <% } %>
 
@@ -419,9 +474,9 @@
       var btn = document.getElementById('button')
 
           if(tema == "Roxo") {
-              document.documentElement.style.setProperty('--color-green', '#8800a7');
-              body.style.setProperty('--color-green', '#8800a7')
-              btn.style.backgroundColor = '#8800a7'
+              document.documentElement.style.setProperty('--color-green', '#ae00d5');
+              body.style.setProperty('--color-green', '#ae00d5')
+              btn.style.backgroundColor = '#ae00d5'
 
           } else if (tema == "Vermelho"){
               document.documentElement.style.setProperty('--color-green', '#ff0000');
@@ -438,9 +493,9 @@
               body.style.setProperty('--color-green', '#00acfc')
               btn.style.backgroundColor = '#00acfc'
           } else if (tema == "Amarelo"){
-              document.documentElement.style.setProperty('--color-green', '#eaff00');
-              body.style.setProperty('--color-green', '#eaff00')
-              btn.style.backgroundColor = '#eaff00'
+              document.documentElement.style.setProperty('--color-green', '#c8da00');
+              body.style.setProperty('--color-green', '#c8da00')
+              btn.style.backgroundColor = '#c8da00'
 
           } else if (tema == "Laranja"){
               document.documentElement.style.setProperty('--color-green', '#e19406');

@@ -96,9 +96,10 @@ router.get('/pesquisar', (req, res) => {
             nome_produto: {
                 [Op.and]: [
                     Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('nome_produto')), 'LIKE', '%' + valor.toLowerCase() + '%')
-                ]
+                ] 
             }, 
-            id_usuario: userResult.id_usuario          
+            id_usuario: userResult.id_usuario,
+            status: { [Op.not]: 'oculto'}
         }
     }).then(produtosFiltrados => {
 
@@ -213,7 +214,8 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
                     background: { r: 0, g: 0, b: 0, alpha: 0 }
                  })
                 .toFormat('webp', { quality: qualidade })
-                .toBuffer();
+                .rotate()
+                .toBuffer(); 
     
             console.log('Imagem processada com qualidade inicial:', qualidade);
             
@@ -227,6 +229,7 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
                     // Evitar processamento adicional se a qualidade atingir zero
                     buffer = await sharp(buffer)
                         .toFormat('webp', { quality: qualidade })
+                        .rotate()
                         .toBuffer();
                 }
             }
@@ -282,7 +285,7 @@ router.post('/produtos/save', upload.fields([{name: 'foto', maxCount: 1}, {name:
         
                                 originalname2: originalname2,
                                 mimetype2: mimetype2,
-                                foto2: foto2 == null ? null : foto.buffer ,
+                                foto2: foto2 == null ? null : foto2.buffer ,
         
                                 slug: slugify(nome_produto),
                                 id_usuario: id_usuario,
@@ -386,6 +389,7 @@ router.post('/admin/produto/edit/env', userAuth, upload.fields([{name: 'foto', m
     var categoria = req.body.categoria
     var marca = req.body.marca
     var status = req.body.status
+    var foto2_existe = req.body.foto2_existe
 
     preco = preco.replace('R$','').trim();
     preco = preco.replace(/,/g, ('.'))
@@ -480,10 +484,14 @@ Promise.all([fotoProcessadaPromise, foto2ProcessadaPromise])
         var { originalname: originalname, mimetype: mimetype, buffer: buffer } = foto || {};
         var { originalname: originalname2, mimetype: mimetype2, buffer: buffer2 } = foto2 || {};
 
-        if (foto2 === null) {
-            originalname2 = mimetype2 = buffer2 = null
-        } else {
+        console.log( foto2_existe, '---------------------------------------------------------------------------------------');
 
+        if ( foto2_existe === 'true' ) {
+            originalname2 = mimetype2 = buffer2 = undefined
+        } else if (foto2_existe === 'false' ) {
+            if (foto2 === null) {
+                originalname2 = mimetype2 = buffer2 = null
+            }
         }
 
         console.log(originalname2, mimetype2, buffer2);
