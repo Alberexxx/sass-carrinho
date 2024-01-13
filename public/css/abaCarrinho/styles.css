@@ -194,7 +194,9 @@
     
   }
   .carrinhoMinimizado {
-    
+   
+
+
     width: 55px;
     height: 55px;
     position: fixed;
@@ -479,7 +481,7 @@
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    
+   
   }
 
   .min-btn {

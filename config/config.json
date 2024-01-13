@@ -15,9 +15,9 @@
   },
   "production": {
     "username": "root",
-    "password": "@alabdudu7789",
-    "database": "inter",
-    "host": "localhost",
+    "password": "@novasenha",
+    "database": "carrinho",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   }
 }

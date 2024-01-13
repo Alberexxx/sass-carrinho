@@ -7,16 +7,17 @@ const connection = new sequelize('inter', 'root', '@alabdudu7789', {
     timezone: '-03:00'
 });
 
-/* ---------- PRODUÇÃO ------------
+// ---------- PRODUÇÃO ------------
 
-const connection = new sequelize('carrinho', 'root', 'novasenha', {
+/*
+const connection = new sequelize('inter', 'root', '@alabdudu7789', {
     host: '127.0.0.1',
     dialect: 'mysql',
     timezone: '-03:00',
-    port: 3306,
+    port: 3306, 
 });
-
 */
+
 
 module.exports = connection;
 

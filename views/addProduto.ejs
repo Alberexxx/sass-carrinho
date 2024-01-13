@@ -51,7 +51,7 @@
                                         <br>
                                         <label class="cursor_text">Foto 1 do Produto </label>
                                         <br>
-                                        <img id="previewImage" src="https://abrai.me/ImPh1" alt="Imagem Preview" style=" max-width: 170px; max-height: 170px; margin: auto;">
+                                        <img id="previewImage" src="/img/public/transferir.png" alt="Imagem Preview" style=" max-width: 170px; max-height: 170px; margin: auto;">
                                        <img class="x_btn" id="limpar_1" src="/img/public/bx-x.svg" alt="" onclick="limpar(1)">
                                         <br>
                                         
@@ -70,7 +70,7 @@
                                         <br>
                                         <label class="cursor_text">Foto 2 do Produto  </label>
                                         <br>
-                                        <img id="previewImage2" src="https://abrai.me/ImPh1" style=" max-width: 170px; max-height: 170px; margin: auto;">
+                                        <img id="previewImage2" src="/img/public/transferir.png" style=" max-width: 170px; max-height: 170px; margin: auto;">
                                         <img class="x_btn" id="limpar_2" src="/img/public/bx-x.svg"  alt="" onclick="limpar(2)">
 
                                         <br>
@@ -129,8 +129,7 @@
                                     <div class="input-container">
                                         <label for="descricao">descrição</label>
                                         <input type="text" name="descricao" id="" placeholder="descricao para o produto" maxlength="950">
-                                        <label for="cor">Cor</label>
-                                        <input type="text" name="cor" id="cor" placeholder="Digite a cor" maxlength="100">
+                                       
                                     </div>
                                     <div class="input-container">
                                         <label for="categoria">Categoria</label>
@@ -230,7 +229,7 @@
                 let limpar1 = document.getElementById('limpar_1')
 
                 inputFile.value = '';
-                previewImage.src = 'https://abrai.me/ImPh1';
+                previewImage.src = '/img/public/transferir.png';
                 limpar1.style.display = 'none'
 
             } else if (x == 2) {
@@ -239,7 +238,7 @@
                 let limpar2 = document.getElementById('limpar_2')
 
                 inputFile2.value = '';
-                previewImage2.src = 'https://abrai.me/ImPh1';
+                previewImage2.src = '/img/public/transferir.png';
                 limpar2.style.display = 'none'
 
             }

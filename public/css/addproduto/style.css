@@ -356,7 +356,7 @@ input[type="number"]{
   width: 10px;
 }
 #previewImage2 {
-  margin-bottom: -10px;
+ /* margin-bottom: -10px; */ 
 }
 
 @media(max-width:768px) {

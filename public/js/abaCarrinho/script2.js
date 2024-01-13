@@ -362,7 +362,7 @@ function enviar(empresa, x, numero) {
     let ValorTotal = 0;
 
     for (var i = 0; i < stringOriginal.length; i++) {
-        let produto = stringOriginal[i].produto ? stringOriginal[i].produto + ", " : "";
+        let produto = stringOriginal[i].produto ? '• ' + stringOriginal[i].produto + ", " : "";
         let cor = stringOriginal[i].cor ? "Cor: " + stringOriginal[i].cor + ", " : "";
         let tamanho = stringOriginal[i].tamanho ? "Tamanho: " + stringOriginal[i].tamanho : "";
         let quantidade = stringOriginal[i].quantidade ? "Qtd " + stringOriginal[i].quantidade + ", " : "";

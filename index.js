@@ -12,14 +12,14 @@ const fs = require('fs');
 const enforce = require('express-sslify');
 
 const sslOptions = {
-  key: fs.readFileSync('/etc/letsencrypt/live/hydr4.online/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/hydr4.online/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/meucarrinhofacil.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/meucarrinhofacil.com/fullchain.pem'),
 };
 
 app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
-
 */
+
 
 
 app.use(express.urlencoded({ extended: true })); // Para analisar dados de formulário
@@ -332,4 +332,4 @@ server.listen(443, () => {
 
 app.listen(8080,() => {
     console.log("Servidor rodando"); 
- });
+});

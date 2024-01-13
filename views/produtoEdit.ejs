@@ -60,7 +60,7 @@
                                             <label>Foto 2 do Produto  </label>
                                                 <br>
                                                 <% if (produto.foto2 === null || produto.foto2 === undefined) { %>
-                                                    <img id="previewImage2" src="https://abrai.me/ImPh1" style=" max-width: 170px; max-height: 170px; " >
+                                                    <img id="previewImage2" src="/img/public/transferir.png" style=" max-width: 170px; max-height: 170px; " >
                                                     
                                                     <img class="x_btn" id="limpar_2" src="/img/public/bx-x.svg" alt="" onclick="limpar()">
                                                     <input type="hidden" name="foto2_existe" id="foto2_existe" value="false">
@@ -174,8 +174,7 @@
                                     <div class="input-container">
                                         <label for="descricao">descrição</label>
                                         <input type="text" name="descricao" id="" placeholder="digite uma descricao para o produto" value="<%= produto.descricao %>" maxlength="950">
-                                        <label for="cor">Cor</label>
-                                        <input type="text" name="cor" id="cor" placeholder="Digite a cor"  value="<%= produto.cor %>" maxlength="100" >
+                                        
                                     </div>
                                     <div class="input-container">
                                         <label for="categoria">Categoria</label>
@@ -250,7 +249,8 @@
 
         console.log('func do eneerror ativada');
         let img2 = document.getElementById('previewImage2')
-        img2.src = 'https://abrai.me/ImPh1'
+        img2.src = '/img/public/transferir.png'
+        img2.src.marginBottom = '1px'
     }
 
 previewImage2.addEventListener('error',  fotoExemplo)
@@ -314,7 +314,7 @@ previewImage2.addEventListener('error',  fotoExemplo)
             let foto2_existe = document.getElementById('foto2_existe')
 
             inputFile2.value = '';
-            previewImage2.src = 'https://abrai.me/ImPh1';
+            previewImage2.src = '/img/public/transferir.png';
             previewImage2.style.marginBottom = '10px'
             limpar2.style.display = 'none'
 
