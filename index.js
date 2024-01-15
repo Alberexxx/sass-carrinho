@@ -105,6 +105,12 @@ app.use('/favicon.ico', (req, res) => res.status(204));
 
 // Rotas
 
+app.use((req, res, next) => {
+    res.header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    res.header('Pragma', 'no-cache');
+    res.header('Expires', '0');
+    next();
+});
 
 app.get("/aba",(req, res) => {
     res.render("abaCarrinho")

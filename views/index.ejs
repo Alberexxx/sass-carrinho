@@ -348,11 +348,11 @@
                
                   
 
-                    <% if ( pagina > 2) { %>
+                    <% if ( pagina >= 2) { %>
                         <a href="/<%= empresa %>/page/<%= pagina - 1 %>"> <strong><<</strong> anterior </a>
  
-                     <% } else if (pagina == 2) { %>
-                         <a href="/<%= empresa %>"> <strong><<</strong> anterior </a>
+                     <%# } else if (pagina == 1) { %>
+                       <!--    <a href="/<%#= empresa %>"> <strong><<</strong> anterior </a>   --> 
  
                          <% } %>
                  
