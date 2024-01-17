@@ -191,7 +191,7 @@
  
                                        <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 15) %></h4>-->
                                        <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
-                                            <h4 class="nome_produto"> <%= limitarTamanhoString( produto.nome_produto, 40 ) %></h4> 
+                                            <h4 class="nome_produto"> <%= limitarTamanhoString( produto.nome_produto, 36 ) %></h4> 
                                         </a>
                                         <p style="color: red;">indisponivel</p>
                                         </div>
@@ -204,9 +204,9 @@
                                           <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 30) %></h4>--> 
                                           <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= produto.id_produto %>/<%= produto.slug %>">
 
-                                            <h4 class="nome_produto"> <%= limitarTamanhoString( produto.nome_produto, 40 ) %></h4>
+                                            <h4 class="nome_produto"> <%= limitarTamanhoString( produto.nome_produto, 36 ) %></h4>
                                         </a>
-                                            <p> <% if (produto.preco == '') { %>
+                                            <p class="texto_dasTaxas"> <% if (produto.preco == '') { %>
                                                
                                             <% } else { %>
                                                 <% if (taxas.taxas.avista.taxa == true) { %>

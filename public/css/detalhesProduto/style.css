@@ -349,7 +349,7 @@ p {
 
 .price p {
   color: var(--color-whiter);
-  font-size: 14px;
+ 
   font-weight: 600;
 }
 .trending-product {

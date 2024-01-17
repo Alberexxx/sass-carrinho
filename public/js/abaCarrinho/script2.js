@@ -303,7 +303,7 @@ function confirmarCredito(taxas, total) {
           label.textContent = `${chave} de ${formatarInput(String(parcela))} com juros (${String(valorTaxa).replace('.',',')}%)   Total: ${formatarInput(String(valorFinal))} `;
 
         } else {
-           label.textContent = `${chave} de R$${formatarInput(String(parcela))} sem juros    Total: R$${formatarInput(String(valorFinal))} `;
+           label.textContent = `${chave} de ${formatarInput(String(parcela))} sem juros    Total: ${formatarInput(String(valorFinal))} `;
         }
         
         
@@ -392,7 +392,7 @@ function enviar(empresa, x, numero) {
     ValorTotal = ValorTotal.toFixed(2); // Limitando a duas casas decimais
     ValorTotal = ValorTotal.replace('.', ',');
 
-    var cabecalho = "------%20Carrinho%20de%20compras%20------%0A%0A";
+    var cabecalho = "*Meu%20Carrinho%20de%20compras*%0A%0A";
 //-----------------------------------------------------------------------------------------------
 
     if (x == 1) {
@@ -429,8 +429,9 @@ function enviar(empresa, x, numero) {
     let regex = /Total: ([^ ]+)/;
     let match = escolhaParcela.match(regex);
 
+    escolhaParcela = encodeURIComponent(escolhaParcela);
 
-      var rodape = `%0A%0A*Pagamento:%20Cartão%20de%20Credito*%0A*Numero%20de%20parcelas%20escolhido*:%20${escolhaParcela}%0A%0A*Valor%20Final%20do%20carrinho:*%20${match[1]}`;
+    var rodape = `%0A%0A*Pagamento:%20Cartão%20de%20Credito*%0A*Numero%20de%20parcelas%20escolhido*:%20${escolhaParcela}%0A%0A*Valor%20Final%20do%20carrinho:*%20${match[1]}`;
 
 //---------------------------------------------------------------------------------------------------------------------->
     } else if (x == 3) {
@@ -447,13 +448,17 @@ function enviar(empresa, x, numero) {
 
       }
 
-
-      
     }
-    var mensagemCompleta = "https://wa.me/55" + numero + "?text=" + cabecalho + novaString + rodape;
-//-----------------------------------------------------------------------------------------------
-  
-   window.location.href = mensagemCompleta;
+  //-----------------------------------------------------------------------------------------------
 
- 
+    novaString = decodeURIComponent(novaString)
+    novaString = encodeURIComponent(novaString)
+
+    rodape = decodeURIComponent(rodape); 
+    rodape = encodeURIComponent(rodape); 
+   
+  var mensagemCompleta = "https://wa.me/55" + numero + "?text=" + cabecalho + novaString + rodape;
+  
+  window.location.href = mensagemCompleta;
+
 }

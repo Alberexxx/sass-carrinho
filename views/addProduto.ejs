@@ -120,7 +120,7 @@
                                 <div class="div1" >
                                     <div class="input-container">
                                         <label for="nome">Nome</label>
-                                        <input type="text" name="nome" id="nome" placeholder="Nome do Produto" required maxlength="60">
+                                        <input type="text" name="nome" oninput="restringirCaracteres(event)" onpaste="impedirColar(event)"  ondrop="impedirArrastar(event)" id="nome" placeholder="Nome do Produto" required maxlength="70">
                                     </div>
                                     <div class="input-container">
                                         <label for="categoria">Marca</label>
@@ -243,6 +243,52 @@
 
             }
         }
+
+        function restringirCaracteres(event) {
+      // Lista de caracteres que você deseja impedir
+      var caracteresProibidos = ['"', "'"];
+
+      // Obtém o valor atual do input
+      var valorAtual = event.target.value;
+
+      // Verifica se algum caractere proibido está presente
+      for (var i = 0; i < caracteresProibidos.length; i++) {
+        var caractereProibido = caracteresProibidos[i];
+        if (valorAtual.includes(caractereProibido)) {
+          // Remove o caractere proibido do valor atual
+          valorAtual = valorAtual.replace(caractereProibido, '');
+          // Atualiza o valor do input
+          event.target.value = valorAtual;
+        }
+      }
+    }
+
+    function impedirColar(event) {
+      // Cancela o evento de colagem
+      event.preventDefault();
+
+      // Obtém o texto da área de transferência
+      var textoAreaTransferencia = (event.originalEvent || event).clipboardData.getData('text/plain');
+
+      // Remove caracteres proibidos do texto da área de transferência
+      var textoSemCaracteresProibidos = textoAreaTransferencia.replace(/[$#@'"]/g, '');
+
+      // Insere o texto ajustado no campo de entrada
+      document.getElementById('nome').value += textoSemCaracteresProibidos;
+    }
+    function impedirArrastar(event) {
+      // Cancela o evento de arrastar
+      event.preventDefault();
+
+      // Obtém o texto arrastado
+      var textoArrastado = (event.originalEvent || event.dataTransfer).getData('text/plain');
+
+      // Remove todos os caracteres proibidos do texto arrastado
+      var textoSemCaracteresProibidos = textoArrastado.replace(/[$#@'"]/g, '');
+
+      // Insere o texto ajustado no campo de entrada
+      document.getElementById('nome').value += textoSemCaracteresProibidos;
+    }
 
 function formatarInput(input) {
     console.log(input.value);

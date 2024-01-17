@@ -123,7 +123,8 @@ router.get('/pesquisar', (req, res) => {
 
             }
         }
-        res.render("index", { produtos: produtosFiltrados, pesquisa: valor , idSessao: idSessao, empresaId: userResult.empresaId, empresa: userResult.nome, instagram: userResult.instagram, numero: userResult.numero, tema: userResult.corTema, enderecoLoja: userResult.enderecoLoja, contato: userResult.contato, horario: userResult.contato, taxas: userResult.taxas});
+        console.log("------------------------------------------", userResult.telefone)
+        res.render("index", { produtos: produtosFiltrados, pesquisa: valor , idSessao: idSessao, empresaId: userResult.empresaId, empresa: userResult.nome, instagram: userResult.instagram, numero: userResult.telefone, tema: userResult.corTema, enderecoLoja: userResult.enderecoLoja, contato: userResult.contato, horario: userResult.contato, taxas: userResult.taxas});
     }).catch(error => {
         console.error('Erro na busca:', error);
         res.status(500).send('Erro na busca de produtos');

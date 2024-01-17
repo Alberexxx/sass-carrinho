@@ -269,13 +269,11 @@
           <h2>Você pode <span>Gostar</span></h2>
         </div>
 
-        <%#  function limitarTamanhoString(str, limite) { %>
-          <%#  if (str.length > limite) { %>
-          <%#       return str.slice(0, limite) + "..."; %>
-           <%#  } else { %>
-           <%#      return str %>
-           <%#  } %>
-      <%#   } %>
+    <% 
+      function limitarTamanhoString(suaVariavel, maxLength) {
+        return suaVariavel.length > maxLength ? `${suaVariavel.slice(0, maxLength)}...` : suaVariavel;
+      } 
+  %>
 
          <div class="products" >
         <% produtosRelacionados.forEach(relacionado => { %>
@@ -302,10 +300,9 @@
                 <% if (relacionado.status == 'indisponivel') { %>
                     <div class="price">
 
-                   <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 15) %></h4>-->
                    <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
 
-                    <h4 class="nome_produto"> <%= relacionado.nome_produto %></h4> 
+                    <h4 class="nome_produto"> <%= limitarTamanhoString(relacionado.nome_produto, 36) %></h4> 
                   </a>
 
                     <p style="color: red;">indisponivel</p>
@@ -316,13 +313,13 @@
                     
                  
                     <div class="price">
-                      <!-- <h4> <%#= limitarTamanhoString(produto.nome_produto, 30) %></h4>--> 
+                      
                       <a class="a_detalhes" href="/<%= empresa %>/detalhes/<%= relacionado.id_produto %>/<%= relacionado.slug %>">
 
-                        <h4 class="nome_produto"> <%= relacionado.nome_produto %></h4>
+                        <h4 class="nome_produto"> <%=  limitarTamanhoString(relacionado.nome_produto, 36) %></h4>
                       </a>
 
-                        <p> <% if (relacionado.preco == '') { %>
+                        <p class="texto_dasTaxas"> <% if (relacionado.preco == '') { %>
                             
                         <% } else { %>
                             <% if (taxas.taxas.avista.taxa == true) { %>
