@@ -112,6 +112,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get("/",(req, res) => {
+    res.render("page1")
+});
+
 app.get("/aba",(req, res) => {
     res.render("abaCarrinho")
 });

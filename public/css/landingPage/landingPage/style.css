@@ -1,0 +1,32 @@
+
+
+  input[type="text"], input[type="email"] {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 19px;
+    box-sizing: border-box;
+  }
+
+  .submit {
+    width: 70%;
+    margin: 100p;
+    background-color: #76b900;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .submit:hover {
+    background-color: #35f605;
+  }
+  #textoContato{
+    font-size: 20px;
+  }
+
+
+ 

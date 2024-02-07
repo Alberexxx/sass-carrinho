@@ -1,0 +1,387 @@
+@charset "utf-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,400;0,600;0,800;1,200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;500;700&family=Raleway:ital,wght@0,200;0,400;0,600;0,800;1,200&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+:root {
+    --branco: #ffffff;
+    --braco_escuro: rgb(239, 239, 239);
+    --cinza: #656566;
+    --verde: #76b900;
+    --preto_claro: #181819;
+    --preto: #000000;
+    --font_Raleway: 'Raleaway',sans-serif;
+    --font-nunito: 'Nunito', sans-serif;
+}
+
+body , html {
+    width: 100vw;
+    color: white;
+    background-color: #000000;
+    scroll-behavior: smooth;
+    font-size: 1em;
+    font-family: var(--font_Raleway);
+}
+
+header {
+    width: 100vw;
+    height: 700px;
+    background-color: var(--preto);
+    background-image: url(/public/imagens/hydr4/fundo_transparente_40.avif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    
+    
+}
+
+
+#titulo3 {
+    font-size: 3em;
+    text-decoration: none;
+    color: var(--branco);
+    margin-left: 5vw;
+}
+#rede_icone {
+    width: 40px;
+}
+#link_insta {
+    margin-top: 14px;
+    margin-left: 70vw;
+    display: inline-block;
+    width: 40px;
+}
+
+#titulo {
+    
+    width: 40vw;
+    margin-top: 50px;
+    margin-left: 30px;
+    font-size: 1.8em;
+    padding: 15px 15px 15px 15px;
+    padding-left: 15px;  
+    padding-right: 15px;
+    border-radius: 20px;
+    color: var(--branco);
+    background-color: #0000007e;
+}
+#titulo:hover {
+    background-color: var(--preto_claro);
+}
+
+#nav1 {
+    width: 100vw;
+    height: 70px;
+    background-color: var(--preto_claro);
+    color: black;
+    
+    
+}
+
+#nav1 > p {
+    
+    font-size: 3em;
+    margin-left: -38vw;
+}
+
+#img1 {
+    width: 50vw;
+    margin-left: 46vw;
+    margin-right: 10vw;
+    margin-top: -400px;
+    display: block;
+    
+    
+}
+
+
+.contato {
+    
+    background-color:var( --verde);
+    font-size: 1.3em;
+    height: 30px;
+    width: 140px;
+    border-radius: 20px;
+    padding-left: 13px;
+    padding-top: 8px;
+    padding-bottom: 3px;
+    margin-left: 30px;
+    margin-top: 30px;
+   
+    color: var(--preto); 
+    
+}
+.contato:hover {
+    background-color: #35f605;
+}
+.link_whats {
+    text-decoration: none;
+}
+#whatsapp {
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    background-color:#25d366;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    font-size:30px;
+    box-shadow: 1px 1px 2px #888;
+    z-index:1000;
+    
+}
+#whatsapp:hover {
+    box-shadow: 5px 5px  5px rgba(0, 0, 0, 0.234);
+}
+#contato_2 {
+    width: 170px;
+
+}
+#contato_1 {
+    margin-left: 16vw;
+}
+
+main{
+    background-color: rgb(0, 0, 0);
+    width: 100vw;
+   
+}
+
+#oq_faz {
+    width: 100vw;
+    height: 700px;
+    background-color: var(--preto_claro);
+    text-align: left;
+    
+}
+#oq_faz > p {
+    margin-left: 30px;
+    display: block;
+    border-collapse: separate;
+    
+}
+#oq_faz > hr {
+    width: 92vw;
+    margin: 10px 0px 40px 30px;
+    border: 0.5px solid var(--verde);
+}
+
+.titulos1 {
+    font-size: 2.2em;
+    margin-bottom: 50px;
+    
+}
+.sub_titulos {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    padding-left: 10px;
+    border-radius: 20px;
+    width: 170px;
+}
+#sub_titulo_1 {
+    width: 150px;
+}
+#sub_titulo_2 {
+    width: 125px;
+}
+.sub_titulos:hover  {
+    background-color: #35f605;
+}
+
+.texto2{
+    padding-left: 50px;
+    width: 70vw;
+    text-align: justify;
+}
+
+#func {
+    width: 100vw;
+    height: 900px;
+    background-color: var(--preto);
+
+}
+
+.titulo1 {
+    font-size: 2.2em;
+    margin-left: 20px;
+    margin-bottom: -73px;
+    
+}
+#conteudo_func {
+    height: 800px;
+    width: 80vw;
+    margin-left: 50px;
+    margin-top: -30px;
+}
+#linha {
+    height: 460px;
+    width: 80vw;
+    
+    border-left: 4px solid var(--verde);
+    margin-top: 120px;
+    margin-left: 50px;
+    
+}
+.titulo_func {
+    height: 50px;
+    margin-top: -160px;
+}   
+
+#tampao {
+    width: 10px;
+    height: 20px;
+} 
+
+.explicacao {
+    height: 50px;
+    width: 67vw;
+    margin-left: 80px;
+    margin-bottom: 60px;
+    border-radius: 5px;
+}
+
+.explicacao > p {
+    margin-left: 7px;
+    padding-right: 7px;
+    
+}
+#explicacao_1 {
+    margin-top: 5px;
+    margin-bottom: 60px;
+    
+}
+
+.circulo {
+    height: 50px;
+    width: 50px;
+    background-color: var(--cinza);
+    border-radius: 50%;
+    margin-left: 28px;
+}
+.circulo:hover {
+    background-color: var(--branco);
+}
+.circulo > p {
+    font-size: 2em;
+    text-align: center;
+    padding-top: 7px;
+}
+.text_titulo {
+
+    font-size: 1.5em;
+    width: 200px;
+    margin-top: -30px;
+    margin-left: 60px;
+}
+.text_titulo:hover {
+    color: greenyellow;
+}
+
+#portifolio {
+    width: 100vw;
+    height: 700px;
+    background-color: var(--preto_claro);
+}
+#titulo_port {
+    display: block;
+    font-size: 2.2em;
+    margin-left: 10vw;
+    margin-top: 20px;
+    margin-bottom: -30px;
+}
+.port_div {
+    
+    background-color: var(--cinza);
+    width: 40vw;
+    height: 410px;
+    margin: auto;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    border-radius: 10px;
+}
+#port_div1 {
+    margin-left: 6vw;
+}   
+#port_div2 {
+   margin-top: -451px; 
+   margin-right: 6vw;
+
+}
+.portifolio-institucional {
+    background-image: url(/public/imagens/hydr4/print-TREVO.png);
+    width: 40vw;
+    height: 330px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.port_div > hr {
+    background-color: #000000;
+    border: 0.5px solid black;
+}
+.nome_port {
+    font-size: 2em;
+    margin-left: 10px;
+}
+
+.breve {
+    text-align: center;
+    margin-top: 150px;
+}
+
+footer {
+    width: 100%;
+    height: 100px;
+    background-color: var(--braco_escuro);
+    color: black;
+}
+footer > hr {
+    background-color: #000000;
+    border: 0.5px solid black;
+    width: 100px;
+    margin: auto;
+    margin-bottom: -40px;
+}
+footer > a {
+    text-decoration: none;
+}
+
+#logo {
+    color: black;
+    font-size: 2em;
+    text-align: center; 
+    margin-bottom: 7px;  
+    margin-top: -10px;
+    
+}
+#seta_div {
+    display: inline-block;
+    padding-left: 20px;
+}
+#seta {
+    margin-top: -46px;
+    width: 30px;
+    float: left;
+    margin-left: 10vw;
+    background-color: #76b900;
+    border-radius: 50%;
+}
+#seta:hover {
+    background-color: #05f621;
+}
+#copr {
+    margin-top: -30px;
+    text-align: center;
+    margin: auto;
+}
+

@@ -41,10 +41,10 @@
             <option value="Laranja" <% if (usuario.corTema === 'Laranja') { %> selected <% } %>>Laranja</option>
         </select>
         <label for="numeroWhatsapp">Número do WhatsApp para envio do carrinho:</label>
-        <input type="text" id="numeroWhatsapp" placeholder=" ex: 81993856910" name="numero" value="<%= usuario.telefone %>">
+        <input type="text" id="numeroWhatsapp" placeholder=" ex: 81993856910" name="numero" value="<%= usuario.telefone %>" maxlength="220">
        
         <label >Contato no rodapé da pagina:</label>
-        <input type="text" id="contato" placeholder="ex: (11)45994-5392" name="contato" value="<%= usuario.contato %>" >
+        <input type="text" id="contato" placeholder="ex: (11)45994-5392" name="contato" value="<%= usuario.contato %>" maxlength="220">
 
         <label for="pagamento">taxas de pagamento:</label>
         <div style="display: flex;">
@@ -309,7 +309,7 @@
         </div>
 
         <label for="horario">horario e dias de funcionamento :</label>
-        <input type="text" id="horario" maxlength="240" placeholder=" ex: funcionamos das 8:00h às 16:00h" name="horario" value="<%= usuario.horario %>">
+        <input type="text" id="horario" maxlength="240" placeholder=" ex: funcionamos das 8:00h às 16:00h" name="horario" value="<%= usuario.horario %>" >
 
         <label for="endereco">Endereço:</label>
         <input type="text" id="endereco" maxlength="240" placeholder=" ex: Rua das flores nº159" name="endereco" value="<%= usuario.enderecoLoja  %>">
